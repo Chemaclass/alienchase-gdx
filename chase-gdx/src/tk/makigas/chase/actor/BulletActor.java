@@ -18,6 +18,13 @@ public class BulletActor extends Actor {
 	}
 	
 	@Override
+	public void act(float delta) {
+		translate(300 * delta, 0);
+		if(getX() > getStage().getWidth())
+			remove();
+	}
+	
+	@Override
 	public void draw(SpriteBatch batch, float parentAlpha) {
 		batch.draw(bullet, getX(), getY(), getOriginX(), getOriginY(),
 				getWidth(), getHeight(), getScaleX(), getScaleY(),
