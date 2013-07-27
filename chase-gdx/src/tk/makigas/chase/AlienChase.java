@@ -16,6 +16,7 @@ public class AlienChase extends Game {
 		MANAGER.load("defensa.png", Texture.class);
 		MANAGER.load("fondo.png", Texture.class);
 		MANAGER.load("pad.png", Texture.class);
+		MANAGER.load("vida.png", Texture.class);
 		while(!MANAGER.update()) {
 			// TODO: Mostrar pantalla de carga
 		}

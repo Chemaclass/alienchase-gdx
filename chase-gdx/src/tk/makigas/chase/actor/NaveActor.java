@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
-public class NaveActor extends Actor {
+public class NaveActor extends Actor implements HealthActor {
 	
 	private TextureRegion nave;
 	
@@ -46,5 +46,22 @@ public class NaveActor extends Actor {
 		batch.draw(nave, getX(), getY(), getOriginX(), getOriginY(),
 				getWidth(), getHeight(), getScaleX(), getScaleY(),
 				getRotation());
+	}
+	
+	private float health;
+
+	@Override
+	public float getHealth() {
+		return health;
+	}
+
+	@Override
+	public void setHealth(float health) {
+		this.health = health;
+	}
+
+	@Override
+	public void sumHealth(float sum) {
+		health += sum;
 	}
 }

@@ -16,6 +16,13 @@ public class AlienActor extends Actor {
 				Texture.class), 43, 29);
 		setSize(alien.getRegionWidth(), alien.getRegionHeight());
 	}
+	
+	@Override
+	public void act(float delta) {
+		translate(-300 * delta, 0);
+		if(getRight() < 0)
+			remove();
+	}
 
 	@Override
 	public void draw(SpriteBatch batch, float parentAlpha) {

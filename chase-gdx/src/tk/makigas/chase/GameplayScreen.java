@@ -103,7 +103,10 @@ public class GameplayScreen extends AbstractScreen {
 	
 	private PadActor padArriba, padAbajo, padShoot;
 
-
+	private BarraActor vidaNave, vidaEscudo;
+	
+	private EscudoActor escudo;
+	
 	@Override
 	public void show() {
 		stage = new Stage();
@@ -133,12 +136,38 @@ public class GameplayScreen extends AbstractScreen {
 			stage.addActor(padAbajo);
 			stage.addActor(padShoot);
 		}
+		
+		escudo = new EscudoActor();
+		
+		vidaNave = new BarraActor(nave);
+		vidaEscudo = new BarraActor(escudo);		
+		
+		vidaNave.setPosition(stage.getWidth() - 150, 10);
+		vidaEscudo.setPosition(stage.getWidth() - 150, 18);
+		
+		stage.addActor(vidaNave);
+		stage.addActor(vidaEscudo);
+		
+		nave.setHealth(0.4f);
+		
+		timer = 2 + (float) Math.random();
 	}
+	
+	private float timer;
 
 	@Override
 	public void render(float delta) {
 		Gdx.gl.glClear(GL11.GL_COLOR_BUFFER_BIT);
 		stage.act();
+		timer -= delta;
+		if(timer < 0) {			
+			AlienActor alien = new AlienActor();
+			alien.setPosition(stage.getWidth(), stage.getHeight() * (float) Math.random());
+			stage.addActor(alien);
+			
+			timer = 2 + (float) Math.random();
+		}
+		
 		stage.draw();
 	}
 
