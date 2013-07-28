@@ -12,7 +12,10 @@ import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL11;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 /**
  * Pantalla de juego principal.
@@ -39,10 +42,13 @@ public class GameplayScreen extends AbstractScreen {
 	/** Contador de tiempo usado para sincronizar algunos eventos. */
 	private float timer;
 	
+	/** Puntuación */
+	private PuntuacionActor puntuacion;
+	
 	private List<AlienActor> aliens;
 	
 	private List<BulletActor> bullets;
-
+	
 	public GameplayScreen(AlienChase game) {
 		super(game);
 	}
@@ -55,6 +61,11 @@ public class GameplayScreen extends AbstractScreen {
 		// Creamos un nuevo escenario y lo asociamos a la entrada.
 		stage = new Stage();
 		Gdx.input.setInputProcessor(stage);
+		
+		// Crear fondo.
+		Image imgFondo = new Image(AlienChase.MANAGER.get("fondo.png", Texture.class));
+		imgFondo.setFillParent(true);
+		stage.addActor(imgFondo);
 		
 		// Creamos una nave.
 		nave = new NaveActor();
@@ -101,6 +112,11 @@ public class GameplayScreen extends AbstractScreen {
 			stage.addActor(padAbajo);
 			stage.addActor(padShoot);
 		}
+		
+		puntuacion = new PuntuacionActor(new BitmapFont());
+		puntuacion.setPosition(10, stage.getHeight() - 10);
+		puntuacion.puntuacion = 0;
+		stage.addActor(puntuacion);
 		
 		// Finalmente inicializamos el contador de tiempo.
 		timer = 2 + (float) Math.random();
@@ -158,6 +174,7 @@ public class GameplayScreen extends AbstractScreen {
 						bullets.get(j).remove();
 						bullets.remove(j);
 						AlienChase.MANAGER.get("explosion.ogg", Sound.class).play();
+						puntuacion.puntuacion++;
 					}
 				}
 			}
