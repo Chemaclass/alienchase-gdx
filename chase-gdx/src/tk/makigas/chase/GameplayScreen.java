@@ -59,7 +59,9 @@ public class GameplayScreen extends AbstractScreen {
 		bullets = new ArrayList<BulletActor>();
 		
 		// Creamos un nuevo escenario y lo asociamos a la entrada.
-		stage = new Stage();
+		int width = Gdx.graphics.getWidth();
+		int height = Gdx.graphics.getHeight();
+		stage = new Stage(width, height, true, game.SB);
 		Gdx.input.setInputProcessor(stage);
 		
 		// Crear fondo.
@@ -140,9 +142,11 @@ public class GameplayScreen extends AbstractScreen {
 			if(aliens.get(i).getRight() < 0) {
 				aliens.get(i).remove();
 				aliens.remove(i);
-				if(escudo.getHealth() > 0) {
+				if(escudo.getHealth() > 0.4f) {
 					escudo.sumHealth(-0.4f);
 					AlienChase.MANAGER.get("hit.ogg", Sound.class).play();
+				} else {
+					game.setScreen(game.GAMEOVER);
 				}
 			}
 		}
@@ -165,6 +169,9 @@ public class GameplayScreen extends AbstractScreen {
 				aliens.remove(i);
 				nave.sumHealth(-0.4f);
 				AlienChase.MANAGER.get("hit.ogg", Sound.class).play();
+				if(nave.getHealth() <= 0) {
+					game.setScreen(game.GAMEOVER);
+				}
 			} else {
 				for(int j = 0; j < bullets.size(); j++) {
 					if(bullets.get(j).bb.overlaps(alien.bb)) {
@@ -194,7 +201,7 @@ public class GameplayScreen extends AbstractScreen {
 
 	@Override
 	public void hide() {
-		
+		Gdx.input.setInputProcessor(null);
 	}
 
 	@Override
