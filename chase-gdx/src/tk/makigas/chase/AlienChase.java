@@ -2,6 +2,7 @@ package tk.makigas.chase;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 
 /**
@@ -24,6 +25,9 @@ public class AlienChase extends Game {
 		MANAGER.load("fondo.png", Texture.class);
 		MANAGER.load("pad.png", Texture.class);
 		MANAGER.load("vida.png", Texture.class);
+		MANAGER.load("hit.ogg", Sound.class);
+		MANAGER.load("explosion.ogg", Sound.class);
+		MANAGER.load("shoot.ogg", Sound.class);
 		while(!MANAGER.update()) {
 			// TODO: Mostrar pantalla de carga
 		}

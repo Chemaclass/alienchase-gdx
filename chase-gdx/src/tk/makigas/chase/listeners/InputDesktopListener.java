@@ -1,9 +1,13 @@
 package tk.makigas.chase.listeners;
 
+import java.util.List;
+
+import tk.makigas.chase.AlienChase;
 import tk.makigas.chase.actor.BulletActor;
 import tk.makigas.chase.actor.NaveActor;
 
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -14,9 +18,12 @@ public class InputDesktopListener extends InputListener {
 	
 	private Stage stage;
 	
-	public InputDesktopListener(NaveActor nave, Stage stage) {
+	private List<BulletActor> bullets;
+	
+	public InputDesktopListener(NaveActor nave, Stage stage, List<BulletActor> bullets) {
 		this.nave = nave;
 		this.stage = stage;
+		this.bullets = bullets;
 	}
 	
 	@Override
@@ -53,7 +60,8 @@ public class InputDesktopListener extends InputListener {
 		BulletActor bullet = new BulletActor();
 		bullet.setPosition(10 + nave.getWidth(), nave.getY() + nave.getHeight() / 2);
 		stage.addActor(bullet);
-		
+		bullets.add(bullet);
+		AlienChase.MANAGER.get("shoot.ogg", Sound.class).play();
 		return true;
 	}
 }

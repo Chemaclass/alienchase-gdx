@@ -5,6 +5,7 @@ import tk.makigas.chase.AlienChase;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
@@ -18,6 +19,8 @@ public class NaveActor extends Actor implements HealthActor {
 	/** Textura de la nave. */
 	private TextureRegion nave;
 	
+	public Rectangle bb;
+	
 	private float health;
 
 	/** Velocidad que lleva la nave. */
@@ -28,6 +31,7 @@ public class NaveActor extends Actor implements HealthActor {
 				Texture.class), 100, 79);
 		setSize(nave.getRegionWidth(), nave.getRegionHeight());
 		health = 1;
+		bb = new Rectangle(getX(), getY(), getWidth(), getHeight());
 	}
 	
 	@Override
@@ -49,6 +53,11 @@ public class NaveActor extends Actor implements HealthActor {
 			setY(getStage().getHeight() - getHeight());
 			velocidad.y = 0;
 		}
+		
+		bb.x = getX();
+		bb.y = getY();
+		bb.width = getWidth();
+		bb.height = getHeight();
 	}
 	
 	@Override

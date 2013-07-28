@@ -39,7 +39,9 @@ public class EscudoActor extends Actor implements HealthActor {
 	@Override
 	public void act(float delta) {
 		timer += delta;
-		if(timer > 2 && health < 1)
-			health += 0.02f; // Añade un porcentaje de vida a la nave. 
+		if(timer > 1 && health < 1) {
+			health += 0.01f; // Añade un porcentaje de vida a la nave.
+			timer = 0;
+		}
 	}
 }

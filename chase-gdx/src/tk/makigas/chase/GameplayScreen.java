@@ -1,5 +1,8 @@
 package tk.makigas.chase;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import tk.makigas.chase.actor.*;
 import tk.makigas.chase.listeners.InputAndroidMoveListener;
 import tk.makigas.chase.listeners.InputAndroidShootListener;
@@ -7,6 +10,7 @@ import tk.makigas.chase.listeners.InputDesktopListener;
 
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL11;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
@@ -34,6 +38,10 @@ public class GameplayScreen extends AbstractScreen {
 	
 	/** Contador de tiempo usado para sincronizar algunos eventos. */
 	private float timer;
+	
+	private List<AlienActor> aliens;
+	
+	private List<BulletActor> bullets;
 
 	public GameplayScreen(AlienChase game) {
 		super(game);
@@ -41,6 +49,9 @@ public class GameplayScreen extends AbstractScreen {
 	
 	@Override
 	public void show() {
+		aliens = new ArrayList<AlienActor>();
+		bullets = new ArrayList<BulletActor>();
+		
 		// Creamos un nuevo escenario y lo asociamos a la entrada.
 		stage = new Stage();
 		Gdx.input.setInputProcessor(stage);
@@ -68,7 +79,7 @@ public class GameplayScreen extends AbstractScreen {
 		// que usar tres botones asociados cada uno a algo.
 		if(Gdx.app.getType() == ApplicationType.Desktop) {
 			stage.setKeyboardFocus(nave); // damos foco a nave.
-			nave.addListener(new InputDesktopListener(nave, stage));
+			nave.addListener(new InputDesktopListener(nave, stage, bullets));
 		} else if(Gdx.app.getType() == ApplicationType.Android) {
 			// Creamos los pads.
 			padArriba = new PadActor(0, 0);
@@ -83,7 +94,7 @@ public class GameplayScreen extends AbstractScreen {
 			// Añadimos los listeners.
 			padArriba.addListener(new InputAndroidMoveListener(nave, 250f));
 			padAbajo.addListener(new InputAndroidMoveListener(nave, 250f));
-			padShoot.addListener(new InputAndroidShootListener(stage, nave));
+			padShoot.addListener(new InputAndroidShootListener(stage, nave, bullets));
 		
 			// Los añadimos al escenario.
 			stage.addActor(padArriba);
@@ -103,14 +114,64 @@ public class GameplayScreen extends AbstractScreen {
 		timer -= delta;
 		if(timer < 0)		
 			dispararAlien();
+		comprobarListas();
+		comprobarColisiones();
 		stage.draw();
+	}
+	
+	private void comprobarListas() {
+		for(int i = 0; i < aliens.size(); i++) {
+			if(aliens.get(i).getRight() < 0) {
+				aliens.get(i).remove();
+				aliens.remove(i);
+				if(escudo.getHealth() > 0) {
+					escudo.sumHealth(-0.4f);
+					AlienChase.MANAGER.get("hit.ogg", Sound.class).play();
+				}
+			}
+		}
+		
+		for(int i = 0; i < bullets.size(); i++) {
+			if(bullets.get(i).getX() > stage.getWidth()) {
+				bullets.get(i).remove();
+				bullets.remove(i);
+			}
+		}
+	}
+	
+	private void comprobarColisiones() {
+		AlienActor alien;
+		for(int i = 0; i < aliens.size(); i++) {
+			alien = aliens.get(i);
+			if(alien.bb.overlaps(nave.bb)) {
+				// Colisión alien-nave.
+				aliens.get(i).remove();
+				aliens.remove(i);
+				nave.sumHealth(-0.4f);
+				AlienChase.MANAGER.get("hit.ogg", Sound.class).play();
+			} else {
+				for(int j = 0; j < bullets.size(); j++) {
+					if(bullets.get(j).bb.overlaps(alien.bb)) {
+						// Colisión alien-bala.
+						aliens.get(i).remove();
+						aliens.remove(i);
+						bullets.get(j).remove();
+						bullets.remove(j);
+						AlienChase.MANAGER.get("explosion.ogg", Sound.class).play();
+					}
+				}
+			}
+		}
 	}
 
 	private void dispararAlien() {
 		AlienActor alien = new AlienActor();
 		alien.setPosition(stage.getWidth(), 0.1f * stage.getHeight() + 
 				0.8f * stage.getHeight() * (float) Math.random());
+		alien.bb.x = alien.getX();
+		alien.bb.y = alien.getY();
 		stage.addActor(alien);
+		aliens.add(alien);
 		timer = 2 + (float) Math.random();
 	}
 
