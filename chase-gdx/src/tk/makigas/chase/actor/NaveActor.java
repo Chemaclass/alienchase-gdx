@@ -8,16 +8,26 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
+/**
+ * Nave.
+ * 
+ * @author danirod
+ */
 public class NaveActor extends Actor implements HealthActor {
 	
+	/** Textura de la nave. */
 	private TextureRegion nave;
 	
+	private float health;
+
+	/** Velocidad que lleva la nave. */
 	public Vector2 velocidad = new Vector2(0, 0);
 
 	public NaveActor() {
 		nave = new TextureRegion(AlienChase.MANAGER.get("cohete.png",
 				Texture.class), 100, 79);
 		setSize(nave.getRegionWidth(), nave.getRegionHeight());
+		health = 1;
 	}
 	
 	@Override
@@ -48,8 +58,6 @@ public class NaveActor extends Actor implements HealthActor {
 				getRotation());
 	}
 	
-	private float health;
-
 	@Override
 	public float getHealth() {
 		return health;
@@ -58,10 +66,17 @@ public class NaveActor extends Actor implements HealthActor {
 	@Override
 	public void setHealth(float health) {
 		this.health = health;
+		checkHealth();
 	}
 
 	@Override
 	public void sumHealth(float sum) {
 		health += sum;
+		checkHealth();
+	}
+	
+	private void checkHealth() {
+		if(health < 0) health = 0;
+		if(health > 1) health = 1;
 	}
 }

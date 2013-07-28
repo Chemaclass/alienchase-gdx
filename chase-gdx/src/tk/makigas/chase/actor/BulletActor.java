@@ -7,6 +7,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
+/**
+ * Bala.
+ * 
+ * @author danirod
+ */
 public class BulletActor extends Actor {
 	
 	private TextureRegion bullet;

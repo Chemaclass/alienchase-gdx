@@ -7,8 +7,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
+/**
+ * Alien.
+ * 
+ * @author danirod
+ */
 public class AlienActor extends Actor {
 	
+	/** Textura usada por el alien. */
 	private TextureRegion alien;
 
 	public AlienActor() {

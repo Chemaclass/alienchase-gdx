@@ -2,8 +2,14 @@ package tk.makigas.chase;
 
 import com.badlogic.gdx.Screen;
 
+/**
+ * Pantalla abstracta que podemos extender para crear pantallas nuevas.
+ * 
+ * @author danirod
+ */
 public abstract class AbstractScreen implements Screen {
 	
+	/** Instancia de juego en ejecución. */
 	protected AlienChase game;
 
 	public AbstractScreen(AlienChase game) {
