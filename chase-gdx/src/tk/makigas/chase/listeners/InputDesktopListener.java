@@ -75,7 +75,7 @@ public class InputDesktopListener extends InputListener {
 			return false;
 		
 		BulletActor bullet = new BulletActor();
-		bullet.setPosition(10 + nave.getWidth(), nave.getY() + nave.getHeight() / 2);
+		bullet.setPosition(10 + nave.getWidth(), nave.getY() + nave.getHeight() / 2 - bullet.getHeight() / 2);
 		stage.addActor(bullet);
 		bullets.add(bullet);
 		AlienChase.MANAGER.get("shoot.ogg", Sound.class).play();
