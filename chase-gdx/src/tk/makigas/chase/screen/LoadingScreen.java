@@ -15,19 +15,31 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package tk.makigas.chase;
+package tk.makigas.chase.screen;
+
+import tk.makigas.chase.AlienChase;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 
 public class LoadingScreen extends AbstractScreen {
+	
+
+	private int width, height;
+	
+	private OrthographicCamera cam;
 
 	public LoadingScreen(AlienChase game) {
 		super(game);
+		cam = new OrthographicCamera();
 	}
 	
 	@Override
 	public void render(float delta) {
+		cam.update();
+		cam.apply(Gdx.gl10);
+		game.sb.setProjectionMatrix(cam.combined);
 		if(AlienChase.MANAGER.update()) {
 			game.setScreen(game.MAIN);
 		}
@@ -36,14 +48,18 @@ public class LoadingScreen extends AbstractScreen {
 		width = Gdx.graphics.getWidth();
 		height = Gdx.graphics.getHeight();
 		if(AlienChase.MANAGER.isLoaded("cargando.png", Texture.class)) {
-			game.SB.begin();
-			game.SB.draw(AlienChase.MANAGER.get("cargando.png", Texture.class), 0, 0, width, height);
-			game.SB.end();
+			game.sb.begin();
+			game.sb.draw(AlienChase.MANAGER.get("cargando.png", Texture.class), 0, 0, width, height);
+			game.sb.end();
 		}
 	}
 
 	@Override
 	public void show() {
+		this.width = Gdx.graphics.getWidth();
+		this.height = Gdx.graphics.getHeight();
+		cam = new OrthographicCamera();
+		cam.setToOrtho(false, width, height);
 	}
 
 	@Override
@@ -56,6 +72,11 @@ public class LoadingScreen extends AbstractScreen {
 		
 	}
 	
-	
+	@Override
+	public void resize(int width, int height) {
+		this.width = width;
+		this.height = height;
+		cam.setToOrtho(false, width, height);
+	}
 
 }

@@ -15,11 +15,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package tk.makigas.chase;
+package tk.makigas.chase.screen;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import tk.makigas.chase.AlienChase;
 import tk.makigas.chase.actor.*;
 import tk.makigas.chase.listeners.InputAndroidMoveListener;
 import tk.makigas.chase.listeners.InputAndroidShootListener;
@@ -78,7 +79,7 @@ public class GameplayScreen extends AbstractScreen {
 		// Creamos un nuevo escenario y lo asociamos a la entrada.
 		int width = Gdx.graphics.getWidth();
 		int height = Gdx.graphics.getHeight();
-		stage = new Stage(width, height, true, game.SB);
+		stage = new Stage(width, height, true, game.sb);
 		Gdx.input.setInputProcessor(stage);
 		
 		// Crear fondo.
@@ -228,9 +229,10 @@ public class GameplayScreen extends AbstractScreen {
 
 	@Override
 	public void resize(int width, int height) {
-		stage.setViewport(width, height, true);
+		stage.setViewport(640, 360, true);
 		vidaNave.setPosition(stage.getWidth() - 150, stage.getHeight() - 20);
 		vidaEscudo.setPosition(stage.getWidth() - 150, stage.getHeight() - 28);
+		puntuacion.setPosition(10, stage.getHeight() - 10);
 		if(Gdx.app.getType() == ApplicationType.Android && padShoot != null)
 			padShoot.setPosition(stage.getWidth() - 50, 10);
 	}

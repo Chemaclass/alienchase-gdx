@@ -17,6 +17,12 @@
  */
 package tk.makigas.chase;
 
+import tk.makigas.chase.screen.AbstractScreen;
+import tk.makigas.chase.screen.GameOverScreen;
+import tk.makigas.chase.screen.GameplayScreen;
+import tk.makigas.chase.screen.LoadingScreen;
+import tk.makigas.chase.screen.MainScreen;
+
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
@@ -33,7 +39,7 @@ public class AlienChase extends Game {
 	/** Gestor de recursos usado por el juego. */
 	public static final AssetManager MANAGER = new AssetManager();
 	
-	public SpriteBatch SB;
+	public SpriteBatch sb;
 		
 	public final AbstractScreen GAMEOVER, GAMEPLAY, LOADING, MAIN;
 	
@@ -46,7 +52,7 @@ public class AlienChase extends Game {
 
 	@Override
 	public void create() {
-		SB = new SpriteBatch();
+		sb = new SpriteBatch();
 		
 		// Cargamos todos los elementos externos que usará el juego.
 		MANAGER.load("cargando.png", Texture.class);
@@ -72,7 +78,7 @@ public class AlienChase extends Game {
 	public void dispose() {
 		super.dispose();
 		MANAGER.dispose();
-		SB.dispose();
+		sb.dispose();
 	}
 	
 }

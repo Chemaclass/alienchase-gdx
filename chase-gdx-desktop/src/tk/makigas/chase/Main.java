@@ -10,7 +10,7 @@ public class Main {
 		cfg.useGL20 = false;
 		cfg.width = 640;
 		cfg.height = 360;
-		cfg.resizable = false;
+		cfg.resizable = true;
 		
 		new LwjglApplication(new AlienChase(), cfg);
 	}
