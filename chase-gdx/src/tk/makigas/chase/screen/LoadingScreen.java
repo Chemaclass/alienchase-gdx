@@ -39,7 +39,7 @@ public class LoadingScreen extends AbstractScreen {
 	public void render(float delta) {
 		cam.update();
 		cam.apply(Gdx.gl10);
-		game.SB.setProjectionMatrix(cam.combined);
+		game.sb.setProjectionMatrix(cam.combined);
 		if(AlienChase.MANAGER.update()) {
 			game.setScreen(game.MAIN);
 		}
@@ -48,9 +48,9 @@ public class LoadingScreen extends AbstractScreen {
 		width = Gdx.graphics.getWidth();
 		height = Gdx.graphics.getHeight();
 		if(AlienChase.MANAGER.isLoaded("cargando.png", Texture.class)) {
-			game.SB.begin();
-			game.SB.draw(AlienChase.MANAGER.get("cargando.png", Texture.class), 0, 0, width, height);
-			game.SB.end();
+			game.sb.begin();
+			game.sb.draw(AlienChase.MANAGER.get("cargando.png", Texture.class), 0, 0, width, height);
+			game.sb.end();
 		}
 	}
 

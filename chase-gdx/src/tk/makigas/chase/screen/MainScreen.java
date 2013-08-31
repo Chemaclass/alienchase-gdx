@@ -46,7 +46,7 @@ public class MainScreen extends AbstractScreen {
 		btnJugar = AlienChase.MANAGER.get("jugar.png", Texture.class);
 		btnSalir = AlienChase.MANAGER.get("salir.png", Texture.class);
 
-		stage = new Stage(640, 360, true, game.SB);
+		stage = new Stage(640, 360, true, game.sb);
 		
 		Image imgFondo = new Image(titulo);
 		imgFondo.setFillParent(true);

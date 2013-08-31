@@ -39,7 +39,7 @@ public class AlienChase extends Game {
 	/** Gestor de recursos usado por el juego. */
 	public static final AssetManager MANAGER = new AssetManager();
 	
-	public SpriteBatch SB;
+	public SpriteBatch sb;
 		
 	public final AbstractScreen GAMEOVER, GAMEPLAY, LOADING, MAIN;
 	
@@ -52,7 +52,7 @@ public class AlienChase extends Game {
 
 	@Override
 	public void create() {
-		SB = new SpriteBatch();
+		sb = new SpriteBatch();
 		
 		// Cargamos todos los elementos externos que usará el juego.
 		MANAGER.load("cargando.png", Texture.class);
@@ -78,7 +78,7 @@ public class AlienChase extends Game {
 	public void dispose() {
 		super.dispose();
 		MANAGER.dispose();
-		SB.dispose();
+		sb.dispose();
 	}
 	
 }

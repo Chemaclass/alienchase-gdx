@@ -79,7 +79,7 @@ public class GameplayScreen extends AbstractScreen {
 		// Creamos un nuevo escenario y lo asociamos a la entrada.
 		int width = Gdx.graphics.getWidth();
 		int height = Gdx.graphics.getHeight();
-		stage = new Stage(width, height, true, game.SB);
+		stage = new Stage(width, height, true, game.sb);
 		Gdx.input.setInputProcessor(stage);
 		
 		// Crear fondo.

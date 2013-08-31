@@ -38,10 +38,10 @@ public class GameOverScreen extends AbstractScreen {
 	public void render(float delta) {
 		cam.update();
 		cam.apply(Gdx.gl10);
-		game.SB.setProjectionMatrix(cam.combined);
-		game.SB.begin();
-		game.SB.draw(gameover, 0, 0, width, height);
-		game.SB.end();
+		game.sb.setProjectionMatrix(cam.combined);
+		game.sb.begin();
+		game.sb.draw(gameover, 0, 0, width, height);
+		game.sb.end();
 		
 		if(Gdx.input.isTouched()) {
 			game.setScreen(game.MAIN);
