@@ -20,18 +20,27 @@ package tk.makigas.chase.screen;
 import tk.makigas.chase.AlienChase;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 
 public class GameOverScreen extends AbstractScreen {
 
+	private int width, height;
+	
+	private OrthographicCamera cam;
+	
 	public GameOverScreen(AlienChase game) {
 		super(game);
+		cam = new OrthographicCamera();
 	}
 
 	@Override
 	public void render(float delta) {
+		cam.update();
+		cam.apply(Gdx.gl10);
+		game.SB.setProjectionMatrix(cam.combined);
 		game.SB.begin();
-		game.SB.draw(gameover, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		game.SB.draw(gameover, 0, 0, width, height);
 		game.SB.end();
 		
 		if(Gdx.input.isTouched()) {
@@ -44,6 +53,10 @@ public class GameOverScreen extends AbstractScreen {
 	@Override
 	public void show() {
 		gameover = AlienChase.MANAGER.get("gameover.png", Texture.class);
+		this.width = Gdx.graphics.getWidth();
+		this.height = Gdx.graphics.getHeight();
+		cam = new OrthographicCamera();
+		cam.setToOrtho(false, width, height);
 	}
 
 	@Override
@@ -58,4 +71,10 @@ public class GameOverScreen extends AbstractScreen {
 		
 	}
 
+	@Override
+	public void resize(int width, int height) {
+		this.width = width;
+		this.height = height;
+		cam.setToOrtho(false, width, height);
+	}
 }

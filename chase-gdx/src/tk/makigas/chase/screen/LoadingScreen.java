@@ -20,16 +20,26 @@ package tk.makigas.chase.screen;
 import tk.makigas.chase.AlienChase;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 
 public class LoadingScreen extends AbstractScreen {
+	
+
+	private int width, height;
+	
+	private OrthographicCamera cam;
 
 	public LoadingScreen(AlienChase game) {
 		super(game);
+		cam = new OrthographicCamera();
 	}
 	
 	@Override
 	public void render(float delta) {
+		cam.update();
+		cam.apply(Gdx.gl10);
+		game.SB.setProjectionMatrix(cam.combined);
 		if(AlienChase.MANAGER.update()) {
 			game.setScreen(game.MAIN);
 		}
@@ -46,6 +56,10 @@ public class LoadingScreen extends AbstractScreen {
 
 	@Override
 	public void show() {
+		this.width = Gdx.graphics.getWidth();
+		this.height = Gdx.graphics.getHeight();
+		cam = new OrthographicCamera();
+		cam.setToOrtho(false, width, height);
 	}
 
 	@Override
@@ -58,6 +72,11 @@ public class LoadingScreen extends AbstractScreen {
 		
 	}
 	
-	
+	@Override
+	public void resize(int width, int height) {
+		this.width = width;
+		this.height = height;
+		cam.setToOrtho(false, width, height);
+	}
 
 }

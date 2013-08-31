@@ -229,9 +229,10 @@ public class GameplayScreen extends AbstractScreen {
 
 	@Override
 	public void resize(int width, int height) {
-		stage.setViewport(width, height, true);
+		stage.setViewport(640, 360, true);
 		vidaNave.setPosition(stage.getWidth() - 150, stage.getHeight() - 20);
 		vidaEscudo.setPosition(stage.getWidth() - 150, stage.getHeight() - 28);
+		puntuacion.setPosition(10, stage.getHeight() - 10);
 		if(Gdx.app.getType() == ApplicationType.Android && padShoot != null)
 			padShoot.setPosition(stage.getWidth() - 50, 10);
 	}
