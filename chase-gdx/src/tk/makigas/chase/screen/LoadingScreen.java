@@ -15,38 +15,49 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package tk.makigas.chase;
+package tk.makigas.chase.screen;
 
-import com.badlogic.gdx.Screen;
+import tk.makigas.chase.AlienChase;
 
-/**
- * Pantalla abstracta que podemos extender para crear pantallas nuevas.
- * 
- * @author danirod
- */
-public abstract class AbstractScreen implements Screen {
-	
-	/** Instancia de juego en ejecución. */
-	protected AlienChase game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 
-	public AbstractScreen(AlienChase game) {
-		this.game = game;
+public class LoadingScreen extends AbstractScreen {
+
+	public LoadingScreen(AlienChase game) {
+		super(game);
 	}
 	
 	@Override
-	public void resize(int width, int height) {
+	public void render(float delta) {
+		if(AlienChase.MANAGER.update()) {
+			game.setScreen(game.MAIN);
+		}
+		
+		int width, height;
+		width = Gdx.graphics.getWidth();
+		height = Gdx.graphics.getHeight();
+		if(AlienChase.MANAGER.isLoaded("cargando.png", Texture.class)) {
+			game.SB.begin();
+			game.SB.draw(AlienChase.MANAGER.get("cargando.png", Texture.class), 0, 0, width, height);
+			game.SB.end();
+		}
+	}
+
+	@Override
+	public void show() {
+	}
+
+	@Override
+	public void hide() {
+	}
+
+	@Override
+	public void dispose() {
+		// TODO Auto-generated method stub
 		
 	}
+	
+	
 
-	@Override
-	public void pause() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void resume() {
-		// TODO Auto-generated method stub
-
-	}
 }

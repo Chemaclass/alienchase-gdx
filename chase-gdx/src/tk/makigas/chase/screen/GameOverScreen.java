@@ -15,7 +15,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package tk.makigas.chase;
+package tk.makigas.chase.screen;
+
+import tk.makigas.chase.AlienChase;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;

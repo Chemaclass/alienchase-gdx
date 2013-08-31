@@ -17,6 +17,12 @@
  */
 package tk.makigas.chase;
 
+import tk.makigas.chase.screen.AbstractScreen;
+import tk.makigas.chase.screen.GameOverScreen;
+import tk.makigas.chase.screen.GameplayScreen;
+import tk.makigas.chase.screen.LoadingScreen;
+import tk.makigas.chase.screen.MainScreen;
+
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;

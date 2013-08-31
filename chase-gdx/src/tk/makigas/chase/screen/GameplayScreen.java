@@ -15,11 +15,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package tk.makigas.chase;
+package tk.makigas.chase.screen;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import tk.makigas.chase.AlienChase;
 import tk.makigas.chase.actor.*;
 import tk.makigas.chase.listeners.InputAndroidMoveListener;
 import tk.makigas.chase.listeners.InputAndroidShootListener;
