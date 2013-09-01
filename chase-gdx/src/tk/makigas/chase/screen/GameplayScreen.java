@@ -91,6 +91,8 @@ public class GameplayScreen extends AbstractScreen {
 		// Finalmente inicializamos el contador de tiempo. Esto sólo
 		// ajusta el tiempo que queda para que el primer alien haga spawn.
 		timer = 2 + (float) Math.random();
+		
+		// TODO: Se ha sugerido poner música de fondo. No es una mala idea.
 	}
 
 	/**

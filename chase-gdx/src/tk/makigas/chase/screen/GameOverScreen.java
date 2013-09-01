@@ -70,6 +70,8 @@ public class GameOverScreen extends AbstractScreen {
 		gameover = AlienChase.MANAGER.get("gameover.png", Texture.class);
 		this.width = Gdx.graphics.getWidth();
 		this.height = Gdx.graphics.getHeight();
+		
+		// TODO: Podría sonar algo que indicara que se ha perdido.
 	}
 
 	@Override
