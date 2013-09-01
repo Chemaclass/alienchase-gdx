@@ -47,12 +47,12 @@ public class LoadingScreen extends AbstractScreen {
 	public void render(float delta) {
 		// Para asegurarnos de que el SpriteBatch y la cámara están
 		// siempre sincronizados, los ajustamos en cada fotograma.
-		game.camera.update();			// recalcula las matrices de la cámara
-		game.camera.apply(Gdx.gl10);	// reajusta las matrices de la cámara
+		game.getCamera().update();			// recalcula las matrices de la cámara
+		game.getCamera().apply(Gdx.gl10);	// reajusta las matrices de la cámara
 		// lo que viene a continuación es super necesario: le indica al
 		// SpriteBatch que use la matriz de proyección de la cámara en sus
 		// cálculos. De este modo, se usarán las coordenadas de la cámara.
-		game.sb.setProjectionMatrix(game.camera.combined);
+		game.getSpriteBatch().setProjectionMatrix(game.getCamera().combined);
 		
 		// Continuamos cargando recursos con normalidad.
 		if(AlienChase.MANAGER.update()) {
@@ -65,10 +65,10 @@ public class LoadingScreen extends AbstractScreen {
 		// el primero de todos).
 		if(AlienChase.MANAGER.isLoaded("cargando.png", Texture.class)) {
 			// Está cargado.
-			game.sb.begin();
-			game.sb.draw(AlienChase.MANAGER.get("cargando.png", Texture.class),
+			game.getSpriteBatch().begin();
+			game.getSpriteBatch().draw(AlienChase.MANAGER.get("cargando.png", Texture.class),
 					0, 0, width, height);
-			game.sb.end();
+			game.getSpriteBatch().end();
 		}
 	}
 

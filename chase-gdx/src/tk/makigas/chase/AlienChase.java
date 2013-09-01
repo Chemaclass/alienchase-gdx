@@ -46,10 +46,10 @@ public class AlienChase extends Game {
 	 * Se declara aquí porque varios estados necesitan tener acceso a
 	 * este recurso y no es recomendable crear múltiples SpriteBatches. 
 	 */
-	public SpriteBatch sb;
+	private SpriteBatch sb;
 	
 	/** Cámara compartida por los distintos estados del juego. */
-	public OrthographicCamera camera;
+	private OrthographicCamera camera;
 		
 	public final AbstractScreen GAMEOVER, GAMEPLAY, LOADING, MAIN;
 	
@@ -89,19 +89,35 @@ public class AlienChase extends Game {
 		setScreen(LOADING);
 	}
 	
+	/**
+	 * Recupera la instancia compartida de SpriteBatch
+	 * @return SpriteBatch en uso por el juego
+	 */
+	public SpriteBatch getSpriteBatch() {
+		return sb;
+	}
+
+	/**
+	 * Recupera la instancia compartida de OrthograhpicCamera
+	 * @return cámara en uso por el juego.
+	 */
+	public OrthographicCamera getCamera() {
+		return camera;
+	}
+
 	@Override
 	public void resize(int width, int height) {
 		super.resize(width, height);	// llamada a super obligatoria
 										// (no sabemos si el estado actual
 										// podría necesitarlo)
-		camera.setToOrtho(false, width, height);
+		getCamera().setToOrtho(false, width, height);
 	}
 	
 	@Override
 	public void dispose() {
 		super.dispose();
 		MANAGER.dispose();
-		sb.dispose();
+		getSpriteBatch().dispose();
 	}
 	
 }
