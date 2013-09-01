@@ -20,43 +20,56 @@ package tk.makigas.chase.screen;
 import tk.makigas.chase.AlienChase;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 
+/**
+ * Pantalla de Game Over. Cuando el usuario pierde la partida se le redirige
+ * a esta pantalla donde puede sufrir pensando en lo que ha hecho hasta que
+ * decida pulsar el botón para volver al menú principal.
+ * 
+ * @author danirod
+ */
 public class GameOverScreen extends AbstractScreen {
 
+	/** Textura con la imagen que se mostrará a modo de Game Over. */
+	private Texture gameover;
+
+	/**
+	 * Guardan el ancho y el alto de la pantalla para que la imagen que se
+	 * renderiza en este estado sepa cómo de ancha y alta debe mostrarse.
+	 */
 	private int width, height;
-	
-	private OrthographicCamera cam;
 	
 	public GameOverScreen(AlienChase game) {
 		super(game);
-		cam = new OrthographicCamera();
 	}
 
 	@Override
 	public void render(float delta) {
-		cam.update();
-		cam.apply(Gdx.gl10);
-		game.sb.setProjectionMatrix(cam.combined);
+		// Para asegurarnos de que el SpriteBatch y la cámara están
+		// siempre sincronizados, los ajustamos en cada fotograma.
+		game.camera.update();			// recalcula las matrices de la cámara
+		game.camera.apply(Gdx.gl10);	// reajusta las matrices de la cámara
+		// lo que viene a continuación es super necesario: le indica al
+		// SpriteBatch que use la matriz de proyección de la cámara en sus
+		// cálculos. De este modo, se usarán las coordenadas de la cámara.
+		game.sb.setProjectionMatrix(game.camera.combined);
+		
 		game.sb.begin();
 		game.sb.draw(gameover, 0, 0, width, height);
 		game.sb.end();
 		
 		if(Gdx.input.isTouched()) {
+			// Volvemos al menú inicio en cuanto se toque la pantalla.
 			game.setScreen(game.MAIN);
 		}
 	}
 	
-	private Texture gameover;
-
 	@Override
 	public void show() {
 		gameover = AlienChase.MANAGER.get("gameover.png", Texture.class);
 		this.width = Gdx.graphics.getWidth();
 		this.height = Gdx.graphics.getHeight();
-		cam = new OrthographicCamera();
-		cam.setToOrtho(false, width, height);
 	}
 
 	@Override
@@ -75,6 +88,6 @@ public class GameOverScreen extends AbstractScreen {
 	public void resize(int width, int height) {
 		this.width = width;
 		this.height = height;
-		cam.setToOrtho(false, width, height);
 	}
+
 }

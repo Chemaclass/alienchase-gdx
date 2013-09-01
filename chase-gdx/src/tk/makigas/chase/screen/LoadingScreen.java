@@ -23,33 +23,51 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 
+/**
+ * Pantalla de carga. Esta es la primera pantalla que se ve al cargar el
+ * juego y es usada como pantalla de espera mientras el AssetManager de la
+ * clase principal termina de cargar sus recursos.
+ * 
+ * @author danirod
+ * @see AlienChase#MANAGER
+ */
 public class LoadingScreen extends AbstractScreen {
-	
 
+	/**
+	 * Guardan el ancho y el alto de la pantalla para que la imagen que se
+	 * renderiza en este estado sepa cómo de ancha y alta debe mostrarse.
+	 */
 	private int width, height;
-	
-	private OrthographicCamera cam;
 
 	public LoadingScreen(AlienChase game) {
 		super(game);
-		cam = new OrthographicCamera();
 	}
 	
 	@Override
 	public void render(float delta) {
-		cam.update();
-		cam.apply(Gdx.gl10);
-		game.sb.setProjectionMatrix(cam.combined);
+		// Para asegurarnos de que el SpriteBatch y la cámara están
+		// siempre sincronizados, los ajustamos en cada fotograma.
+		game.camera.update();			// recalcula las matrices de la cámara
+		game.camera.apply(Gdx.gl10);	// reajusta las matrices de la cámara
+		// lo que viene a continuación es super necesario: le indica al
+		// SpriteBatch que use la matriz de proyección de la cámara en sus
+		// cálculos. De este modo, se usarán las coordenadas de la cámara.
+		game.sb.setProjectionMatrix(game.camera.combined);
+		
+		// Continuamos cargando recursos con normalidad.
 		if(AlienChase.MANAGER.update()) {
-			game.setScreen(game.MAIN);
+			game.setScreen(game.MAIN); // si hemos terminado vamos al menú
 		}
 		
-		int width, height;
-		width = Gdx.graphics.getWidth();
-		height = Gdx.graphics.getHeight();
+		// Intentamos mostrar la imagen que dice cargando.
+		// Sólo se puede mostrar esta imagen si ya ha sido cargada por el
+		// AssetManager (de ahí que sea necesario cargar este recurso
+		// el primero de todos).
 		if(AlienChase.MANAGER.isLoaded("cargando.png", Texture.class)) {
+			// Está cargado.
 			game.sb.begin();
-			game.sb.draw(AlienChase.MANAGER.get("cargando.png", Texture.class), 0, 0, width, height);
+			game.sb.draw(AlienChase.MANAGER.get("cargando.png", Texture.class),
+					0, 0, width, height);
 			game.sb.end();
 		}
 	}
@@ -58,8 +76,6 @@ public class LoadingScreen extends AbstractScreen {
 	public void show() {
 		this.width = Gdx.graphics.getWidth();
 		this.height = Gdx.graphics.getHeight();
-		cam = new OrthographicCamera();
-		cam.setToOrtho(false, width, height);
 	}
 
 	@Override
@@ -76,7 +92,6 @@ public class LoadingScreen extends AbstractScreen {
 	public void resize(int width, int height) {
 		this.width = width;
 		this.height = height;
-		cam.setToOrtho(false, width, height);
 	}
 
 }

@@ -24,8 +24,10 @@ import tk.makigas.chase.screen.LoadingScreen;
 import tk.makigas.chase.screen.MainScreen;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -39,7 +41,15 @@ public class AlienChase extends Game {
 	/** Gestor de recursos usado por el juego. */
 	public static final AssetManager MANAGER = new AssetManager();
 	
+	/**
+	 * SpriteBatch compartido por los distintos estados del juego.
+	 * Se declara aquí porque varios estados necesitan tener acceso a
+	 * este recurso y no es recomendable crear múltiples SpriteBatches. 
+	 */
 	public SpriteBatch sb;
+	
+	/** Cámara compartida por los distintos estados del juego. */
+	public OrthographicCamera camera;
 		
 	public final AbstractScreen GAMEOVER, GAMEPLAY, LOADING, MAIN;
 	
@@ -52,7 +62,12 @@ public class AlienChase extends Game {
 
 	@Override
 	public void create() {
+		int width, height;
+		
 		sb = new SpriteBatch();
+		width = Gdx.graphics.getWidth();
+		height = Gdx.graphics.getHeight();
+		camera = new OrthographicCamera(width, height);
 		
 		// Cargamos todos los elementos externos que usará el juego.
 		MANAGER.load("cargando.png", Texture.class);
@@ -72,6 +87,14 @@ public class AlienChase extends Game {
 		MANAGER.load("salir.png", Texture.class);
 		
 		setScreen(LOADING);
+	}
+	
+	@Override
+	public void resize(int width, int height) {
+		super.resize(width, height);	// llamada a super obligatoria
+										// (no sabemos si el estado actual
+										// podría necesitarlo)
+		camera.setToOrtho(false, width, height);
 	}
 	
 	@Override
