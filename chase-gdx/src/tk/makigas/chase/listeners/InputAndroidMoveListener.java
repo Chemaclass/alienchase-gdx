@@ -22,17 +22,43 @@ import tk.makigas.chase.actor.NaveActor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 
+/**
+ * Listener encargado del movimiento de la nave en móviles.
+ * 
+ * Este listener genérico controla el movimiento. Si es hacia arriba o hacia
+ * abajo, esto ya se decide en el momento de llamar al constructor. Con esto
+ * se evita tener que crear distintas clases para hacer la misma operación,
+ * ya que los botones del pad que controlan el movimiento de la nave no dejan
+ * de ser actores independientes los unos de los otros.
+ * 
+ * @author danirod
+ */
 public class InputAndroidMoveListener extends InputListener {
 	
+	/**
+	 * Nave que va a ser controlada por el listener.
+	 */
 	private NaveActor nave;
 	
+	/**
+	 * Velocidad que espera que alcance la nave cuando el pad sea pulsado.
+	 */
 	private float targetSpeed;
 	
+	/**
+	 * Crea un nuevo listener.
+	 * 
+	 * @param nave nave que va a ser controlada por el listener
+	 * @param targetSpeed velocidad que deberá llevar la nave
+	 */
 	public InputAndroidMoveListener(NaveActor nave, float targetSpeed) {
 		this.nave = nave;
 		this.targetSpeed = targetSpeed;
 	}
-
+	
+	// TODO: La nave podría acelerar y decelerar en vez de parar de golpe.
+	
+	/** Cuando el botón se pulsa, la nave se pone en marcha. */
 	@Override
 	public boolean touchDown(InputEvent event, float x, float y,
 			int pointer, int button) {
@@ -40,6 +66,7 @@ public class InputAndroidMoveListener extends InputListener {
 		return true;
 	}
 
+	/** Cuando el botón se levanta, la nave deja de moverse. */
 	@Override
 	public void touchUp(InputEvent event, float x, float y,
 			int pointer, int button) {

@@ -143,9 +143,26 @@ public class GameplayScreen extends AbstractScreen {
 	 */
 	private void initInput() {
 		if(Gdx.app.getType() == ApplicationType.Desktop) {			// DESKTOP
+			
+			// Si estamos en escritorio, tenemos acceso a un teclado físico,
+			// por lo que tiene sentido poder controlar la nave usando el
+			// teclado. En este caso usamos un listener único que asociamos
+			// a la nave (realmente valdría cualquier actor, ya que no
+			// estamos usando el ratón para nada en este juego).
+			
 			stage.setKeyboardFocus(nave); // damos foco a nave.
 			nave.addListener(new InputDesktopListener(nave, stage, bullets));
 		} else if(Gdx.app.getType() == ApplicationType.Android) { 	// ANDROID
+			
+			// Los móviles son táctiles por lo que no tenemos a nuestra
+			// disposición en la mayoría de casos un teclado físico o al
+			// menos un conjunto de teclas cuya posición sea fiable y
+			// ergonómica. Así que creamos varios actores en la pantalla
+			// a modo de pad virtual: son botones que al pulsarse controlan
+			// la entrada del juego. En este caso necesitamos tres botones
+			// INDEPENDIENTES entre sí, controlados por listeners igual
+			// de INDEPENDIENTES.
+			
 			// Creamos los pads.
 			padArriba = new PadActor(0, 0);
 			padAbajo = new PadActor(1, 0);

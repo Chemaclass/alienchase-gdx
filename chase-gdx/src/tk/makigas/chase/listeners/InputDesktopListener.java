@@ -29,27 +29,62 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
+/**
+ * Sistema de entrada para escritorio.
+ * 
+ * El escritorio utiliza este sistema para gestionar la entrada en el juego.
+ * Aquí se gestionan todos los eventos: las pulsaciones de teclas para
+ * mover la nave arriba y abajo y las pulsaciones de teclas para disparar
+ * una bala. 
+ * 
+ * @author danirod
+ *
+ */
 public class InputDesktopListener extends InputListener {
 	
+	/**
+	 * La nave que será controlada por este sistema.
+	 * Necesario para poder darle instrucciones de movimiento y para obtener
+	 * su posición en el momento de disparar balas.
+	 */
 	private NaveActor nave;
 	
+	/**
+	 * Escenario. Necesario para permitir que las balas hagan spawn.
+	 */
 	private Stage stage;
 	
+	/**
+	 * Lista dinámica de balas. Necesario para que el sistema
+	 * pueda controlar más adelante la bala cuando tenga que desaparecer.
+	 */
 	private List<BulletActor> bullets;
 	
+	/**
+	 * Crea un nuevo sistema de entrada.
+	 * 
+	 * @param nave nave que se moverá.
+	 * @param stage escenario donde se añadirá la bala.
+	 * @param bullets lista dinámica de balas
+	 */
 	public InputDesktopListener(NaveActor nave, Stage stage, List<BulletActor> bullets) {
 		this.nave = nave;
 		this.stage = stage;
 		this.bullets = bullets;
 	}
-	
+
+	/**
+	 * Gestiona eventos para mover la nave arriba y abajo. Es necesario
+	 * hacerlos en keyDown para que la nave pueda moverse DURANTE todo
+	 * el tiempo que esas teclas estén pulsadas.
+	 */
 	@Override
 	public boolean keyDown(InputEvent event, int keycode) {
 		switch(keycode) {
-		case Input.Keys.UP:
+		case Input.Keys.UP: // mover arriba -> velocidad positiva
 			nave.velocidad.y = 250;
 			return true;
-		case Input.Keys.DOWN:
+		case Input.Keys.DOWN: // mover abajo -> velocidad negativa
 			nave.velocidad.y = -250;
 			return true;
 		default:
@@ -57,11 +92,16 @@ public class InputDesktopListener extends InputListener {
 		}
 	}
 
+	/**
+	 * Necesario para desactivar el movimiento de la nave cuando se suelten
+	 * las teclas arriba y abajo. De otro modo continuaría moviéndose de
+	 * forma casi infinita.
+	 */
 	@Override
 	public boolean keyUp(InputEvent event, int keycode) {
 		switch(keycode) {
-		case Input.Keys.UP:
-		case Input.Keys.DOWN:
+		case Input.Keys.UP:			// sólo nos interesa detenerla si se pulsa
+		case Input.Keys.DOWN:		// UP y DOWN (no otras teclas como SPACE).
 			nave.velocidad.y = 0;
 			return true;
 		default:
@@ -69,15 +109,25 @@ public class InputDesktopListener extends InputListener {
 		}
 	}
 
+	/**
+	 * Dispara una bala cuando se pulsa la tecla ESPACIO.
+	 */
 	@Override
 	public boolean keyTyped(InputEvent event, char character) {
 		if(character != ' ')
 			return false;
 		
+		// TODO: ¿Tal vez esto podría hacerse en otra clase?
+		// De este modo no sería necesario que esta clase mantuviese
+		// tantas dependencias extrañas (¿listener, lista de balas?)
+		// En vez de hacer esto aquí se invocaría un método que lo hiciera
+		
+		// crea la bala y la añade al escenario
 		BulletActor bullet = new BulletActor();
 		bullet.setPosition(10 + nave.getWidth(), nave.getY() + nave.getHeight() / 2 - bullet.getHeight() / 2);
 		stage.addActor(bullet);
 		bullets.add(bullet);
+		
 		AlienChase.MANAGER.get("shoot.ogg", Sound.class).play();
 		return true;
 	}
