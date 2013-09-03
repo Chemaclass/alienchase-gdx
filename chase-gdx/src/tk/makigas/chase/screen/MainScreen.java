@@ -91,7 +91,6 @@ public class MainScreen extends AbstractScreen {
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
 		
 	}
 
