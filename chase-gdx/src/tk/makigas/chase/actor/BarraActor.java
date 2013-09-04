@@ -36,6 +36,10 @@ public class BarraActor extends Actor {
 	/** Elemento del que se hace un seguimiento. */
 	private HealthActor entidad;
 
+	/**
+	 * 
+	 * @param entidad entidad que tiene vida a trackear.
+	 */
 	public BarraActor(HealthActor entidad) {
 		barra = AlienChase.MANAGER.get("vida.png", Texture.class);
 		setSize(barra.getWidth(), barra.getHeight());
@@ -44,6 +48,13 @@ public class BarraActor extends Actor {
 	
 	@Override
 	public void draw(SpriteBatch batch, float parentAlpha) {
+		// La llamada a draw usada en este ejemplo es aquella que deja usar
+		// los parámetros srcX, srcY, srcWidth y srcHeight. Con los parámetros
+		// src* podemos indicar sólo una región a dibujar. De este modo,
+		// la textura de la barra contiene la barra completa (al 100%), pero
+		// nosotros sólo mostramos una porción de ella: a medida que pierda
+		// vida ocultamos la parte derecha de la barra para que no se muestre
+		// la barra del todo llena.
 		batch.draw(barra, getX(), getY(), 0, 0,
 				(int) (getWidth() * entidad.getHealth()), (int) getHeight());
 	}

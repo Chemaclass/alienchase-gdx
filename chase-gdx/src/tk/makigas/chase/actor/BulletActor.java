@@ -26,7 +26,8 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 /**
- * Bala.
+ * La bala es disparada por la nave al pulsar la tecla espacio. Puede
+ * colisionar con otra entidades.
  * 
  * @author danirod
  */

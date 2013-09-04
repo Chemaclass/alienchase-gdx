@@ -20,7 +20,12 @@ package tk.makigas.chase.actor;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 /**
- * Escudo terrestre.
+ * Escudo terrestre. Es una entidad invisible pero está ahí y puede colisionar
+ * con los aliens. Cuando su vida alcanza el valor 0, entonces el escudo se
+ * considera muerto. Esto tiene la consecuencia de que cualquier alien que
+ * consiga esquivar la nave acabará la partida.
+ * 
+ * La vida del escudo se regenera lentamente pero de forma automática.
  * 
  * @author danirod
  */
@@ -51,12 +56,13 @@ public class EscudoActor extends Actor implements HealthActor {
 		if(health > 1) health = 1;
 	}
 	
+	/** Número de segundos desde la última vez que se incrementó la vida. */
 	private float timer = 0;
 	
 	@Override
 	public void act(float delta) {
 		timer += delta;
-		if(timer > 1 && health < 1) {
+		if(timer > 1 && health < 1) { // incrementar la vida si es posible
 			health += 0.01f; // Añade un porcentaje de vida a la nave.
 			timer = 0;
 		}

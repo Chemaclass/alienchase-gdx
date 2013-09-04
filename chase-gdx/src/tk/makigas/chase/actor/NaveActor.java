@@ -27,7 +27,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 /**
- * Nave.
+ * La nave es un actor controlado por el usuario. Se puede desplazar arriba
+ * o abajo según cómo se pulsen las teclas. Puede disparar entidades de tipo
+ * bala. Colisiona con el alien.
  * 
  * @author danirod
  */
@@ -36,12 +38,14 @@ public class NaveActor extends Actor implements HealthActor {
 	/** Textura de la nave. */
 	private TextureRegion nave;
 	
+	/** Hitbox de la nave. */
 	public Rectangle bb;
 	
+	/** Nivel de salud del alien. */
 	private float health;
 
 	/** Velocidad que lleva la nave. */
-	public Vector2 velocidad = new Vector2(0, 0);
+	public Vector2 velocidad = new Vector2(0, 0);	
 
 	public NaveActor() {
 		nave = new TextureRegion(AlienChase.MANAGER.get("cohete.png",
@@ -55,26 +59,30 @@ public class NaveActor extends Actor implements HealthActor {
 	public void act(float delta) {
 		translate(velocidad.x * delta, velocidad.y * delta);
 		
-		if(getX() < 0) {
+		// no podemos permitir que la nave se escape de la pantalla
+		// si detectamos que se escapa por algún lado lo impedimos
+		// y además le detenemos (para que no siga intentando escapar)
+		if(getX() < 0) { // se escapa por la izquierda
 			setX(0);
 			velocidad.x = 0;
-		} else if(getRight() > getStage().getWidth()) {
+		} else if(getRight() > getStage().getWidth()) { // por la derecha
+			// como el origen de coordenadas de la nave está a la izquierda
+			// hay que restar el ancho del escenario al tamaño de la nave.
 			setX(getStage().getWidth() - getWidth());
 			velocidad.x = 0;
 		}
 		
-		if(getY() < 0) {
+		if(getY() < 0) { // por abajo
 			setY(0);
 			velocidad.y = 0;
-		} else if(getTop() > getStage().getHeight()) {
+		} else if(getTop() > getStage().getHeight()) { // por arriba
+			// el origen de coordenadas de la nave se encuentra abajo
+			// por lo que tenemos que hacer una resta escenario - nave.
 			setY(getStage().getHeight() - getHeight());
 			velocidad.y = 0;
 		}
 		
-		bb.x = getX();
-		bb.y = getY();
-		bb.width = getWidth();
-		bb.height = getHeight();
+		bb.set(getX(), getY(), getWidth(), getHeight());
 	}
 	
 	@Override

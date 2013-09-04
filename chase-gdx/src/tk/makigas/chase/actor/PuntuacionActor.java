@@ -21,10 +21,19 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
+/**
+ * Este actor que forma parte de la UI muestra una cadena de texto con la
+ * puntuación del juego.
+ * 
+ * @author danirod
+ */
+// TODO: Bastante bugueada y mal hecha, debería cambiar su funcionamiento.
 public class PuntuacionActor extends Actor {
 	
-	public int puntuacion;
+	/** Puntuación actual. */
+	public int puntuacion; // oh, sí, es un parámetro público. </ironía>
 	
+	/** Fuente usada para imprimir los mensajes. */
 	private BitmapFont font;
 
 	public PuntuacionActor(BitmapFont font) {
@@ -33,6 +42,7 @@ public class PuntuacionActor extends Actor {
 
 	@Override
 	public void draw(SpriteBatch batch, float parentAlpha) {
+		// Solo escribe el mensaje en la pantalla.
 		font.draw(batch, "PUNTOS: " + puntuacion, getX(), getY());
 	}
 }

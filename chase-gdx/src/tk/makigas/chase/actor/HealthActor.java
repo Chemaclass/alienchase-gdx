@@ -25,6 +25,9 @@ package tk.makigas.chase.actor;
  * 
  * @author danirod
  */
+// TODO: Esta interfaz es cáncer y debería desaparecer.
+// El sistema en general debería cambiarse por una mejor alternativa.
+// (¿tal vez un sistema de actor base y subactores?)
 public interface HealthActor {
 
 	/**

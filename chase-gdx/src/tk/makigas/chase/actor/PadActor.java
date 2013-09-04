@@ -24,6 +24,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
+/**
+ * El pad es un actor que funciona como un botón en dispositivos móviles.
+ * Sirve para permitir que el usuario lo pulse y así disparar algunos eventos.
+ * 
+ * @author danirod
+ */
 public class PadActor extends Actor {
 	
 	/** Textura usada por el botón. */
