@@ -27,7 +27,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
  * 
  * @author danirod
  */
-// TODO: Bastante bugueada y mal hecha, debería cambiar su funcionamiento.
 public class PuntuacionActor extends Actor {
 	
 	/** Puntuación actual. */

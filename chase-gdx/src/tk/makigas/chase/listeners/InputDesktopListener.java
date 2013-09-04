@@ -116,12 +116,7 @@ public class InputDesktopListener extends InputListener {
 	public boolean keyTyped(InputEvent event, char character) {
 		if(character != ' ')
 			return false;
-		
-		// TODO: ¿Tal vez esto podría hacerse en otra clase?
-		// De este modo no sería necesario que esta clase mantuviese
-		// tantas dependencias extrañas (¿listener, lista de balas?)
-		// En vez de hacer esto aquí se invocaría un método que lo hiciera
-		
+
 		// crea la bala y la añade al escenario
 		BulletActor bullet = new BulletActor();
 		bullet.setPosition(10 + nave.getWidth(), nave.getY() + nave.getHeight() / 2 - bullet.getHeight() / 2);

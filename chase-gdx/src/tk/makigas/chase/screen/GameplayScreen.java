@@ -91,8 +91,6 @@ public class GameplayScreen extends AbstractScreen {
 		// Finalmente inicializamos el contador de tiempo. Esto sólo
 		// ajusta el tiempo que queda para que el primer alien haga spawn.
 		timer = 2 + (float) Math.random();
-		
-		// TODO: Se ha sugerido poner música de fondo. No es una mala idea.
 	}
 
 	/**
@@ -128,7 +126,6 @@ public class GameplayScreen extends AbstractScreen {
 		stage.addActor(vidaEscudo);
 		
 		// La puntuación es un actor que muestra un string en pantalla.
-		// TODO: Usar una tipografía propia más chula que la Arial...
 		puntuacion = new PuntuacionActor(new BitmapFont());
 		puntuacion.setPosition(10, stage.getHeight() - 10);
 		puntuacion.puntuacion = 0;

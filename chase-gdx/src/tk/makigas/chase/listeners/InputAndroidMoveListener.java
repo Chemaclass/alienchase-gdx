@@ -55,9 +55,7 @@ public class InputAndroidMoveListener extends InputListener {
 		this.nave = nave;
 		this.targetSpeed = targetSpeed;
 	}
-	
-	// TODO: La nave podría acelerar y decelerar en vez de parar de golpe.
-	
+		
 	/** Cuando el botón se pulsa, la nave se pone en marcha. */
 	@Override
 	public boolean touchDown(InputEvent event, float x, float y,
