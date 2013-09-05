@@ -32,6 +32,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL11;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
@@ -56,6 +57,9 @@ public class GameplayScreen extends AbstractScreen {
 	
 	/** Pads usados para controlar el juego en Android. */
 	private PadActor padArriba, padAbajo, padShoot;
+	
+	/** Groups all the UI actors. */
+	private Group uiActors;
 	
 	/** Contador de tiempo usado para sincronizar algunos eventos. */
 	private float timer;
@@ -117,19 +121,23 @@ public class GameplayScreen extends AbstractScreen {
 		escudo.setBounds(-5, 0, 5, stage.getHeight());
 		stage.addActor(escudo);
 		
+		// Empezamos a definir la UI.
+		uiActors = new Group();
+		stage.addActor(uiActors);
+		
 		// Creamos los HUD de las naves.
 		vidaNave = new BarraActor(nave);
 		vidaEscudo = new BarraActor(escudo);		
 		vidaNave.setPosition(stage.getWidth() - 150, stage.getHeight() - 20);
 		vidaEscudo.setPosition(stage.getWidth() - 150, stage.getHeight() - 28);
-		stage.addActor(vidaNave);
-		stage.addActor(vidaEscudo);
+		uiActors.addActor(vidaNave);
+		uiActors.addActor(vidaEscudo);
 		
 		// La puntuación es un actor que muestra un string en pantalla.
 		puntuacion = new PuntuacionActor(new BitmapFont());
 		puntuacion.setPosition(10, stage.getHeight() - 10);
 		puntuacion.puntuacion = 0;
-		stage.addActor(puntuacion);
+		uiActors.addActor(puntuacion);
 	}
 
 	/**
@@ -176,9 +184,9 @@ public class GameplayScreen extends AbstractScreen {
 			padShoot.addListener(new InputAndroidShootListener(stage, this));
 		
 			// Los añadimos al escenario.
-			stage.addActor(padArriba);
-			stage.addActor(padAbajo);
-			stage.addActor(padShoot);
+			uiActors.addActor(padArriba);
+			uiActors.addActor(padAbajo);
+			uiActors.addActor(padShoot);
 		}
 	}
 
@@ -277,24 +285,22 @@ public class GameplayScreen extends AbstractScreen {
 	}
 
 	/**
-	 * Genera un nuevo alien en el escenario. Este método es invocado de
-	 * forma automática cuando el temporizador indica que es hora de disparar
-	 * un nuevo alien.
+	 * Spawns a new alien. This method is called when the timer gets to 0,
+	 * meaning that it's time to spawn a new alien.
 	 */
 	private void dispararAlien() {
 		AlienActor alien = new AlienActor();
 		
-		// Le damos una posición en al pantalla a él y a su bounding box.
+		// set alien position and initialise its bounding box.
 		alien.setPosition(stage.getWidth(), 0.1f * stage.getHeight() + 
 				0.8f * stage.getHeight() * (float) Math.random());
 		alien.bb.x = alien.getX();
 		alien.bb.y = alien.getY();
 		
-		stage.addActor(alien);
+		stage.getRoot().addActorBefore(uiActors, alien);
 		aliens.add(alien);
 		
-		// Hay que actualizar el contador. Es aquí donde realmente
-		// se indica cada cuánto tiempo se disparará un alien nuevo.
+		// update timer. this is required so that new aliens can spawn later.
 		timer = 2 + (float) Math.random();
 	}
 	
@@ -305,7 +311,7 @@ public class GameplayScreen extends AbstractScreen {
 		BulletActor bullet = new BulletActor();
 		bullet.setPosition(10 + nave.getWidth(),
 				nave.getY() + 0.5f * (nave.getHeight() - bullet.getHeight()));
-		stage.addActor(bullet);
+		stage.getRoot().addActorBefore(uiActors, bullet);
 		bullets.add(bullet);
 	}
 
