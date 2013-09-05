@@ -17,11 +17,8 @@
  */
 package tk.makigas.chase.listeners;
 
-import java.util.List;
-
 import tk.makigas.chase.AlienChase;
-import tk.makigas.chase.actor.BulletActor;
-import tk.makigas.chase.actor.NaveActor;
+import tk.makigas.chase.screen.GameplayScreen;
 
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -36,17 +33,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
  */
 public class InputAndroidShootListener extends InputListener {
 	
-	/** Escenario donde ocurre la acción. */
-	private Stage stage;
-	
-	/**
-	 * Nave que hay en el escenario. Necesaria para poder obtener la
-	 * posición de la nave de cara a posicionar la bala inicialmente.
-	 */
-	private NaveActor nave;
-	
-	/** Listado de balas. Necesario para que el sistema detecte la bala. */
-	private List<BulletActor> bullets;
+	private GameplayScreen screen;
 	
 	/**
 	 * Crea un nuevo listener de disparos
@@ -55,22 +42,15 @@ public class InputAndroidShootListener extends InputListener {
 	 * @param nave nave espacial que se encargará de disparar.
 	 * @param bullets lista dinámica de balas en la que las balas se añadirán
 	 */
-	public InputAndroidShootListener(Stage stage, NaveActor nave, List<BulletActor> bullets) {
-		this.nave = nave;
-		this.stage = stage;
-		this.bullets = bullets;
+	public InputAndroidShootListener(Stage stage, GameplayScreen screen) {
+		this.screen = screen;
 	}
 	
 	/** Al pulsarse el botón, debe dispararse una bala nueva. */
 	@Override
 	public boolean touchDown(InputEvent event, float x, float y,
 			int pointer, int button) {
-		// crea la bala y la añade al escenario
-		BulletActor bullet = new BulletActor();
-		bullet.setPosition(10 + nave.getWidth(), nave.getY() + nave.getHeight() / 2 - bullet.getHeight() / 2);
-		stage.addActor(bullet);
-		bullets.add(bullet);
-		
+		screen.spawnBullet();		
 		AlienChase.MANAGER.get("shoot.ogg", Sound.class).play();
 		return true;
 	}

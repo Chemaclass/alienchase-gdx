@@ -148,7 +148,7 @@ public class GameplayScreen extends AbstractScreen {
 			// estamos usando el ratón para nada en este juego).
 			
 			stage.setKeyboardFocus(nave); // damos foco a nave.
-			nave.addListener(new InputDesktopListener(nave, stage, bullets));
+			nave.addListener(new InputDesktopListener(nave, this));
 		} else if(Gdx.app.getType() == ApplicationType.Android) { 	// ANDROID
 			
 			// Los móviles son táctiles por lo que no tenemos a nuestra
@@ -173,7 +173,7 @@ public class GameplayScreen extends AbstractScreen {
 			// Añadimos los listeners.
 			padArriba.addListener(new InputAndroidMoveListener(nave, 250f));
 			padAbajo.addListener(new InputAndroidMoveListener(nave, 250f));
-			padShoot.addListener(new InputAndroidShootListener(stage, nave, bullets));
+			padShoot.addListener(new InputAndroidShootListener(stage, this));
 		
 			// Los añadimos al escenario.
 			stage.addActor(padArriba);
@@ -296,6 +296,17 @@ public class GameplayScreen extends AbstractScreen {
 		// Hay que actualizar el contador. Es aquí donde realmente
 		// se indica cada cuánto tiempo se disparará un alien nuevo.
 		timer = 2 + (float) Math.random();
+	}
+	
+	/**
+	 * Spawns a net bullet right in front of the spaceship.
+	 */
+	public void spawnBullet() {
+		BulletActor bullet = new BulletActor();
+		bullet.setPosition(10 + nave.getWidth(),
+				nave.getY() + 0.5f * (nave.getHeight() - bullet.getHeight()));
+		stage.addActor(bullet);
+		bullets.add(bullet);
 	}
 
 	@Override

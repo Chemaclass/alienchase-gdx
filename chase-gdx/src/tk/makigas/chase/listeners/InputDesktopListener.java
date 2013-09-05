@@ -17,17 +17,14 @@
  */
 package tk.makigas.chase.listeners;
 
-import java.util.List;
-
 import tk.makigas.chase.AlienChase;
-import tk.makigas.chase.actor.BulletActor;
 import tk.makigas.chase.actor.NaveActor;
+import tk.makigas.chase.screen.GameplayScreen;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 
 /**
  * Sistema de entrada para escritorio.
@@ -49,16 +46,7 @@ public class InputDesktopListener extends InputListener {
 	 */
 	private NaveActor nave;
 	
-	/**
-	 * Escenario. Necesario para permitir que las balas hagan spawn.
-	 */
-	private Stage stage;
-	
-	/**
-	 * Lista dinámica de balas. Necesario para que el sistema
-	 * pueda controlar más adelante la bala cuando tenga que desaparecer.
-	 */
-	private List<BulletActor> bullets;
+	private GameplayScreen screen;
 	
 	/**
 	 * Crea un nuevo sistema de entrada.
@@ -67,10 +55,9 @@ public class InputDesktopListener extends InputListener {
 	 * @param stage escenario donde se añadirá la bala.
 	 * @param bullets lista dinámica de balas
 	 */
-	public InputDesktopListener(NaveActor nave, Stage stage, List<BulletActor> bullets) {
+	public InputDesktopListener(NaveActor nave, GameplayScreen screen) {
 		this.nave = nave;
-		this.stage = stage;
-		this.bullets = bullets;
+		this.screen = screen;
 	}
 
 	/**
@@ -116,13 +103,7 @@ public class InputDesktopListener extends InputListener {
 	public boolean keyTyped(InputEvent event, char character) {
 		if(character != ' ')
 			return false;
-
-		// crea la bala y la añade al escenario
-		BulletActor bullet = new BulletActor();
-		bullet.setPosition(10 + nave.getWidth(), nave.getY() + nave.getHeight() / 2 - bullet.getHeight() / 2);
-		stage.addActor(bullet);
-		bullets.add(bullet);
-		
+		screen.spawnBullet();
 		AlienChase.MANAGER.get("shoot.ogg", Sound.class).play();
 		return true;
 	}
