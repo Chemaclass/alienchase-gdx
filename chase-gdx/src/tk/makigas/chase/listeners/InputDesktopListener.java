@@ -52,6 +52,12 @@ public class InputDesktopListener extends InputListener {
 		case Input.Keys.DOWN:
 			nave.velocidad.y = -250;
 			return true;
+		case Input.Keys.LEFT:
+			nave.velocidad.x = -250;
+			return true;
+		case Input.Keys.RIGHT:
+			nave.velocidad.x = 250;
+			return true;
 		default:
 			return false;
 		}
@@ -64,6 +70,10 @@ public class InputDesktopListener extends InputListener {
 		case Input.Keys.DOWN:
 			nave.velocidad.y = 0;
 			return true;
+		case Input.Keys.LEFT:
+		case Input.Keys.RIGHT:
+			nave.velocidad.x = 0;
+			return true;
 		default:
 			return false;
 		}
@@ -72,10 +82,11 @@ public class InputDesktopListener extends InputListener {
 	@Override
 	public boolean keyTyped(InputEvent event, char character) {
 		if(character != ' ')
-			return false;
-		
+			return false;		
 		BulletActor bullet = new BulletActor();
-		bullet.setPosition(10 + nave.getWidth(), nave.getY() + nave.getHeight() / 2);
+		float x = nave.getX() + nave.getWidth() + 2;
+		float y = nave.getY()-10 + nave.getHeight() / 2;
+		bullet.setPosition(x, y);
 		stage.addActor(bullet);
 		bullets.add(bullet);
 		AlienChase.MANAGER.get("shoot.ogg", Sound.class).play();
