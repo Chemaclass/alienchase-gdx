@@ -20,7 +20,13 @@ package tk.makigas.chase;
 import java.util.ArrayList;
 import java.util.List;
 
-import tk.makigas.chase.actor.*;
+import tk.makigas.chase.actor.AlienActor;
+import tk.makigas.chase.actor.BarraActor;
+import tk.makigas.chase.actor.BulletActor;
+import tk.makigas.chase.actor.EscudoActor;
+import tk.makigas.chase.actor.NaveActor;
+import tk.makigas.chase.actor.PadActor;
+import tk.makigas.chase.actor.PuntuacionActor;
 import tk.makigas.chase.listeners.InputAndroidMoveListener;
 import tk.makigas.chase.listeners.InputAndroidShootListener;
 import tk.makigas.chase.listeners.InputDesktopListener;
@@ -38,182 +44,203 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
  * Pantalla de juego principal.
  * 
  * @author danirod
+ * @author chema
  */
 public class GameplayScreen extends AbstractScreen {
 
 	/** Escenario usado por el juego. */
 	private Stage stage;
-	
+
 	/** Nave usada por el jugador. */
 	private NaveActor nave;
-	
+
 	/** Escudo de la Tierra. */
-	private EscudoActor escudo;
-	
-	/** HUDs usados para mostrar la vida de escudo y de nave. */
-	private BarraActor vidaNave, vidaEscudo;
-	
+	private List<EscudoActor> escudos;
+
+	/** HUD usado para mostrar la vida de la nave. */
+	private BarraActor vidaNave;
+
 	/** Pads usados para controlar el juego en Android. */
 	private PadActor padArriba, padAbajo, padShoot;
-	
-	/** Contador de tiempo usado para sincronizar algunos eventos. */
-	private float timer;
-	
+
 	/** Puntuación */
 	private PuntuacionActor puntuacion;
-	
+
+	/** Lista de aliens */
 	private List<AlienActor> aliens;
-	
-	private List<BulletActor> bullets;
-	
+
 	public GameplayScreen(AlienChase game) {
 		super(game);
 	}
-	
+
 	@Override
 	public void show() {
-		aliens = new ArrayList<AlienActor>();
-		bullets = new ArrayList<BulletActor>();
-		
+		init(); // Inicializamos los componentes
+		crearListeners(); // Preparamos los listeners
+	}
+
+	/** Inicializamos los componentes */
+	private void init() {
+
 		// Creamos un nuevo escenario y lo asociamos a la entrada.
 		int width = Gdx.graphics.getWidth();
 		int height = Gdx.graphics.getHeight();
 		stage = new Stage(width, height, true, game.SB);
 		Gdx.input.setInputProcessor(stage);
-		
+
 		// Crear fondo.
-		Image imgFondo = new Image(AlienChase.MANAGER.get("fondo.png", Texture.class));
+		Image imgFondo = new Image(AlienChase.MANAGER.get("fondo.png",
+				Texture.class));
 		imgFondo.setFillParent(true);
 		stage.addActor(imgFondo);
-		
+
 		// Creamos una nave.
-		nave = new NaveActor();
-		nave.setPosition(10, 10);
+		nave = new NaveActor(stage);
+		nave.setPosition(stage.getWidth() / 2 - nave.getHeight() / 2, 10);
 		stage.addActor(nave);
 
-		// Creamos un escudo.
-		escudo = new EscudoActor();
-		escudo.setBounds(-5, 0, 5, stage.getHeight());
-		stage.addActor(escudo);
-		
 		// Creamos los HUD de las naves.
 		vidaNave = new BarraActor(nave);
-		vidaEscudo = new BarraActor(escudo);		
 		vidaNave.setPosition(stage.getWidth() - 150, stage.getHeight() - 20);
-		vidaEscudo.setPosition(stage.getWidth() - 150, stage.getHeight() - 28);
 		stage.addActor(vidaNave);
-		stage.addActor(vidaEscudo);
-		
+
+		// Creamos la puntuación.
+		puntuacion = new PuntuacionActor(new BitmapFont());
+		puntuacion.setPosition(10, stage.getHeight() - 10);
+		puntuacion.puntuacion = 0;
+		stage.addActor(puntuacion);
+
+		// Creamos los escudos.
+		// crearEscudos();
+
+		// Creamos los aliens.
+		crearAliens();
+	}
+
+	/** Creamos los sistemas de entrada/salida */
+	private void crearListeners() {
 		// Creamos los sistemas de entrada. En escritorio tendremos que usar
 		// un listener que lo hace todo, mientras que para Android tendremos
 		// que usar tres botones asociados cada uno a algo.
-		if(Gdx.app.getType() == ApplicationType.Desktop) {
+		if (Gdx.app.getType() == ApplicationType.Desktop) {
 			stage.setKeyboardFocus(nave); // damos foco a nave.
-			nave.addListener(new InputDesktopListener(nave, stage, bullets));
-		} else if(Gdx.app.getType() == ApplicationType.Android) {
+			nave.addListener(new InputDesktopListener(nave));
+		} else if (Gdx.app.getType() == ApplicationType.Android) {
 			// Creamos los pads.
 			padArriba = new PadActor(0, 0);
 			padAbajo = new PadActor(1, 0);
 			padShoot = new PadActor(0, 1);
-		
+
 			// Los colocamos.
 			padArriba.setPosition(10, 50);
 			padAbajo.setPosition(10, 10);
 			padShoot.setPosition(stage.getWidth() - 50, 10);
-		
+
 			// Añadimos los listeners.
 			padArriba.addListener(new InputAndroidMoveListener(nave, 250f));
 			padAbajo.addListener(new InputAndroidMoveListener(nave, 250f));
-			padShoot.addListener(new InputAndroidShootListener(stage, nave, bullets));
-		
+			padShoot.addListener(new InputAndroidShootListener(nave));
+
 			// Los añadimos al escenario.
 			stage.addActor(padArriba);
 			stage.addActor(padAbajo);
 			stage.addActor(padShoot);
 		}
-		
-		puntuacion = new PuntuacionActor(new BitmapFont());
-		puntuacion.setPosition(10, stage.getHeight() - 10);
-		puntuacion.puntuacion = 0;
-		stage.addActor(puntuacion);
-		
-		// Finalmente inicializamos el contador de tiempo.
-		timer = 2 + (float) Math.random();
 	}
 
 	@Override
 	public void render(float delta) {
 		Gdx.gl.glClear(GL11.GL_COLOR_BUFFER_BIT);
-		
 		stage.act();
-		timer -= delta;
-		if(timer < 0)		
-			dispararAlien();
-		comprobarListas();
-		comprobarColisiones();
+		// Revisamos las colisiones
+		colisionesAliens();
+		colisionesNave();
+		// Revisamos si destruimos a todos los aliens
+		if (aliens.size() <= 0)
+			win();
 		stage.draw();
 	}
-	
-	private void comprobarListas() {
-		for(int i = 0; i < aliens.size(); i++) {
-			if(aliens.get(i).getRight() < 0) {
-				aliens.get(i).remove();
-				aliens.remove(i);
-				if(escudo.getHealth() > 0.4f) {
-					escudo.sumHealth(-0.4f);
-					AlienChase.MANAGER.get("hit.ogg", Sound.class).play();
-				} else {
-					game.setScreen(game.GAMEOVER);
-				}
-			}
-		}
-		
-		for(int i = 0; i < bullets.size(); i++) {
-			if(bullets.get(i).getX() > stage.getWidth()) {
-				bullets.get(i).remove();
-				bullets.remove(i);
-			}
-		}
+
+	/** Ganar partida */
+	private void win() {
+
+		// Creamos los aliens.
+		crearAliens();
 	}
-	
-	private void comprobarColisiones() {
-		AlienActor alien;
-		for(int i = 0; i < aliens.size(); i++) {
-			alien = aliens.get(i);
-			if(alien.bb.overlaps(nave.bb)) {
-				// Colisión alien-nave.
-				aliens.get(i).remove();
-				aliens.remove(i);
-				nave.sumHealth(-0.4f);
-				AlienChase.MANAGER.get("hit.ogg", Sound.class).play();
-				if(nave.getHealth() <= 0) {
-					game.setScreen(game.GAMEOVER);
-				}
-			} else {
-				for(int j = 0; j < bullets.size(); j++) {
-					if(bullets.get(j).bb.overlaps(alien.bb)) {
-						// Colisión alien-bala.
-						aliens.get(i).remove();
-						aliens.remove(i);
-						bullets.get(j).remove();
-						bullets.remove(j);
-						AlienChase.MANAGER.get("explosion.ogg", Sound.class).play();
+
+	/** Colisiones de los disparos de la nave con los aliens */
+	private void colisionesNave() {
+		try {
+			for (BulletActor bulletNave : nave.getBullets()) {
+				for (AlienActor alien : aliens) {
+					// Se produce una colisión entre la balaNave y el alien
+					if (bulletNave.collision(alien)) {
+						bulletNave.remove();
+						nave.getBullets().remove(bulletNave);
+						alien.remove();
+						aliens.remove(alien);
 						puntuacion.puntuacion++;
 					}
 				}
 			}
+		} catch (java.util.ConcurrentModificationException e) {
+			// Ocurre por modificar una lista mientras se itera en ella
 		}
 	}
 
-	private void dispararAlien() {
-		AlienActor alien = new AlienActor();
-		alien.setPosition(stage.getWidth(), 0.1f * stage.getHeight() + 
-				0.8f * stage.getHeight() * (float) Math.random());
-		alien.bb.x = alien.getX();
-		alien.bb.y = alien.getY();
-		stage.addActor(alien);
-		aliens.add(alien);
-		timer = 2 + (float) Math.random();
+	/** Colisiones de los disparos de cada alien con la nave */
+	private void colisionesAliens() {
+		try {
+			for (AlienActor alien : aliens) {
+				// Para todas las balas del alien
+				for (BulletActor bulletAlien : alien.getBullets()) {
+					// Se produce una colisión entre la balaNave y el alien
+					if (bulletAlien.collision(nave)) {
+						bulletAlien.remove();
+						alien.getBullets().remove(bulletAlien);
+						nave.sumHealth(-0.1f);
+						AlienChase.MANAGER.get("hit.ogg", Sound.class).play();
+						if (nave.getHealth() <= 0) {
+							game.setScreen(game.GAMEOVER);
+						}
+					}
+				}
+			}
+		} catch (java.util.ConcurrentModificationException e) {
+			// Ocurre por modificar una lista mientras se itera en ella
+		}
+	}
+
+	/** Creamos los escudos */
+	/*
+	 * private void crearEscudos() { escudos = new ArrayList<EscudoActor>(); int
+	 * numEscudos = EscudoActor.NUM_ESCUDOS; // Creamos los aliens for (int i =
+	 * 0; i < 50; i++) { EscudoActor escudo = new EscudoActor(); float x = 10 +
+	 * (i * 30); float y = 10; escudo.setPosition(x, y); escudo.bb.x =
+	 * escudo.getX(); escudo.bb.y = escudo.getY(); stage.addActor(escudo);
+	 * escudos.add(escudo);
+	 * 
+	 * } }
+	 */
+
+	/** Creamos los aliens */
+	private void crearAliens() {
+		aliens = new ArrayList<AlienActor>();
+		int colum = AlienActor.NUM_COLUM;
+		int filas = AlienActor.NUM_FILAS;
+		// Creamos los aliens
+		for (int i = 0; i < colum; i++) {
+			for (int j = 0; j < filas; j++) {
+				AlienActor alien = new AlienActor(stage);
+				float x = 20 + (i * 50);
+				float y = stage.getHeight() - (50 + (j * 40));
+				alien.setPosition(x, y);
+				alien.bb.x = alien.getX();
+				alien.bb.y = alien.getY();
+				stage.addActor(alien);
+				aliens.add(alien);
+			}
+		}
 	}
 
 	@Override
@@ -230,8 +257,9 @@ public class GameplayScreen extends AbstractScreen {
 	public void resize(int width, int height) {
 		stage.setViewport(width, height, true);
 		vidaNave.setPosition(stage.getWidth() - 150, stage.getHeight() - 20);
-		vidaEscudo.setPosition(stage.getWidth() - 150, stage.getHeight() - 28);
-		if(Gdx.app.getType() == ApplicationType.Android && padShoot != null)
+		// vidaEscudo.setPosition(stage.getWidth() - 150, stage.getHeight() -
+		// 28);
+		if (Gdx.app.getType() == ApplicationType.Android && padShoot != null)
 			padShoot.setPosition(stage.getWidth() - 50, 10);
 	}
 }

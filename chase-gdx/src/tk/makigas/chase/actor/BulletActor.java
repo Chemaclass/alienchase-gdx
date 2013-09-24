@@ -23,39 +23,66 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 
 /**
  * Bala.
  * 
  * @author danirod
  */
-public class BulletActor extends Actor {
-	
-	private TextureRegion bullet;
-	
-	public Rectangle bb;
+public class BulletActor extends CuerpoActor {
 
-	public BulletActor() {
-		bullet = new TextureRegion(AlienChase.MANAGER.get("bala.png",
+	private float yv, xv;
+
+	private BulletActor() {
+		texture = new TextureRegion(AlienChase.MANAGER.get("bala.png",
 				Texture.class), 16, 16);
-		setSize(bullet.getRegionWidth(), bullet.getRegionHeight());
+		setSize(texture.getRegionWidth(), texture.getRegionHeight());
 		bb = new Rectangle(getX(), getY(), getWidth(), getHeight());
 	}
-	
+
+	public BulletActor(DisparadorActor disparador, int yv) {
+		this();
+		setX(disparador.getX());
+		setY(disparador.getY());
+		this.yv = yv;
+		this.xv = 0;
+	}
+
+	public BulletActor(DisparadorActor disparador, int yv, int xv) {
+		this();
+		setX(disparador.getX());
+		setY(disparador.getY());
+		this.yv = yv;
+		this.xv = xv;
+	}
+
 	@Override
-	public void act(float delta) {
-		translate(300 * delta, 0);
+	public void act(float delta) {		
+		
+		translate(xv * delta, yv * delta);
+		//Si la bala sale por la izquierda o derecha
+		if(getX() < 0 || getRight() > getStage().getWidth()) {
+			remove();
+		}
+		//Si la bala sale por arriba o abajo
+		if(getY() < 0 || getTop() > getStage().getHeight()) {
+			remove();
+		}
+		
 		bb.x = getX();
 		bb.y = getY();
 		bb.width = getWidth();
 		bb.height = getHeight();
 	}
-	
+
 	@Override
 	public void draw(SpriteBatch batch, float parentAlpha) {
-		batch.draw(bullet, getX(), getY(), getOriginX(), getOriginY(),
+		batch.draw(texture, getX(), getY(), getOriginX(), getOriginY(),
 				getWidth(), getHeight(), getScaleX(), getScaleY(),
 				getRotation());
+	}
+
+	public boolean collision(CuerpoActor actor) {
+		return getBounds().overlaps(actor.getBounds());
 	}
 }

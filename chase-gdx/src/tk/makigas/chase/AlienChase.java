@@ -75,4 +75,10 @@ public class AlienChase extends Game {
 		SB.dispose();
 	}
 	
+	public static int random(int inf, int sup) {
+        int posibilidades = sup - inf;
+        double a = Math.random() * posibilidades;
+        return (int) Math.round(a) + inf;
+    }
+	
 }

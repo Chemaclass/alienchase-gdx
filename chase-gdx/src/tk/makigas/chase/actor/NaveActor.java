@@ -19,40 +19,39 @@ package tk.makigas.chase.actor;
 
 import tk.makigas.chase.AlienChase;
 
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 
 /**
  * Nave.
  * 
  * @author danirod
  */
-public class NaveActor extends Actor implements HealthActor {
+public class NaveActor extends DisparadorActor implements HealthActor {
 	
-	/** Textura de la nave. */
-	private TextureRegion nave;
-	
-	public Rectangle bb;
 	
 	private float health;
 
 	/** Velocidad que lleva la nave. */
 	public Vector2 velocidad = new Vector2(0, 0);
 
-	public NaveActor() {
-		nave = new TextureRegion(AlienChase.MANAGER.get("cohete.png",
-				Texture.class), 100, 79);
-		setSize(nave.getRegionWidth(), nave.getRegionHeight());
+	public NaveActor(Stage stage) {
+		super(stage);
+		texture = new TextureRegion(AlienChase.MANAGER.get("cohete.png",
+				Texture.class), 79, 79);
+		setSize(texture.getRegionWidth(), texture.getRegionHeight());
 		health = 1;
 		bb = new Rectangle(getX(), getY(), getWidth(), getHeight());
 	}
 	
 	@Override
 	public void act(float delta) {
+		super.act(delta);
 		translate(velocidad.x * delta, velocidad.y * delta);
 		
 		if(getX() < 0) {
@@ -78,8 +77,19 @@ public class NaveActor extends Actor implements HealthActor {
 	}
 	
 	@Override
+	public void disparar(){
+		BulletActor bullet = new BulletActor(this, 250);
+		float x = getX() - 16 + getWidth() / 2;
+		float y = getY() + getHeight() - 10;
+		bullet.setPosition(x, y);
+		stage.addActor(bullet);
+		bullets.add(bullet);
+		AlienChase.MANAGER.get("shoot.ogg", Sound.class).play();		
+	}
+	
+	@Override
 	public void draw(SpriteBatch batch, float parentAlpha) {
-		batch.draw(nave, getX(), getY(), getOriginX(), getOriginY(),
+		batch.draw(texture, getX(), getY(), getOriginX(), getOriginY(),
 				getWidth(), getHeight(), getScaleX(), getScaleY(),
 				getRotation());
 	}
@@ -105,4 +115,5 @@ public class NaveActor extends Actor implements HealthActor {
 		if(health < 0) health = 0;
 		if(health > 1) health = 1;
 	}
+	
 }

@@ -17,6 +17,11 @@
  */
 package tk.makigas.chase.actor;
 
+import tk.makigas.chase.AlienChase;
+
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 /**
@@ -24,12 +29,18 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
  * 
  * @author danirod
  */
-public class EscudoActor extends Actor implements HealthActor {
+public class EscudoActor extends CuerpoActor implements HealthActor {
+	
+	/** Número de escudos que tendremos*/
+	public static final int NUM_ESCUDOS = 7;
 	
 	private float health;
 
 	public EscudoActor() {
 		health = 1;
+		texture = new TextureRegion(AlienChase.MANAGER.get("defensa.png",Texture.class));
+		setSize(texture.getRegionWidth(), texture.getRegionHeight());
+		bb = new Rectangle(getX(), getY(), getWidth(), getHeight());
 	}
 
 	public float getHealth() {
