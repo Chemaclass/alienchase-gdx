@@ -35,7 +35,7 @@ public class AlienActor extends DisparadorActor {
 
 	/* Número de aliens que tendremos*/
 	public static final int NUM_COLUM = 10;
-	public static final int NUM_FILAS = 2;
+	public static final int NUM_FILAS = 3;
 	
 	private static final int MOVIMIENTO_X = 4;
 	private static final int MOVIMIENTO_Y = 20;
@@ -76,7 +76,7 @@ public class AlienActor extends DisparadorActor {
 		bb.height = getHeight();
 
 		// De forma aleatoria disparará
-		if (AlienChase.random(0, 100) == 1)
+		if (AlienChase.random(0, 150) == 4)
 			disparar();
 	}
 

@@ -33,14 +33,14 @@ import com.badlogic.gdx.math.Rectangle;
 public class EscudoActor extends CuerpoActor implements HealthActor {
 
 	/** Número de escudos que tendremos */
-	public static final int NUM_ESCUDOS = 40;
+	public static final int NUM_ESCUDOS = 35;
 
 	private float health;
 
 	public EscudoActor() {
 		health = 1;
 		texture = new TextureRegion(AlienChase.MANAGER.get("defensa.png",
-				Texture.class), 0, 0, 16, 16);
+				Texture.class), 0, 0, 32, 32);
 		setSize(texture.getRegionWidth(), texture.getRegionHeight());
 		bb = new Rectangle(getX(), getY(), getWidth(), getHeight());
 	}
@@ -60,8 +60,8 @@ public class EscudoActor extends CuerpoActor implements HealthActor {
 	}
 
 	private void checkHealth() {
-		if (health < 0)
-			health = 0;
+		if (health < 0) 
+			health = 0;		 
 		if (health > 1)
 			health = 1;
 	}
@@ -72,9 +72,13 @@ public class EscudoActor extends CuerpoActor implements HealthActor {
 	public void act(float delta) {
 		timer += delta;
 		if (timer > 1 && health < 1) {
-			health += 0.01f; // Añade un porcentaje de vida a la nave.
+			health += 0.05f; // Añade un porcentaje de vida
 			timer = 0;
 		}
+		if (health < 0.5f)
+			setVisible(false);
+		else
+			setVisible(true);
 	}
 
 	@Override

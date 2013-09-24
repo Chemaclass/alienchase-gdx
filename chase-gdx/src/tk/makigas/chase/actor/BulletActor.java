@@ -28,6 +28,7 @@ import com.badlogic.gdx.math.Rectangle;
  * Bala.
  * 
  * @author danirod
+ * @author chema
  */
 public class BulletActor extends CuerpoActor {
 

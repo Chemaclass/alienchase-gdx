@@ -5,10 +5,14 @@ import java.util.List;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
+/**
+ * @author chema
+ *
+ */
 public abstract class DisparadorActor extends CuerpoActor {
 
 	protected Stage stage;
-	protected final List<BulletActor> bullets = new LinkedList<BulletActor>();
+	protected List<BulletActor> bullets = new LinkedList<BulletActor>();
 
 	public DisparadorActor(Stage stage) {
 		this.stage = stage;
@@ -19,5 +23,9 @@ public abstract class DisparadorActor extends CuerpoActor {
 	public List<BulletActor> getBullets() {
 		return bullets;
 	}
-
+	
+	public void setBullets(List<BulletActor> l){
+		this.bullets = l;
+	}
+	
 }
