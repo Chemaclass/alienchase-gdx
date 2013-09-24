@@ -111,7 +111,7 @@ public class GameplayScreen extends AbstractScreen {
 		stage.addActor(puntuacion);
 
 		// Creamos los escudos.
-		// crearEscudos();
+		crearEscudos();
 
 		// Creamos los aliens.
 		crearAliens();
@@ -188,13 +188,13 @@ public class GameplayScreen extends AbstractScreen {
 		}
 	}
 
-	/** Colisiones de los disparos de cada alien con la nave */
+	/** Colisiones de los disparos de cada alien con la nave y con los escudos */
 	private void colisionesAliens() {
 		try {
 			for (AlienActor alien : aliens) {
 				// Para todas las balas del alien
 				for (BulletActor bulletAlien : alien.getBullets()) {
-					// Se produce una colisión entre la balaNave y el alien
+					// Colisiones balaAlien con nava
 					if (bulletAlien.collision(nave)) {
 						bulletAlien.remove();
 						alien.getBullets().remove(bulletAlien);
@@ -202,6 +202,23 @@ public class GameplayScreen extends AbstractScreen {
 						AlienChase.MANAGER.get("hit.ogg", Sound.class).play();
 						if (nave.getHealth() <= 0) {
 							game.setScreen(game.GAMEOVER);
+						}
+					}
+					// Colisiones balaAlien con los escudos
+					else {
+						try{
+							for (EscudoActor escudo : escudos) {
+								// Colisión balaAlien con escudo
+								if (bulletAlien.collision(escudo)) {
+									bulletAlien.remove();
+									alien.getBullets().remove(bulletAlien);
+									escudo.remove();
+									escudos.remove(escudo);
+									//AlienChase.MANAGER.get("hit.ogg", Sound.class).play();
+								}
+							}
+						} catch (java.util.ConcurrentModificationException e) {
+							// Ocurre por modificar una lista mientras se itera en ella
 						}
 					}
 				}
@@ -212,16 +229,22 @@ public class GameplayScreen extends AbstractScreen {
 	}
 
 	/** Creamos los escudos */
-	/*
-	 * private void crearEscudos() { escudos = new ArrayList<EscudoActor>(); int
-	 * numEscudos = EscudoActor.NUM_ESCUDOS; // Creamos los aliens for (int i =
-	 * 0; i < 50; i++) { EscudoActor escudo = new EscudoActor(); float x = 10 +
-	 * (i * 30); float y = 10; escudo.setPosition(x, y); escudo.bb.x =
-	 * escudo.getX(); escudo.bb.y = escudo.getY(); stage.addActor(escudo);
-	 * escudos.add(escudo);
-	 * 
-	 * } }
-	 */
+
+	private void crearEscudos() {
+		escudos = new ArrayList<EscudoActor>();
+		int numEscudos = EscudoActor.NUM_ESCUDOS; // Creamos los aliens
+		for (int i = 0; i < numEscudos; i++) {
+			EscudoActor escudo = new EscudoActor();
+			float x = 10 + (i * 30);
+			float y = 100;
+			escudo.setPosition(x, y);
+			escudo.bb.x = escudo.getX();
+			escudo.bb.y = escudo.getY();
+			stage.addActor(escudo);
+			escudos.add(escudo);
+
+		}
+	}
 
 	/** Creamos los aliens */
 	private void crearAliens() {

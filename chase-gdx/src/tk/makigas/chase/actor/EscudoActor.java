@@ -20,25 +20,27 @@ package tk.makigas.chase.actor;
 import tk.makigas.chase.AlienChase;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 
 /**
  * Escudo terrestre.
  * 
  * @author danirod
+ * @author chema
  */
 public class EscudoActor extends CuerpoActor implements HealthActor {
-	
-	/** Número de escudos que tendremos*/
-	public static final int NUM_ESCUDOS = 7;
-	
+
+	/** Número de escudos que tendremos */
+	public static final int NUM_ESCUDOS = 40;
+
 	private float health;
 
 	public EscudoActor() {
 		health = 1;
-		texture = new TextureRegion(AlienChase.MANAGER.get("defensa.png",Texture.class));
+		texture = new TextureRegion(AlienChase.MANAGER.get("defensa.png",
+				Texture.class), 0, 0, 16, 16);
 		setSize(texture.getRegionWidth(), texture.getRegionHeight());
 		bb = new Rectangle(getX(), getY(), getWidth(), getHeight());
 	}
@@ -46,30 +48,39 @@ public class EscudoActor extends CuerpoActor implements HealthActor {
 	public float getHealth() {
 		return health;
 	}
-	
+
 	public void setHealth(float health) {
 		this.health = health;
 		checkHealth();
 	}
-	
+
 	public void sumHealth(float sum) {
 		health += sum;
 		checkHealth();
 	}
-	
+
 	private void checkHealth() {
-		if(health < 0) health = 0;
-		if(health > 1) health = 1;
+		if (health < 0)
+			health = 0;
+		if (health > 1)
+			health = 1;
 	}
-	
+
 	private float timer = 0;
-	
+
 	@Override
 	public void act(float delta) {
 		timer += delta;
-		if(timer > 1 && health < 1) {
+		if (timer > 1 && health < 1) {
 			health += 0.01f; // Añade un porcentaje de vida a la nave.
 			timer = 0;
 		}
+	}
+
+	@Override
+	public void draw(SpriteBatch batch, float parentAlpha) {
+		batch.draw(texture, getX(), getY(), getOriginX(), getOriginY(),
+				getWidth(), getHeight(), getScaleX(), getScaleY(),
+				getRotation());
 	}
 }

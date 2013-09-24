@@ -31,6 +31,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
  * Nave.
  * 
  * @author danirod
+ * @author chema
  */
 public class NaveActor extends DisparadorActor implements HealthActor {
 	

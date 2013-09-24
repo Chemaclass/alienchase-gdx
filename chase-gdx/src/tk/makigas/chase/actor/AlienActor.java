@@ -29,6 +29,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
  * Alien.
  * 
  * @author danirod
+ * @author chema
  */
 public class AlienActor extends DisparadorActor {
 
