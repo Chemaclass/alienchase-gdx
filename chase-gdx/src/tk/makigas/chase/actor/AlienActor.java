@@ -33,13 +33,14 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
  */
 public class AlienActor extends DisparadorActor {
 
-	/* Número de aliens que tendremos*/
+	/* Número de aliens que tendremos */
 	public static final int NUM_COLUM = 10;
 	public static final int NUM_FILAS = 3;
-	
+
 	private static final int MOVIMIENTO_X = 4;
 	private static final int MOVIMIENTO_Y = 20;
-	
+	private TextureRegion texture;
+	public Rectangle bb;
 	private int xv, yv;
 
 	public AlienActor(Stage stage) {

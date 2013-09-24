@@ -18,6 +18,7 @@
 package tk.makigas.chase.actor;
 
 import tk.makigas.chase.AlienChase;
+import tk.makigas.chase.GameplayScreen;
 
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
@@ -34,8 +35,9 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
  * @author chema
  */
 public class NaveActor extends DisparadorActor implements HealthActor {
-	
-	
+
+	private TextureRegion texture;
+	public Rectangle bb;
 	private float health;
 
 	/** Velocidad que lleva la nave. */
@@ -49,52 +51,53 @@ public class NaveActor extends DisparadorActor implements HealthActor {
 		health = 1;
 		bb = new Rectangle(getX(), getY(), getWidth(), getHeight());
 	}
-	
+
 	@Override
 	public void act(float delta) {
 		super.act(delta);
 		translate(velocidad.x * delta, velocidad.y * delta);
-		
-		if(getX() < 0) {
+
+		if (getX() < 0) {
 			setX(0);
 			velocidad.x = 0;
-		} else if(getRight() > getStage().getWidth()) {
+		} else if (getRight() > getStage().getWidth()) {
 			setX(getStage().getWidth() - getWidth());
 			velocidad.x = 0;
 		}
-		
-		if(getY() < 0) {
+
+		if (getY() < 0) {
 			setY(0);
 			velocidad.y = 0;
-		} else if(getTop() > getStage().getHeight()) {
+		} else if (getTop() > getStage().getHeight()) {
 			setY(getStage().getHeight() - getHeight());
 			velocidad.y = 0;
 		}
-		
+
 		bb.x = getX();
 		bb.y = getY();
 		bb.width = getWidth();
 		bb.height = getHeight();
 	}
-	
+
 	@Override
-	public void disparar(){
+	public void disparar() {
 		BulletActor bullet = new BulletActor(this, 250);
 		float x = getX() - 16 + getWidth() / 2;
 		float y = getY() + getHeight() - 10;
 		bullet.setPosition(x, y);
 		stage.addActor(bullet);
 		bullets.add(bullet);
-		AlienChase.MANAGER.get("shoot.ogg", Sound.class).play();		
+		if (GameplayScreen.SOUND)
+			AlienChase.MANAGER.get("shoot.ogg", Sound.class).play();
 	}
-	
+
 	@Override
 	public void draw(SpriteBatch batch, float parentAlpha) {
 		batch.draw(texture, getX(), getY(), getOriginX(), getOriginY(),
 				getWidth(), getHeight(), getScaleX(), getScaleY(),
 				getRotation());
 	}
-	
+
 	@Override
 	public float getHealth() {
 		return health;
@@ -111,10 +114,12 @@ public class NaveActor extends DisparadorActor implements HealthActor {
 		health += sum;
 		checkHealth();
 	}
-	
+
 	private void checkHealth() {
-		if(health < 0) health = 0;
-		if(health > 1) health = 1;
+		if (health < 0)
+			health = 0;
+		if (health > 1)
+			health = 1;
 	}
-	
+
 }

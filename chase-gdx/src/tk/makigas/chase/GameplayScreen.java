@@ -18,6 +18,7 @@
 package tk.makigas.chase;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import tk.makigas.chase.actor.AlienActor;
@@ -68,6 +69,9 @@ public class GameplayScreen extends AbstractScreen {
 
 	/** Lista de aliens */
 	private List<AlienActor> aliens;
+
+	/** Activar sonio */
+	public static final boolean SOUND = false;
 
 	public GameplayScreen(AlienChase game) {
 		super(game);
@@ -163,77 +167,72 @@ public class GameplayScreen extends AbstractScreen {
 
 	/** Ganar partida */
 	private void win() {
-
+		//Implementar algo...
+		
 		// Creamos los aliens.
 		crearAliens();
 	}
 
 	/** Colisiones de los disparos de la nave con los aliens */
 	private void colisionesNave() {
-		List<BulletActor> copyBullets = new ArrayList<BulletActor>(nave.getBullets());
-		List<AlienActor> copyAliens = new ArrayList<AlienActor>(aliens);
+
+		Iterator<BulletActor> itBullets = nave.getBullets().iterator();
+		Iterator<AlienActor> itAliens = aliens.iterator();
 		
-		for (BulletActor bulletNave : nave.getBullets()) {			
-			for (AlienActor alien : aliens) {				
+		while (itBullets.hasNext()) {
+			
+			BulletActor bulletNave = itBullets.next();
+
+			while (itAliens.hasNext()) {
+
+				AlienActor alien = itAliens.next();
 				// Se produce una colisión entre la balaNave y el alien
-				if (bulletNave.collision(alien)) {
-					bulletNave.remove();
-					copyBullets.remove(bulletNave);
-					alien.remove();
-					copyAliens.remove(alien);
+				if (bulletNave.bb.overlaps(alien.bb)) {
+					
 					puntuacion.puntuacion++;
 				}
 			}
 		}
-		nave.setBullets(copyBullets);
-		aliens = copyAliens;
 	}
 
 	/** Colisiones de los disparos de cada alien con la nave */
 	private void colisionesAliensNave() {
-		List<AlienActor> copyAliens = new ArrayList<AlienActor>(aliens);
-		for (AlienActor alien : aliens) {
-			List<BulletActor> copyBullets = new ArrayList<BulletActor>(
-					alien.getBullets());
+
+		Iterator<AlienActor> itAliens = aliens.iterator();
+
+		while (itAliens.hasNext()) {
+			
+			AlienActor alien = itAliens.next();
+			Iterator<BulletActor> itBullets = alien.getBullets().iterator();
+			
 			// Para todas las balas del alien
-			for (BulletActor bulletAlien : alien.getBullets()) {
-				// Colisiones balaAlien con nava
-				if (bulletAlien.collision(nave)) {
-					bulletAlien.remove();
-					copyBullets.remove(bulletAlien);
-					//nave.sumHealth(-0.3f); <----------------------------------------------
-					AlienChase.MANAGER.get("hit.ogg", Sound.class).play();
-					if (nave.getHealth() <= 0) {
-						game.setScreen(game.GAMEOVER);
-					}
+			while (itBullets.hasNext()) {
+
+				BulletActor bulletAlien = itBullets.next();
+				// Colisiones balaAlien con nave
+				if (bulletAlien.bb.overlaps(nave.bb)) {
+					
 				}
 				// Colisiones balaAlien con escudos
 				else {
-					List<EscudoActor> copyEscudos = new ArrayList<EscudoActor>(
-							escudos);
-					for (EscudoActor escudo : escudos) {
-						// Colisión balaAlien con escudo
-						if (bulletAlien.collision(escudo) && escudo.isVisible()) {
-							bulletAlien.remove();
-							copyBullets.remove(bulletAlien);
-							escudo.sumHealth(-0.3f);
-						}
+					Iterator<EscudoActor> itEscudos = escudos.iterator();
+					while (itEscudos.hasNext()) {
+						
 					}
 				}
 			}
-			alien.setBullets(copyBullets);
 		}
-		aliens = copyAliens;
 	}
 
 	/** Creamos los escudos */
 
 	private void crearEscudos() {
 		escudos = new ArrayList<EscudoActor>();
-		int numEscudos = EscudoActor.NUM_ESCUDOS; // Creamos los aliens
+		// int numEscudos = EscudoActor.NUM_ESCUDOS;
+		int numEscudos = 4;
 		for (int i = 0; i < numEscudos; i++) {
 			EscudoActor escudo = new EscudoActor();
-			float x = i * 32;
+			float x = 50 + i * 128;
 			float y = 110;
 			escudo.setPosition(x, y);
 			escudo.bb.x = escudo.getX();
@@ -248,6 +247,8 @@ public class GameplayScreen extends AbstractScreen {
 		aliens = new ArrayList<AlienActor>();
 		int colum = AlienActor.NUM_COLUM;
 		int filas = AlienActor.NUM_FILAS;
+		// int colum = 1;
+		// int filas = 1;
 		// Creamos los aliens
 		for (int i = 0; i < colum; i++) {
 			for (int j = 0; j < filas; j++) {

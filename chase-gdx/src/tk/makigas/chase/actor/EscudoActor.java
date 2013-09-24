@@ -23,6 +23,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 
 /**
  * Escudo terrestre.
@@ -30,19 +31,24 @@ import com.badlogic.gdx.math.Rectangle;
  * @author danirod
  * @author chema
  */
-public class EscudoActor extends CuerpoActor implements HealthActor {
+public class EscudoActor extends Actor implements HealthActor {
 
 	/** Número de escudos que tendremos */
-	public static final int NUM_ESCUDOS = 35;
+	public static final int NUM_ESCUDOS = 20;
 
+	private static final int MOVIMIENTO_X = 2;
+	private TextureRegion texture;
+	public Rectangle bb;
+	private int xv;
 	private float health;
 
 	public EscudoActor() {
 		health = 1;
-		texture = new TextureRegion(AlienChase.MANAGER.get("defensa.png",
-				Texture.class), 0, 0, 32, 32);
+		texture = new TextureRegion(AlienChase.MANAGER.get("muro.png",
+				Texture.class), 0, 0, 128, 32);
 		setSize(texture.getRegionWidth(), texture.getRegionHeight());
 		bb = new Rectangle(getX(), getY(), getWidth(), getHeight());
+		xv = MOVIMIENTO_X;
 	}
 
 	public float getHealth() {
@@ -60,25 +66,27 @@ public class EscudoActor extends CuerpoActor implements HealthActor {
 	}
 
 	private void checkHealth() {
-		if (health < 0) 
-			health = 0;		 
+		if (health < 0)
+			health = 0;
 		if (health > 1)
 			health = 1;
 	}
 
-	private float timer = 0;
-
 	@Override
 	public void act(float delta) {
-		timer += delta;
-		if (timer > 1 && health < 1) {
-			health += 0.05f; // Añade un porcentaje de vida
-			timer = 0;
+		translate(xv, 0);
+
+		if (getX() < 0) {
+			xv = MOVIMIENTO_X;
+
+		} else if (getRight() > getStage().getWidth()) {
+			xv = -MOVIMIENTO_X;
 		}
-		if (health < 0.5f)
-			setVisible(false);
-		else
-			setVisible(true);
+
+		bb.x = getX();
+		bb.y = getY();
+		bb.width = getWidth();
+		bb.height = getHeight();
 	}
 
 	@Override

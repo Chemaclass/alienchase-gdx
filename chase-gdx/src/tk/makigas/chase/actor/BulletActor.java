@@ -23,6 +23,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 
 /**
  * Bala.
@@ -30,8 +31,10 @@ import com.badlogic.gdx.math.Rectangle;
  * @author danirod
  * @author chema
  */
-public class BulletActor extends CuerpoActor {
-
+public class BulletActor extends Actor {
+	
+	private TextureRegion texture;
+	public Rectangle bb;
 	private float yv, xv;
 
 	private BulletActor() {
@@ -58,22 +61,20 @@ public class BulletActor extends CuerpoActor {
 	}
 
 	@Override
-	public void act(float delta) {		
-		
+	public void act(float delta) {
+
 		translate(xv * delta, yv * delta);
-		//Si la bala sale por la izquierda o derecha
-		if(getX() < 0 || getRight() > getStage().getWidth()) {
-			remove();
-		}
-		//Si la bala sale por arriba o abajo
-		if(getY() < 0 || getTop() > getStage().getHeight()) {
-			remove();
-		}
-		
+
 		bb.x = getX();
 		bb.y = getY();
 		bb.width = getWidth();
 		bb.height = getHeight();
+
+		// Si la bala sale por la izquierda o derecha o arriba o abajo
+		if (getX() < 0 || getRight() > getStage().getWidth() || getY() < -20
+				|| getTop() > getStage().getHeight()) {			
+			remove();
+		}
 	}
 
 	@Override
@@ -81,9 +82,5 @@ public class BulletActor extends CuerpoActor {
 		batch.draw(texture, getX(), getY(), getOriginX(), getOriginY(),
 				getWidth(), getHeight(), getScaleX(), getScaleY(),
 				getRotation());
-	}
-
-	public boolean collision(CuerpoActor actor) {
-		return getBounds().overlaps(actor.getBounds());
 	}
 }
