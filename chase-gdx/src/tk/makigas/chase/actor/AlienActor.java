@@ -18,6 +18,7 @@
 package tk.makigas.chase.actor;
 
 import tk.makigas.chase.AlienChase;
+import static tk.makigas.chase.AlienChase.random;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -37,11 +38,13 @@ public class AlienActor extends DisparadorActor {
 	public static final int NUM_COLUM = 10;
 	public static final int NUM_FILAS = 3;
 
-	private static final int MOVIMIENTO_X = 4;
+	private static final int MOVIMIENTO_X = 5;
 	private static final int MOVIMIENTO_Y = 20;
 	private TextureRegion texture;
 	public Rectangle bb;
 	private int xv, yv;
+	
+	public static int nAliensVivos = 0;
 
 	public AlienActor(Stage stage) {
 		super(stage);
@@ -51,6 +54,7 @@ public class AlienActor extends DisparadorActor {
 		bb = new Rectangle(getX(), getY(), getWidth(), getHeight());
 		xv = MOVIMIENTO_X;
 		yv = 0;
+		nAliensVivos++;
 	}
 
 	@Override
@@ -77,9 +81,11 @@ public class AlienActor extends DisparadorActor {
 		bb.height = getHeight();
 
 		// De forma aleatoria disparará
-		if (AlienChase.random(0, 150) == 4)
+		if (random(0, nAliensVivos * 15) == 4){
 			disparar();
-	}
+		}
+				
+	}	
 
 	@Override
 	public void disparar() {
@@ -87,7 +93,7 @@ public class AlienActor extends DisparadorActor {
 		float x = getX() - 16 + getWidth() / 2;
 		float y = getY() + getHeight() - 10;
 		bullet.setPosition(x, y);
-		stage.addActor(bullet);
+		stage.addActor(bullet);		
 		bullets.add(bullet);
 	}
 

@@ -22,8 +22,6 @@ import tk.makigas.chase.AlienChase;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 
 /**
  * Bala.
@@ -31,17 +29,14 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
  * @author danirod
  * @author chema
  */
-public class BulletActor extends Actor {
+public class BulletActor extends CuerpoActor {
 	
-	private TextureRegion texture;
-	public Rectangle bb;
 	private float yv, xv;
 
 	private BulletActor() {
 		texture = new TextureRegion(AlienChase.MANAGER.get("bala.png",
 				Texture.class), 16, 16);
 		setSize(texture.getRegionWidth(), texture.getRegionHeight());
-		bb = new Rectangle(getX(), getY(), getWidth(), getHeight());
 	}
 
 	public BulletActor(DisparadorActor disparador, int yv) {
@@ -59,28 +54,28 @@ public class BulletActor extends Actor {
 		this.yv = yv;
 		this.xv = xv;
 	}
-
+	
 	@Override
 	public void act(float delta) {
 
 		translate(xv * delta, yv * delta);
 
-		bb.x = getX();
-		bb.y = getY();
-		bb.width = getWidth();
-		bb.height = getHeight();
-
 		// Si la bala sale por la izquierda o derecha o arriba o abajo
-		if (getX() < 0 || getRight() > getStage().getWidth() || getY() < -20
-				|| getTop() > getStage().getHeight()) {			
+		if (getX() < 0 || getRight() > getStage().getWidth() 
+		 || getY() < 0 || getTop() > getStage().getHeight()) {			
 			remove();
 		}
-	}
+	}	
 
 	@Override
 	public void draw(SpriteBatch batch, float parentAlpha) {
 		batch.draw(texture, getX(), getY(), getOriginX(), getOriginY(),
 				getWidth(), getHeight(), getScaleX(), getScaleY(),
 				getRotation());
+	}
+	
+	/** Devuelve verdadero si se produce una colisión entre la bala y el actor*/
+	public boolean collision(CuerpoActor actor){
+		return getBounds().overlaps(actor.getBounds());
 	}
 }

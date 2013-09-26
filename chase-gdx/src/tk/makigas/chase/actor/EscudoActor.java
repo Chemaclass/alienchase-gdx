@@ -22,8 +22,7 @@ import tk.makigas.chase.AlienChase;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 
 /**
  * Escudo terrestre.
@@ -31,23 +30,24 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
  * @author danirod
  * @author chema
  */
-public class EscudoActor extends Actor implements HealthActor {
+public class EscudoActor extends CuerpoActor implements HealthActor {
 
-	/** Número de escudos que tendremos */
-	public static final int NUM_ESCUDOS = 20;
+	/** Número de escudos que tendremos inicialmente */
+	public static final int NUM_ESCUDOS = 3;
 
 	private static final int MOVIMIENTO_X = 2;
-	private TextureRegion texture;
-	public Rectangle bb;
+
 	private int xv;
+	private Stage stage;
 	private float health;
 
-	public EscudoActor() {
+	public EscudoActor(Stage stage) {
+		stage.addActor(this);
+		this.stage = stage;		
 		health = 1;
 		texture = new TextureRegion(AlienChase.MANAGER.get("muro.png",
-				Texture.class), 0, 0, 128, 32);
-		setSize(texture.getRegionWidth(), texture.getRegionHeight());
-		bb = new Rectangle(getX(), getY(), getWidth(), getHeight());
+				Texture.class), 0, 0, 64, 32);
+		setSize(texture.getRegionWidth(), texture.getRegionHeight());		
 		xv = MOVIMIENTO_X;
 	}
 
@@ -66,14 +66,25 @@ public class EscudoActor extends Actor implements HealthActor {
 	}
 
 	private void checkHealth() {
-		if (health < 0)
-			health = 0;
 		if (health > 1)
 			health = 1;
+		if(health < 0 ){
+			stage.getRoot().removeActor(this);
+			remove();
+		}
 	}
+
+	private float timer = 0;
 
 	@Override
 	public void act(float delta) {
+
+		timer += delta;
+		if (timer > 1 && health < 1) {
+			health += 0.03f; // Añade un porcentaje de vida al escudo.
+			timer = 0;
+		}
+
 		translate(xv, 0);
 
 		if (getX() < 0) {
@@ -81,12 +92,7 @@ public class EscudoActor extends Actor implements HealthActor {
 
 		} else if (getRight() > getStage().getWidth()) {
 			xv = -MOVIMIENTO_X;
-		}
-
-		bb.x = getX();
-		bb.y = getY();
-		bb.width = getWidth();
-		bb.height = getHeight();
+		}		
 	}
 
 	@Override

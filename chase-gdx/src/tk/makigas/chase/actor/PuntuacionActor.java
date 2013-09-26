@@ -20,6 +20,7 @@ package tk.makigas.chase.actor;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 
 public class PuntuacionActor extends Actor {
 	
@@ -27,7 +28,8 @@ public class PuntuacionActor extends Actor {
 	
 	private BitmapFont font;
 
-	public PuntuacionActor(BitmapFont font) {
+	public PuntuacionActor(Stage s,BitmapFont font) {
+		s.addActor(this);
 		this.font = font;
 	}
 

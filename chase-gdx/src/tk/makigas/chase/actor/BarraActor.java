@@ -22,6 +22,7 @@ import tk.makigas.chase.AlienChase;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 
 /**
  * Barra de vida usada para mostrar la vida de un elemento compatible.
@@ -36,7 +37,8 @@ public class BarraActor extends Actor {
 	/** Elemento del que se hace un seguimiento. */
 	private HealthActor entidad;
 
-	public BarraActor(HealthActor entidad) {
+	public BarraActor(Stage s,HealthActor entidad) {
+		s.addActor(this);
 		barra = AlienChase.MANAGER.get("vida.png", Texture.class);
 		setSize(barra.getWidth(), barra.getHeight());
 		this.entidad = entidad;

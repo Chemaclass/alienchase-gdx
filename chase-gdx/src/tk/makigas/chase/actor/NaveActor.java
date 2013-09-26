@@ -24,7 +24,6 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
@@ -36,8 +35,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
  */
 public class NaveActor extends DisparadorActor implements HealthActor {
 
-	private TextureRegion texture;
-	public Rectangle bb;
+	
 	private float health;
 
 	/** Velocidad que lleva la nave. */
@@ -49,12 +47,20 @@ public class NaveActor extends DisparadorActor implements HealthActor {
 				Texture.class), 79, 79);
 		setSize(texture.getRegionWidth(), texture.getRegionHeight());
 		health = 1;
-		bb = new Rectangle(getX(), getY(), getWidth(), getHeight());
 	}
 
+	private float timer = 0;
+	
 	@Override
 	public void act(float delta) {
 		super.act(delta);
+		
+		timer += delta;
+		if(timer > 1 && health < 1) {
+			health += 0.04f; // Añade un porcentaje de vida a la nave.
+			timer = 0;
+		}
+		
 		translate(velocidad.x * delta, velocidad.y * delta);
 
 		if (getX() < 0) {
@@ -72,11 +78,6 @@ public class NaveActor extends DisparadorActor implements HealthActor {
 			setY(getStage().getHeight() - getHeight());
 			velocidad.y = 0;
 		}
-
-		bb.x = getX();
-		bb.y = getY();
-		bb.width = getWidth();
-		bb.height = getHeight();
 	}
 
 	@Override
@@ -85,11 +86,12 @@ public class NaveActor extends DisparadorActor implements HealthActor {
 		float x = getX() - 16 + getWidth() / 2;
 		float y = getY() + getHeight() - 10;
 		bullet.setPosition(x, y);
-		stage.addActor(bullet);
+		stage.addActor(bullet);		
+		
 		bullets.add(bullet);
 		if (GameplayScreen.SOUND)
 			AlienChase.MANAGER.get("shoot.ogg", Sound.class).play();
-	}
+	}	
 
 	@Override
 	public void draw(SpriteBatch batch, float parentAlpha) {
