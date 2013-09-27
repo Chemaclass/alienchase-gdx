@@ -17,8 +17,11 @@
  */
 package tk.makigas.chase.listeners;
 
+import tk.makigas.chase.GameplayScreen;
+import tk.makigas.chase.GameplayScreen.State;
 import tk.makigas.chase.actor.NaveActor;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -69,6 +72,14 @@ public class InputDesktopListener extends InputListener {
 
 	@Override
 	public boolean keyTyped(InputEvent event, char character) {
+		if(GameplayScreen.getEstado() == GameplayScreen.State.RUNNING
+				&& character == 'p' || character == 'P')
+			GameplayScreen.pausar();
+		else if(GameplayScreen.getEstado() == GameplayScreen.State.PAUSED
+				&& character == 'p' || character == 'P'){
+			GameplayScreen.continuar();
+		}
+			
 		if (character != ' ')
 			return false;
 		nave.disparar();

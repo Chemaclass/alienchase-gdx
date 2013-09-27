@@ -38,8 +38,8 @@ public class AlienActor extends DisparadorActor {
 	public static final int NUM_FILAS = 3;
 
 	/** Velocidad del movimiento */
-	private static final int MOVIMIENTO_X = 5;
-	private static final int MOVIMIENTO_Y = 20;
+	private static final int MOVIMIENTO_X = 4;
+	private static final int MOVIMIENTO_Y = 24;
 
 	/** Número de aliens vivos */
 	public static int nAliensVivos = 0;

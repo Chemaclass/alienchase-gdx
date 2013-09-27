@@ -73,6 +73,13 @@ public class GameplayScreen extends AbstractScreen {
 	/** Activar sonio */
 	public static final boolean SOUND = true;
 
+	/** Estados en los que se puede encontrar el juego */
+	public enum State {
+		RUNNING, PAUSED
+	}
+
+	private static State state = State.PAUSED;
+
 	public GameplayScreen(AlienChase game) {
 		super(game);
 	}
@@ -109,6 +116,7 @@ public class GameplayScreen extends AbstractScreen {
 		crearAliens();
 		// Preparamos los listeners
 		crearListeners();
+		state = State.RUNNING;
 	}
 
 	/** Creamos los sistemas de entrada/salida */
@@ -133,10 +141,14 @@ public class GameplayScreen extends AbstractScreen {
 			padShoot.setPosition(stage.getWidth() - 50, 10);
 
 			// Añadimos los listeners.
-			padArriba.addListener(new InputAndroidMoveListener(nave, 250f, false));
-			padAbajo.addListener(new InputAndroidMoveListener(nave, -250f, false));
-			padDerecha.addListener(new InputAndroidMoveListener(nave, 250f, true));
-			padIzquierda.addListener(new InputAndroidMoveListener(nave, -250f, true));
+			padArriba.addListener(new InputAndroidMoveListener(nave, 250f,
+					false));
+			padAbajo.addListener(new InputAndroidMoveListener(nave, -250f,
+					false));
+			padDerecha.addListener(new InputAndroidMoveListener(nave, 250f,
+					true));
+			padIzquierda.addListener(new InputAndroidMoveListener(nave, -250f,
+					true));
 			padShoot.addListener(new InputAndroidShootListener(nave));
 
 			// Los añadimos al escenario.
@@ -144,21 +156,27 @@ public class GameplayScreen extends AbstractScreen {
 			stage.addActor(padAbajo);
 			stage.addActor(padDerecha);
 			stage.addActor(padIzquierda);
-			stage.addActor(padShoot);			
+			stage.addActor(padShoot);
 		}
 	}
 
 	@Override
 	public void render(float delta) {
 		Gdx.gl.glClear(GL11.GL_COLOR_BUFFER_BIT);
-		stage.act();
-		// Revisamos las colisiones
-		colisionesAliensNaveYEscudos();
-		colisionesNaveAliens();
-		// Revisamos si destruimos a todos los aliens
-		if (aliens.size() <= 0)
-			win();
+		if (state.equals(State.RUNNING)) {
+			stage.act();
+			// Revisamos las colisiones
+			colisionesAliensNaveYEscudos();
+			colisionesNaveAliens();
+			// Revisamos si destruimos a todos los aliens
+			if (aliens.size() <= 0)
+				win();
+		}
+		if (state.equals(State.PAUSED)) {
+
+		}
 		stage.draw();
+
 	}
 
 	/** Ganar partida */
@@ -277,6 +295,20 @@ public class GameplayScreen extends AbstractScreen {
 				aliens.add(alien);
 			}
 		}
+	}
+
+	/** Pausar el juego */
+	public static void pausar() {
+		state = State.PAUSED;
+	}
+
+	/** Continuar el juego */
+	public static void continuar() {
+		state = State.RUNNING;
+	}
+
+	public static State getEstado() {
+		return state;
 	}
 
 	@Override

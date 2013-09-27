@@ -36,7 +36,7 @@ public class AlienChase extends Game {
 	public SpriteBatch SB;
 		
 	public final AbstractScreen GAMEOVER, GAMEPLAY, LOADING, MAIN;
-	
+		
 	public AlienChase() {
 		GAMEOVER = new GameOverScreen(this);
 		GAMEPLAY = new GameplayScreen(this);
