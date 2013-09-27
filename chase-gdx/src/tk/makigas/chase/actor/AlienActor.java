@@ -18,6 +18,7 @@
 package tk.makigas.chase.actor;
 
 import tk.makigas.chase.AlienChase;
+import tk.makigas.chase.GameplayScreen;
 import static tk.makigas.chase.AlienChase.random;
 
 import com.badlogic.gdx.graphics.Texture;
@@ -72,6 +73,7 @@ public class AlienActor extends DisparadorActor {
 		if (getY() < 0) {
 			translate(0, stage.getHeight());
 			// GAMEOVER
+			GameplayScreen.gameOver();
 		}
 
 		// De forma aleatoria disparará

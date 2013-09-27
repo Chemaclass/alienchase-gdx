@@ -84,7 +84,7 @@ public class NaveActor extends DisparadorActor implements HealthActor {
 		stage.addActor(bullet);		
 		
 		bullets.add(bullet);
-		if (GameplayScreen.SOUND)
+		if (GameplayScreen.isSound())
 			AlienChase.MANAGER.get("shoot.ogg", Sound.class).play();
 	}	
 

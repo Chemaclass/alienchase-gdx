@@ -18,11 +18,14 @@
 package tk.makigas.chase;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.sun.org.apache.bcel.internal.generic.GETSTATIC;
 
 public class MainScreen extends AbstractScreen {
 
@@ -31,6 +34,8 @@ public class MainScreen extends AbstractScreen {
 	private Texture btnJugar;
 
 	private Texture btnSalir;
+
+	private Texture btnSonido;
 
 	private Stage stage;
 
@@ -43,13 +48,15 @@ public class MainScreen extends AbstractScreen {
 		titulo = AlienChase.MANAGER.get("title.png", Texture.class);
 		btnJugar = AlienChase.MANAGER.get("jugar.png", Texture.class);
 		btnSalir = AlienChase.MANAGER.get("salir.png", Texture.class);
+		btnSonido = new TextureRegion(AlienChase.MANAGER.get("sonido.png",
+				Texture.class), 0, 0, 90, 32).getTexture();
 
 		stage = new Stage(640, 360, true, game.SB);
-		
+
 		Image imgFondo = new Image(titulo);
 		imgFondo.setFillParent(true);
 		stage.addActor(imgFondo);
-		
+
 		Image imgJugar = new Image(btnJugar);
 		imgJugar.setBounds(10, 100, 300, 75);
 		imgJugar.addListener(new InputListener() {
@@ -61,7 +68,7 @@ public class MainScreen extends AbstractScreen {
 			}
 		});
 		stage.addActor(imgJugar);
-		
+
 		Image imgSalir = new Image(btnSalir);
 		imgSalir.setBounds(330, 100, 300, 75);
 		imgSalir.addListener(new InputListener() {
@@ -73,6 +80,22 @@ public class MainScreen extends AbstractScreen {
 			}
 		});
 		stage.addActor(imgSalir);
+		
+		Image imgSonido = new Image(btnSonido);
+		imgSonido.addListener(new InputListener(){
+			@Override
+			public boolean touchDown(InputEvent event, float x, float y,
+					int pointer, int button) {
+				boolean flag = GameplayScreen.isSound();
+				if(!flag){
+					AlienChase.MANAGER.get("shoot.ogg", Sound.class).play();
+				}
+				GameplayScreen.setSound(flag?false:true);
+				return true;
+			}
+		});
+		stage.addActor(imgSonido);
+		imgSonido.setBounds(210, 65, 140, 30);
 		Gdx.input.setInputProcessor(stage);
 	}
 
@@ -81,18 +104,16 @@ public class MainScreen extends AbstractScreen {
 		stage.act();
 		stage.draw();
 	}
-	
+
 	@Override
 	public void hide() {
-		
+
 	}
 
 	@Override
 	public void dispose() {
 		// TODO Auto-generated method stub
-		
-	}
 
-	
+	}
 
 }

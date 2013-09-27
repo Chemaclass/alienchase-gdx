@@ -12,16 +12,20 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
  */
 public abstract class DisparadorActor extends CuerpoActor {
 
+	/** Lista de balas. */
 	protected final List<BulletActor> bullets = new LinkedList<BulletActor>();
 	
+	/** Tipo de bala. Se definirá en el hijo. {balaNave,balaAlien}*/
 	protected String bala;
 	
 	public DisparadorActor(Stage stage) {
 		super(stage);
 	}
 
+	/** Disparar. */
 	public abstract void disparar();
 
+	/** Elimina todas las balas liberando así todo su espacio. */
 	public void limpiarBullets(){
 		Iterator<BulletActor> itBullets = bullets.iterator();
 		while(itBullets.hasNext()){
@@ -33,6 +37,7 @@ public abstract class DisparadorActor extends CuerpoActor {
 		bullets.clear();
 	}
 	
+	/** Obtener la lista de balas. */
 	public List<BulletActor> getBullets() {
 		return bullets;
 	}	

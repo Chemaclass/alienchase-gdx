@@ -71,11 +71,11 @@ public class GameplayScreen extends AbstractScreen {
 	private List<AlienActor> aliens;
 
 	/** Activar sonio */
-	public static final boolean SOUND = true;
-
+	private static boolean sound = false;
+	
 	/** Estados en los que se puede encontrar el juego */
 	public enum State {
-		RUNNING, PAUSED
+		RUNNING, PAUSED, LOST
 	}
 
 	private static State state = State.PAUSED;
@@ -171,12 +171,12 @@ public class GameplayScreen extends AbstractScreen {
 			// Revisamos si destruimos a todos los aliens
 			if (aliens.size() <= 0)
 				win();
-		}
-		if (state.equals(State.PAUSED)) {
-
+		}else if (state.equals(State.PAUSED)) {
+			
+		}else if (state.equals(State.LOST)) {
+			game.setScreen(game.GAMEOVER);
 		}
 		stage.draw();
-
 	}
 
 	/** Ganar partida */
@@ -240,10 +240,10 @@ public class GameplayScreen extends AbstractScreen {
 					itBullets.remove();
 
 					nave.sumHealth(-0.35f);
-					AlienChase.MANAGER.get("hit.ogg", Sound.class).play();
+					if (sound) 
+						AlienChase.MANAGER.get("hit.ogg", Sound.class).play();
 					if (nave.getHealth() <= 0)
 						game.setScreen(game.GAMEOVER);
-
 				} else {
 					Iterator<EscudoActor> itEscudos = escudos.iterator();
 					// Iteramos por todos los escudos
@@ -297,14 +297,19 @@ public class GameplayScreen extends AbstractScreen {
 		}
 	}
 
-	/** Pausar el juego */
+	/** Pausar el juego. */
 	public static void pausar() {
 		state = State.PAUSED;
 	}
 
-	/** Continuar el juego */
+	/** Continuar el juego. */
 	public static void continuar() {
 		state = State.RUNNING;
+	}
+	
+	/** Juego perdido. */
+	public static void gameOver(){
+		state = State.LOST;
 	}
 
 	public static State getEstado() {
@@ -327,5 +332,13 @@ public class GameplayScreen extends AbstractScreen {
 		vidaNave.setPosition(stage.getWidth() - 150, stage.getHeight() - 20);
 		if (Gdx.app.getType() == ApplicationType.Android && padShoot != null)
 			padShoot.setPosition(stage.getWidth() - 50, 10);
+	}
+
+	public static boolean isSound() {
+		return sound;
+	}
+	
+	public static void setSound(boolean sound){
+		GameplayScreen.sound=sound;
 	}
 }

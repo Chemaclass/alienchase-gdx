@@ -18,10 +18,8 @@
 package tk.makigas.chase.listeners;
 
 import tk.makigas.chase.GameplayScreen;
-import tk.makigas.chase.GameplayScreen.State;
 import tk.makigas.chase.actor.NaveActor;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
