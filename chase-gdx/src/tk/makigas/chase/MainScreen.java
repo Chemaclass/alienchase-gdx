@@ -25,7 +25,6 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.sun.org.apache.bcel.internal.generic.GETSTATIC;
 
 public class MainScreen extends AbstractScreen {
 
@@ -35,7 +34,7 @@ public class MainScreen extends AbstractScreen {
 
 	private Texture btnSalir;
 
-	private Texture btnSonido;
+	private Texture btnSonidoOff, btnSonidoOn;
 
 	private Stage stage;
 
@@ -45,18 +44,36 @@ public class MainScreen extends AbstractScreen {
 
 	@Override
 	public void show() {
+		
+		stage = new Stage(640, 360, true, game.SB);
+		
 		titulo = AlienChase.MANAGER.get("title.png", Texture.class);
 		btnJugar = AlienChase.MANAGER.get("jugar.png", Texture.class);
 		btnSalir = AlienChase.MANAGER.get("salir.png", Texture.class);
-		btnSonido = new TextureRegion(AlienChase.MANAGER.get("sonido.png",
+		btnSonidoOff = new TextureRegion(AlienChase.MANAGER.get("sonidoOff.png",
 				Texture.class), 0, 0, 90, 32).getTexture();
-
-		stage = new Stage(640, 360, true, game.SB);
-
+		btnSonidoOn = new TextureRegion(AlienChase.MANAGER.get("sonidoOn.png",
+				Texture.class), 0, 0, 90, 32).getTexture();
+		/*//No sé cómo hacerlo funcionar ¿?
+		CheckBoxStyle checkBoxStyle = new CheckBoxStyle();
+		checkBoxStyle.font = new BitmapFont();
+		checkBoxStyle.checkboxOff = new Image(btnSonidoOff).getDrawable();
+		checkBoxStyle.checkboxOn = new Image(btnSonidoOn).getDrawable();
+		CheckBox cbSound = new CheckBox(" Sound", checkBoxStyle);		
+		stage.addActor(cbSound);*/
+		
 		Image imgFondo = new Image(titulo);
 		imgFondo.setFillParent(true);
 		stage.addActor(imgFondo);
 
+		implementarJugarSalir();
+		
+		implementarSonido();
+		
+		Gdx.input.setInputProcessor(stage);
+	}
+	
+	private void implementarJugarSalir() {
 		Image imgJugar = new Image(btnJugar);
 		imgJugar.setBounds(10, 100, 300, 75);
 		imgJugar.addListener(new InputListener() {
@@ -79,26 +96,46 @@ public class MainScreen extends AbstractScreen {
 				return true;
 			}
 		});
-		stage.addActor(imgSalir);
+		stage.addActor(imgSalir);		
+	}
+
+	private void implementarSonido() {
+		final Image imgSonidoOff = new Image(btnSonidoOff);
+		final Image imgSonidoOn = new Image(btnSonidoOn);
 		
-		Image imgSonido = new Image(btnSonido);
-		imgSonido.addListener(new InputListener(){
+		imgSonidoOff.addListener(new InputListener(){
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y,
 					int pointer, int button) {
-				boolean flag = GameplayScreen.isSound();
-				if(!flag){
-					AlienChase.MANAGER.get("shoot.ogg", Sound.class).play();
-				}
-				GameplayScreen.setSound(flag?false:true);
+				checkSound();
+				imgSonidoOff.setVisible(false);
 				return true;
 			}
 		});
-		stage.addActor(imgSonido);
-		imgSonido.setBounds(210, 65, 140, 30);
-		Gdx.input.setInputProcessor(stage);
+		imgSonidoOn.addListener(new InputListener(){
+			@Override
+			public boolean touchDown(InputEvent event, float x, float y,
+					int pointer, int button) {
+				checkSound();
+				imgSonidoOff.setVisible(true);
+				return true;
+			}
+		});
+		imgSonidoOff.setBounds(210, 65, 140, 30);
+		imgSonidoOn.setBounds(210, 65, 140, 30);
+		stage.addActor(imgSonidoOn);
+		stage.addActor(imgSonidoOff);		
 	}
 
+	/** Cambiar el sonido a su inversa. */
+	private void checkSound(){
+		boolean flag = GameplayScreen.isSound();
+		if(!flag){					
+			AlienChase.MANAGER.get("shoot.ogg", Sound.class).play();
+		}
+		GameplayScreen.setSound(flag?false:true);
+	}
+	
 	@Override
 	public void render(float delta) {
 		stage.act();
@@ -112,7 +149,6 @@ public class MainScreen extends AbstractScreen {
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
 
 	}
 

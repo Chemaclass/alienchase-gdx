@@ -64,20 +64,21 @@ public class GameplayScreen extends AbstractScreen {
 	/** Pads usados para controlar el juego en Android. */
 	private PadActor padArriba, padAbajo, padDerecha, padIzquierda, padShoot;
 
-	/** Puntuación */
+	/** Puntuación. */
 	private PuntuacionActor puntuacion;
 
-	/** Lista de aliens */
+	/** Lista de aliens. */
 	private List<AlienActor> aliens;
 
-	/** Activar sonio */
+	/** Activar sonido. */
 	private static boolean sound = false;
-	
-	/** Estados en los que se puede encontrar el juego */
+
+	/** Estados en los que se puede encontrar el juego. */
 	public enum State {
 		RUNNING, PAUSED, LOST
 	}
 
+	/** Estado del juego. */
 	private static State state = State.PAUSED;
 
 	public GameplayScreen(AlienChase game) {
@@ -171,9 +172,9 @@ public class GameplayScreen extends AbstractScreen {
 			// Revisamos si destruimos a todos los aliens
 			if (aliens.size() <= 0)
 				win();
-		}else if (state.equals(State.PAUSED)) {
+		} else if (state.equals(State.PAUSED)) {
 			
-		}else if (state.equals(State.LOST)) {
+		} else if (state.equals(State.LOST)) {
 			game.setScreen(game.GAMEOVER);
 		}
 		stage.draw();
@@ -240,7 +241,7 @@ public class GameplayScreen extends AbstractScreen {
 					itBullets.remove();
 
 					nave.sumHealth(-0.35f);
-					if (sound) 
+					if (sound)
 						AlienChase.MANAGER.get("hit.ogg", Sound.class).play();
 					if (nave.getHealth() <= 0)
 						game.setScreen(game.GAMEOVER);
@@ -306,9 +307,9 @@ public class GameplayScreen extends AbstractScreen {
 	public static void continuar() {
 		state = State.RUNNING;
 	}
-	
+
 	/** Juego perdido. */
-	public static void gameOver(){
+	public static void gameOver() {
 		state = State.LOST;
 	}
 
@@ -337,8 +338,8 @@ public class GameplayScreen extends AbstractScreen {
 	public static boolean isSound() {
 		return sound;
 	}
-	
-	public static void setSound(boolean sound){
-		GameplayScreen.sound=sound;
+
+	public static void setSound(boolean sound) {
+		GameplayScreen.sound = sound;
 	}
 }
