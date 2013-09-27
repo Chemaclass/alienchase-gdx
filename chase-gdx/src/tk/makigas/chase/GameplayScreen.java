@@ -180,11 +180,13 @@ public class GameplayScreen extends AbstractScreen {
 					// Eliminamos los actores alien/bala del stage
 					stage.getRoot().removeActor(alien);
 					stage.getRoot().removeActor(bullet);
+					// borramos todas sus balas del stage
+					alien.limpiarBullets();
 					// Eliminamos los actores alien/bala de las listas
-					itAliens.remove();
+					itAliens.remove();					
 					AlienActor.nAliensVivos--;// Le restamos 1 al número de
-												// Aliens vivos
-					try {
+												// Aliens vivos					
+					try {	
 						itBullets.remove();
 					} catch (java.lang.IllegalStateException e) {
 						// Ocurre cuando dos balas colisionan al mismo tiempo en
@@ -237,7 +239,7 @@ public class GameplayScreen extends AbstractScreen {
 								// tiempo en un mismo alien
 								System.err.println("Dos balas colisionaron al "
 										+ "mismo tiempo en un escudo!");
-							}							
+							}
 						}
 					}
 				}
