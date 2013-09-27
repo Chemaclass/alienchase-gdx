@@ -24,20 +24,34 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 
 public class PuntuacionActor extends Actor {
 
-	public int nivel;
+	private int nivel;
 
-	public int puntuacion;
+	private int puntuacion;
 
 	private BitmapFont font;
 
 	public PuntuacionActor(Stage s, BitmapFont font) {
 		s.addActor(this);
 		this.font = font;
+		puntuacion = 0;
+		nivel = 1;
 	}
 
 	@Override
 	public void draw(SpriteBatch batch, float parentAlpha) {
 		font.draw(batch, "NIVEL: " + nivel, getX(), getY());
 		font.draw(batch, "PUNTOS: " + puntuacion, getX(), getY() - 20);
+	}
+
+	public void subirNivel() {
+		nivel++;
+	}
+	
+	public void subirPuntuacion(int sum){
+		puntuacion+=sum;
+	}
+	
+	public void subirPuntuacion(){
+		puntuacion++;
 	}
 }

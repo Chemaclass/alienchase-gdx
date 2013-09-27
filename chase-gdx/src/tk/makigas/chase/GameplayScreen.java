@@ -62,7 +62,7 @@ public class GameplayScreen extends AbstractScreen {
 	private BarraActor vidaNave;
 
 	/** Pads usados para controlar el juego en Android. */
-	private PadActor padArriba, padAbajo, padShoot;
+	private PadActor padArriba, padAbajo, padDerecha, padIzquierda, padShoot;
 
 	/** Puntuación */
 	private PuntuacionActor puntuacion;
@@ -102,14 +102,13 @@ public class GameplayScreen extends AbstractScreen {
 		// Creamos la puntuación.
 		puntuacion = new PuntuacionActor(stage, new BitmapFont());
 		puntuacion.setPosition(10, stage.getHeight() - 10);
-		puntuacion.puntuacion = 0;
 
 		// Creamos los escudos.
 		crearEscudos();
-
 		// Creamos los aliens.
 		crearAliens();
-		crearListeners(); // Preparamos los listeners
+		// Preparamos los listeners
+		crearListeners();
 	}
 
 	/** Creamos los sistemas de entrada/salida */
@@ -124,6 +123,8 @@ public class GameplayScreen extends AbstractScreen {
 			// Creamos los pads.
 			padArriba = new PadActor(0, 0);
 			padAbajo = new PadActor(1, 0);
+			padDerecha = new PadActor(0, 2);
+			padIzquierda = new PadActor(1, 2);
 			padShoot = new PadActor(0, 1);
 
 			// Los colocamos.
@@ -132,14 +133,18 @@ public class GameplayScreen extends AbstractScreen {
 			padShoot.setPosition(stage.getWidth() - 50, 10);
 
 			// Añadimos los listeners.
-			padArriba.addListener(new InputAndroidMoveListener(nave, 250f));
-			padAbajo.addListener(new InputAndroidMoveListener(nave, 250f));
+			padArriba.addListener(new InputAndroidMoveListener(nave, 250f, false));
+			padAbajo.addListener(new InputAndroidMoveListener(nave, -250f, false));
+			padDerecha.addListener(new InputAndroidMoveListener(nave, 250f, true));
+			padIzquierda.addListener(new InputAndroidMoveListener(nave, -250f, true));
 			padShoot.addListener(new InputAndroidShootListener(nave));
 
 			// Los añadimos al escenario.
 			stage.addActor(padArriba);
 			stage.addActor(padAbajo);
-			stage.addActor(padShoot);
+			stage.addActor(padDerecha);
+			stage.addActor(padIzquierda);
+			stage.addActor(padShoot);			
 		}
 	}
 
@@ -160,7 +165,7 @@ public class GameplayScreen extends AbstractScreen {
 	private void win() {
 
 		nave.limpiarBullets();
-		puntuacion.nivel++;
+		puntuacion.subirNivel();
 		// Creamos los aliens.
 		crearAliens();
 	}
@@ -191,10 +196,8 @@ public class GameplayScreen extends AbstractScreen {
 					} catch (java.lang.IllegalStateException e) {
 						// Ocurre cuando dos balas colisionan al mismo tiempo en
 						// un mismo alien
-						System.err
-								.println("Dos balas colisionaron al mismo tiempo en un alien!");
 					}
-					puntuacion.puntuacion++;
+					puntuacion.subirPuntuacion();
 				}
 			}
 		}
@@ -218,7 +221,7 @@ public class GameplayScreen extends AbstractScreen {
 					stage.getRoot().removeActor(bullet);
 					itBullets.remove();
 
-					nave.sumHealth(-0.2f);
+					nave.sumHealth(-0.35f);
 					AlienChase.MANAGER.get("hit.ogg", Sound.class).play();
 					if (nave.getHealth() <= 0)
 						game.setScreen(game.GAMEOVER);
@@ -230,15 +233,12 @@ public class GameplayScreen extends AbstractScreen {
 						EscudoActor escudo = itEscudos.next();
 						// Se produce una colisión entre bala_alien/escudo
 						if (bullet.collision(escudo)) {
-
 							stage.getRoot().removeActor(bullet);
 							try {
 								itBullets.remove();
 							} catch (java.lang.IllegalStateException e) {
 								// Ocurre cuando dos balas colisionan al mismo
 								// tiempo en un mismo alien
-								System.err.println("Dos balas colisionaron al "
-										+ "mismo tiempo en un escudo!");
 							}
 						}
 					}
@@ -246,13 +246,6 @@ public class GameplayScreen extends AbstractScreen {
 			}
 		}
 	}
-
-	/** Añadimos un escudo a nuestra lista */
-	/*
-	 * private void addEscudo() { EscudoActor escudo = new EscudoActor(stage);
-	 * float x = 50 + 2 * 128; float y = 110; escudo.setPosition(x, y);
-	 * escudos.add(escudo); }
-	 */
 
 	/** Creamos los escudos */
 	private void crearEscudos() {
@@ -300,8 +293,6 @@ public class GameplayScreen extends AbstractScreen {
 	public void resize(int width, int height) {
 		stage.setViewport(width, height, true);
 		vidaNave.setPosition(stage.getWidth() - 150, stage.getHeight() - 20);
-		// vidaEscudo.setPosition(stage.getWidth() - 150, stage.getHeight() -
-		// 28);
 		if (Gdx.app.getType() == ApplicationType.Android && padShoot != null)
 			padShoot.setPosition(stage.getWidth() - 50, 10);
 	}

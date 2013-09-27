@@ -1,4 +1,4 @@
-# Alien Chase 2013 Edition
+# Alien Chase 2013 Chema Edition
 
 ProTip: this README file is written in plain English. Most of the code for
 this project is still in Spanish. I don't know if I'll translate the code
@@ -6,20 +6,12 @@ to English, as this is just some sample code that owns to my tutorials,
 which are also done in Spanish.
 
 ## What is this?
-Alien Chase is a space shooter game developed in LibGDX as part of a YouTube
-video tutorial series on that library. The goal of the series was to develop
-a simple game in LibGDX from scratch and the series already finished with
-the deployment of desktop and Android versions of the game.
-
-This is a remake of Alien Chase 2012, which is a shooter game that I already
-made last year, also as a YouTube video tutorial series. Last year I made
-the same game using Slick2D library.
+Alien Chase Chema Edition is a space shooter game developed in LibGDX.
+This is a remake of Alien Chase 2013 by danirod.
 
 ## Is it safe to play?
 Yes, it's technically safe. I mean, the game works. You can destroy aliens,
 aliens can destroy you, you get the fancy sounds, the images and so.
-However, the code was done as I was recording these videos, so I cannot
-guarantee that is bug-safe.
 
 I may review and fix the code if I have the time. This includes documenting
 the code, in order to make it easier to understand, reformatting the code,

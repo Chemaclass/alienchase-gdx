@@ -89,10 +89,4 @@ public class InputDesktopListener extends InputListener {
 		return true;
 	}
 
-	@Override
-	public boolean scrolled(InputEvent event, float x, float y, int amount) {
-		nave.disparar();
-		return true;
-	}
-
 }

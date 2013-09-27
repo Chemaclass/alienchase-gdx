@@ -21,29 +21,46 @@ import tk.makigas.chase.actor.NaveActor;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
-
+/**
+ * 
+ * @author chema
+ *
+ */
 public class InputAndroidMoveListener extends InputListener {
-	
+
+	/** Nave. */
 	private NaveActor nave;
-	
+
+	/** Velocidad del cambio. */
 	private float targetSpeed;
-	
-	public InputAndroidMoveListener(NaveActor nave, float targetSpeed) {
+
+	/** Saber si es un movimiento horizontal */
+	private boolean horizontal;
+
+	public InputAndroidMoveListener(NaveActor nave, float targetSpeed,
+			boolean horizontal) {
 		this.nave = nave;
 		this.targetSpeed = targetSpeed;
+		this.horizontal = horizontal;
 	}
 
 	@Override
-	public boolean touchDown(InputEvent event, float x, float y,
-			int pointer, int button) {
-		nave.velocidad.y = targetSpeed;
+	public boolean touchDown(InputEvent event, float x, float y, int pointer,
+			int button) {
+		if (horizontal)
+			nave.velocidad.x = targetSpeed;
+		else
+			nave.velocidad.y = targetSpeed;
 		return true;
 	}
 
 	@Override
-	public void touchUp(InputEvent event, float x, float y,
-			int pointer, int button) {
-		nave.velocidad.y = 0;
+	public void touchUp(InputEvent event, float x, float y, int pointer,
+			int button) {
+		if (horizontal)
+			nave.velocidad.x = 0;
+		else
+			nave.velocidad.y = 0;
 	}
-	
+
 }
