@@ -158,9 +158,9 @@ public class GameplayScreen extends AbstractScreen {
 
 	/** Ganar partida */
 	private void win() {
-		// Implementar mejoras como premio.
-		//addEscudo();
-		limpiarBalasNave();
+
+		nave.limpiarBullets();
+		puntuacion.nivel++;
 		// Creamos los aliens.
 		crearAliens();
 	}
@@ -183,10 +183,10 @@ public class GameplayScreen extends AbstractScreen {
 					// borramos todas sus balas del stage
 					alien.limpiarBullets();
 					// Eliminamos los actores alien/bala de las listas
-					itAliens.remove();					
+					itAliens.remove();
 					AlienActor.nAliensVivos--;// Le restamos 1 al número de
-												// Aliens vivos					
-					try {	
+												// Aliens vivos
+					try {
 						itBullets.remove();
 					} catch (java.lang.IllegalStateException e) {
 						// Ocurre cuando dos balas colisionan al mismo tiempo en
@@ -212,9 +212,9 @@ public class GameplayScreen extends AbstractScreen {
 				BulletActor bullet = itBullets.next();
 				// Se produce una colisión entre una bala_alien/nave
 				if (bullet.collision(nave)) {
-					
+
 					System.out.println("bala_alien/nave");
-					
+
 					stage.getRoot().removeActor(bullet);
 					itBullets.remove();
 
@@ -231,7 +231,7 @@ public class GameplayScreen extends AbstractScreen {
 						// Se produce una colisión entre bala_alien/escudo
 						if (bullet.collision(escudo)) {
 
-							stage.getRoot().removeActor(bullet);							
+							stage.getRoot().removeActor(bullet);
 							try {
 								itBullets.remove();
 							} catch (java.lang.IllegalStateException e) {
@@ -248,23 +248,21 @@ public class GameplayScreen extends AbstractScreen {
 	}
 
 	/** Añadimos un escudo a nuestra lista */
-	/*private void addEscudo() {
-		EscudoActor escudo = new EscudoActor(stage);
-		float x = 50 + 2 * 128;
-		float y = 110;
-		escudo.setPosition(x, y);
-		escudos.add(escudo);
-	}*/
+	/*
+	 * private void addEscudo() { EscudoActor escudo = new EscudoActor(stage);
+	 * float x = 50 + 2 * 128; float y = 110; escudo.setPosition(x, y);
+	 * escudos.add(escudo); }
+	 */
 
 	/** Creamos los escudos */
 	private void crearEscudos() {
 		escudos = new ArrayList<EscudoActor>();
-		//int numEscudos = EscudoActor.NUM_ESCUDOS;
+		// int numEscudos = EscudoActor.NUM_ESCUDOS;
 		int numEscudos = 4;
 		for (int i = 0; i < numEscudos; i++) {
 			float x = 50 + i * 128;
 			float y = 110;
-			EscudoActor escudo = new EscudoActor(stage);			
+			EscudoActor escudo = new EscudoActor(stage);
 			escudo.setPosition(x, y);
 			escudos.add(escudo);
 		}
@@ -287,19 +285,7 @@ public class GameplayScreen extends AbstractScreen {
 			}
 		}
 	}
-	
-	/** Limpiar todas las balas de la nave*/
-	private void limpiarBalasNave(){
-		Iterator<BulletActor> itBullets = nave.getBullets().iterator();
-		while(itBullets.hasNext()){
-			BulletActor bullet = itBullets.next();
-			//Eliminamos las balas del stage
-			stage.getRoot().removeActor(bullet);
-		}
-		//Limpiamos la lista de balas de la nave
-		nave.getBullets().clear();		
-	}
-	
+
 	@Override
 	public void hide() {
 		Gdx.input.setInputProcessor(null);

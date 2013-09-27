@@ -51,7 +51,8 @@ public class AlienChase extends Game {
 		// Cargamos todos los elementos externos que usará el juego.
 		MANAGER.load("cargando.png", Texture.class);
 		MANAGER.load("alien.gif", Texture.class);
-		MANAGER.load("bala.png", Texture.class);
+		MANAGER.load("balaNave.png", Texture.class);
+		MANAGER.load("balaAlien.png", Texture.class);
 		MANAGER.load("cohete.png", Texture.class);
 		MANAGER.load("defensa.png", Texture.class);
 		MANAGER.load("muro.png", Texture.class);

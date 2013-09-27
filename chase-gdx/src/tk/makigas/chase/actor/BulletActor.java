@@ -34,28 +34,24 @@ public class BulletActor extends CuerpoActor {
 
 	private DisparadorActor disparador;
 
-	private BulletActor(Stage stage) {
-		super(stage);
-		stage.addActor(this);
-		texture = new TextureRegion(AlienChase.MANAGER.get("bala.png",
+	private BulletActor(Stage stage,DisparadorActor disparador) {
+		super(stage);	
+		this.disparador = disparador;
+		setX(disparador.getX());
+		setY(disparador.getY());
+		texture = new TextureRegion(AlienChase.MANAGER.get(disparador.bala+".png",
 				Texture.class), 16, 16);
 		setSize(texture.getRegionWidth(), texture.getRegionHeight());
 	}
 
 	public BulletActor(Stage stage, DisparadorActor disparador, int yv) {
-		this(stage);
-		this.disparador = disparador;
-		setX(disparador.getX());
-		setY(disparador.getY());
+		this(stage,disparador);
 		velocidad.y = yv;
 		velocidad.x = 0;
 	}
 
 	public BulletActor(Stage stage, DisparadorActor disparador, int yv, int xv) {
-		this(stage);
-		this.disparador = disparador;
-		setX(disparador.getX());
-		setY(disparador.getY());
+		this(stage,disparador);
 		velocidad.y = yv;
 		velocidad.x = xv;
 	}

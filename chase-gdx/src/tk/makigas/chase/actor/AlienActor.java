@@ -46,7 +46,6 @@ public class AlienActor extends DisparadorActor {
 
 	public AlienActor(Stage stage) {
 		super(stage);
-		stage.addActor(this);
 		texture = new TextureRegion(AlienChase.MANAGER.get("alien.gif",
 				Texture.class), 43, 29);
 		setSize(texture.getRegionWidth(), texture.getRegionHeight());
@@ -54,6 +53,7 @@ public class AlienActor extends DisparadorActor {
 		velocidad.x = MOVIMIENTO_X;
 		velocidad.y = 0;
 		nAliensVivos++;
+		bala = "balaAlien";
 	}
 
 	@Override
@@ -78,7 +78,6 @@ public class AlienActor extends DisparadorActor {
 		if (random(0, nAliensVivos * 15) == 4) {
 			disparar();
 		}
-
 	}
 
 	@Override
@@ -86,12 +85,13 @@ public class AlienActor extends DisparadorActor {
 
 		BulletActor bullet;
 		int r = random(0, 2);
-		if (r == 0)
+		if (r == 0)// Dirección: abajo-izquierda
 			bullet = new BulletActor(stage, this, -120, -50);
-		else if (r == 1)
+		else if (r == 1) // Dirección: abajo-recto
 			bullet = new BulletActor(stage, this, -120);
-		else
+		else // Dirección: abajo-derecha
 			bullet = new BulletActor(stage, this, -120, 50);
+		
 		float x = getX() - 16 + getWidth() / 2;
 		float y = getY() + getHeight() - 10;
 		bullet.setPosition(x, y);

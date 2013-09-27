@@ -36,11 +36,11 @@ public class NaveActor extends DisparadorActor implements HealthActor {
 
 	public NaveActor(Stage stage) {
 		super(stage);
-		stage.addActor(this);
 		texture = new TextureRegion(AlienChase.MANAGER.get("cohete.png",
 				Texture.class), 79, 79);
 		setSize(texture.getRegionWidth(), texture.getRegionHeight());
 		health = 1;
+		bala = "balaNave";
 	}
 
 	private float timer = 0;
@@ -77,7 +77,7 @@ public class NaveActor extends DisparadorActor implements HealthActor {
 	@Override
 	public void disparar() {
 		BulletActor bullet = new BulletActor(stage, this, 250);
-		float x = getX() - 16 + getWidth() / 2;
+		float x = getX() - 8 + getWidth() / 2;
 		float y = getY() + getHeight() - 10;
 		
 		bullet.setPosition(x, y);

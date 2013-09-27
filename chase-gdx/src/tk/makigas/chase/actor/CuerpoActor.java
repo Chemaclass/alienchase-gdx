@@ -27,6 +27,7 @@ public abstract class CuerpoActor extends Actor implements HealthActor {
 	
 	public CuerpoActor(Stage stage){
 		this.stage = stage;
+		stage.addActor(this);
 	}
 	
 	protected Rectangle getBounds(){

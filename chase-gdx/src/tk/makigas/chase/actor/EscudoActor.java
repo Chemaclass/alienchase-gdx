@@ -39,8 +39,6 @@ public class EscudoActor extends CuerpoActor {
 
 	public EscudoActor(Stage stage) {
 		super(stage);
-		stage.addActor(this);
-		this.stage = stage;
 		health = 1;
 		texture = new TextureRegion(AlienChase.MANAGER.get("muro.png",
 				Texture.class), 0, 0, 32, 32);
