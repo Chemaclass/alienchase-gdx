@@ -158,8 +158,9 @@ public class GameplayScreen extends AbstractScreen {
 
 	/** Ganar partida */
 	private void win() {
-		// Añadimos un escudo de defensa al juego como premio.
-		addEscudo();
+		// Implementar mejoras como premio.
+		//addEscudo();
+		limpiarBalasNave();
 		// Creamos los aliens.
 		crearAliens();
 	}
@@ -228,7 +229,7 @@ public class GameplayScreen extends AbstractScreen {
 						// Se produce una colisión entre bala_alien/escudo
 						if (bullet.collision(escudo)) {
 
-							stage.getRoot().removeActor(bullet);
+							stage.getRoot().removeActor(bullet);							
 							try {
 								itBullets.remove();
 							} catch (java.lang.IllegalStateException e) {
@@ -236,8 +237,7 @@ public class GameplayScreen extends AbstractScreen {
 								// tiempo en un mismo alien
 								System.err.println("Dos balas colisionaron al "
 										+ "mismo tiempo en un escudo!");
-							}
-							escudo.sumHealth(-0.3f);
+							}							
 						}
 					}
 				}
@@ -246,13 +246,13 @@ public class GameplayScreen extends AbstractScreen {
 	}
 
 	/** Añadimos un escudo a nuestra lista */
-	private void addEscudo() {
+	/*private void addEscudo() {
 		EscudoActor escudo = new EscudoActor(stage);
 		float x = 50 + 2 * 128;
 		float y = 110;
 		escudo.setPosition(x, y);
 		escudos.add(escudo);
-	}
+	}*/
 
 	/** Creamos los escudos */
 	private void crearEscudos() {
@@ -285,7 +285,19 @@ public class GameplayScreen extends AbstractScreen {
 			}
 		}
 	}
-
+	
+	/** Limpiar todas las balas de la nave*/
+	private void limpiarBalasNave(){
+		Iterator<BulletActor> itBullets = nave.getBullets().iterator();
+		while(itBullets.hasNext()){
+			BulletActor bullet = itBullets.next();
+			//Eliminamos las balas del stage
+			stage.getRoot().removeActor(bullet);
+		}
+		//Limpiamos la lista de balas de la nave
+		nave.getBullets().clear();		
+	}
+	
 	@Override
 	public void hide() {
 		Gdx.input.setInputProcessor(null);

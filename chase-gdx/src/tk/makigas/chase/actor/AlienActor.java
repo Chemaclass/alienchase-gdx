@@ -36,12 +36,12 @@ public class AlienActor extends DisparadorActor {
 	/** Número de aliens que tendremos */
 	public static final int NUM_COLUM = 10;
 	public static final int NUM_FILAS = 3;
-	
-	/** Velocidad del movimiento*/ 
+
+	/** Velocidad del movimiento */
 	private static final int MOVIMIENTO_X = 5;
 	private static final int MOVIMIENTO_Y = 20;
-	
-	/** Número de aliens vivos*/
+
+	/** Número de aliens vivos */
 	public static int nAliensVivos = 0;
 
 	public AlienActor(Stage stage) {
@@ -50,8 +50,7 @@ public class AlienActor extends DisparadorActor {
 		texture = new TextureRegion(AlienChase.MANAGER.get("alien.gif",
 				Texture.class), 43, 29);
 		setSize(texture.getRegionWidth(), texture.getRegionHeight());
-		
-		
+
 		velocidad.x = MOVIMIENTO_X;
 		velocidad.y = 0;
 		nAliensVivos++;
@@ -76,18 +75,26 @@ public class AlienActor extends DisparadorActor {
 		}
 
 		// De forma aleatoria disparará
-		if (random(0, nAliensVivos * 15) == 4){
+		if (random(0, nAliensVivos * 15) == 4) {
 			disparar();
 		}
-				
-	}	
+
+	}
 
 	@Override
 	public void disparar() {
-		BulletActor bullet = new BulletActor(stage, this, -120);
+
+		BulletActor bullet;
+		int r = random(0, 2);
+		if (r == 0)
+			bullet = new BulletActor(stage, this, -120, -50);
+		else if (r == 1)
+			bullet = new BulletActor(stage, this, -120);
+		else
+			bullet = new BulletActor(stage, this, -120, 50);
 		float x = getX() - 16 + getWidth() / 2;
 		float y = getY() + getHeight() - 10;
-		bullet.setPosition(x, y);	
+		bullet.setPosition(x, y);
 		bullets.add(bullet);
 	}
 
@@ -96,5 +103,5 @@ public class AlienActor extends DisparadorActor {
 		batch.draw(texture, getX(), getY(), getOriginX(), getOriginY(),
 				getWidth(), getHeight(), getScaleX(), getScaleY(),
 				getRotation());
-	}
+	}	
 }

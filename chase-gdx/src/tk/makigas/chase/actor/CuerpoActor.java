@@ -11,7 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
  * @author chema
  *
  */
-public abstract class CuerpoActor extends Actor {
+public abstract class CuerpoActor extends Actor implements HealthActor {
 
 	/** Imagen */
 	protected TextureRegion texture;
@@ -20,7 +20,7 @@ public abstract class CuerpoActor extends Actor {
 	protected Stage stage;
 	
 	/** Vida */
-	protected float health;
+	protected float health = 1;
 
 	/** Velocidad. */
 	public Vector2 velocidad = new Vector2(0, 0);
@@ -31,5 +31,29 @@ public abstract class CuerpoActor extends Actor {
 	
 	protected Rectangle getBounds(){
 		return new Rectangle(getX(),getY(),getWidth(),getHeight());
+	}
+	
+	/**
+	 * Obtiene la vida actual de la entidad.
+	 * @return vida actual.
+	 */
+	public float getHealth(){
+		return health;		
+	}
+	
+	/**
+	 * Cambia la vida actual.
+	 * @param health nuevo valor de la vida.
+	 */
+	public void setHealth(float health){
+		this.health = health;
+	}
+	
+	/**
+	 * Suma (o resta) vida a la nave.
+	 * @param sum cantidad de vida sumada o restada.
+	 */
+	public void sumHealth(float sum){
+		health += sum;
 	}
 }

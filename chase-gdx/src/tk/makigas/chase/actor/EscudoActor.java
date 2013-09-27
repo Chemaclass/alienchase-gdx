@@ -30,49 +30,23 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
  * @author danirod
  * @author chema
  */
-public class EscudoActor extends CuerpoActor implements HealthActor {
+public class EscudoActor extends CuerpoActor {
 
 	/** Número de escudos que tendremos inicialmente */
 	public static final int NUM_ESCUDOS = 3;
 
 	private static final int MOVIMIENTO_X = 2;
 
-	private int xv;
-	private Stage stage;
-	private float health;
-
 	public EscudoActor(Stage stage) {
 		super(stage);
 		stage.addActor(this);
-		this.stage = stage;		
+		this.stage = stage;
 		health = 1;
 		texture = new TextureRegion(AlienChase.MANAGER.get("muro.png",
-				Texture.class), 0, 0, 64, 32);
+				Texture.class), 0, 0, 32, 32);
 		setSize(texture.getRegionWidth(), texture.getRegionHeight());		
-		xv = MOVIMIENTO_X;
-	}
-
-	public float getHealth() {
-		return health;
-	}
-
-	public void setHealth(float health) {
-		this.health = health;
-		checkHealth();
-	}
-
-	public void sumHealth(float sum) {
-		health += sum;
-		checkHealth();
-	}
-
-	private void checkHealth() {
-		if (health > 1)
-			health = 1;
-		if(health < 0 ){
-			stage.getRoot().removeActor(this);
-			remove();
-		}
+		velocidad.x = MOVIMIENTO_X;
+		velocidad.y = 0;
 	}
 
 	private float timer = 0;
@@ -86,13 +60,13 @@ public class EscudoActor extends CuerpoActor implements HealthActor {
 			timer = 0;
 		}
 
-		translate(xv, 0);
+		translate(velocidad.x, velocidad.y);
 
 		if (getX() < 0) {
-			xv = MOVIMIENTO_X;
+			velocidad.x = MOVIMIENTO_X;
 
 		} else if (getRight() > getStage().getWidth()) {
-			xv = -MOVIMIENTO_X;
+			velocidad.x = -MOVIMIENTO_X;
 		}		
 	}
 
