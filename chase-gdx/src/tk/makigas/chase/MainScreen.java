@@ -107,7 +107,8 @@ public class MainScreen extends AbstractScreen {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y,
 					int pointer, int button) {
-				checkSound();
+				AlienChase.MANAGER.get("shoot.ogg", Sound.class).play();
+				GameplayScreen.setSound(true);
 				imgSonidoOff.setVisible(false);
 				return true;
 			}
@@ -116,7 +117,7 @@ public class MainScreen extends AbstractScreen {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y,
 					int pointer, int button) {
-				checkSound();
+				GameplayScreen.setSound(false);
 				imgSonidoOff.setVisible(true);
 				return true;
 			}
@@ -125,15 +126,6 @@ public class MainScreen extends AbstractScreen {
 		imgSonidoOn.setBounds(210, 65, 140, 30);
 		stage.addActor(imgSonidoOn);
 		stage.addActor(imgSonidoOff);		
-	}
-
-	/** Cambiar el sonido a su inversa. */
-	private void checkSound(){
-		boolean flag = GameplayScreen.isSound();
-		if(!flag){					
-			AlienChase.MANAGER.get("shoot.ogg", Sound.class).play();
-		}
-		GameplayScreen.setSound(flag?false:true);
 	}
 	
 	@Override
