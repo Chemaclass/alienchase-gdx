@@ -74,4 +74,25 @@ public class InputDesktopListener extends InputListener {
 		nave.disparar();
 		return true;
 	}
+
+	@Override
+	public boolean mouseMoved(InputEvent event, float x, float y) {
+		nave.setX(nave.getX() - (nave.getWidth() / 2) + x);
+		nave.setY(nave.getY() - (nave.getHeight() / 2) + y);
+		return true;
+	}
+
+	@Override
+	public boolean touchDown(InputEvent event, float x, float y, int pointer,
+			int button) {
+		nave.disparar();
+		return true;
+	}
+
+	@Override
+	public boolean scrolled(InputEvent event, float x, float y, int amount) {
+		nave.disparar();
+		return true;
+	}
+
 }
