@@ -42,6 +42,7 @@ public class EscudoActor extends CuerpoActor implements HealthActor {
 	private float health;
 
 	public EscudoActor(Stage stage) {
+		super(stage);
 		stage.addActor(this);
 		this.stage = stage;		
 		health = 1;

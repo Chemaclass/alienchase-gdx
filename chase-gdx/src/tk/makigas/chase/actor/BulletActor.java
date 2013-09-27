@@ -22,6 +22,7 @@ import tk.makigas.chase.AlienChase;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 
 /**
  * Bala.
@@ -30,42 +31,49 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
  * @author chema
  */
 public class BulletActor extends CuerpoActor {
-	
-	private float yv, xv;
 
-	private BulletActor() {
+	private DisparadorActor disparador;
+
+	private BulletActor(Stage stage) {
+		super(stage);
+		stage.addActor(this);
 		texture = new TextureRegion(AlienChase.MANAGER.get("bala.png",
 				Texture.class), 16, 16);
 		setSize(texture.getRegionWidth(), texture.getRegionHeight());
 	}
 
-	public BulletActor(DisparadorActor disparador, int yv) {
-		this();
+	public BulletActor(Stage stage, DisparadorActor disparador, int yv) {
+		this(stage);
+		this.disparador = disparador;
 		setX(disparador.getX());
 		setY(disparador.getY());
-		this.yv = yv;
-		this.xv = 0;
+		velocidad.y = yv;
+		velocidad.x = 0;
 	}
 
-	public BulletActor(DisparadorActor disparador, int yv, int xv) {
-		this();
+	public BulletActor(Stage stage, DisparadorActor disparador, int yv, int xv) {
+		this(stage);
+		this.disparador = disparador;
 		setX(disparador.getX());
 		setY(disparador.getY());
-		this.yv = yv;
-		this.xv = xv;
+		velocidad.y = yv;
+		velocidad.x = xv;
 	}
-	
+
 	@Override
 	public void act(float delta) {
 
-		translate(xv * delta, yv * delta);
+		translate(velocidad.x * delta, velocidad.y * delta);
 
 		// Si la bala sale por la izquierda o derecha o arriba o abajo
-		if (getX() < 0 || getRight() > getStage().getWidth() 
-		 || getY() < 0 || getTop() > getStage().getHeight()) {			
-			remove();
+		if (getX() < 0 || getRight() > getStage().getWidth() || getY() < 0
+				|| getTop() > getStage().getHeight()) {
+			stage.getRoot().removeActor(this); // Eliminamos la bala del stage
+			disparador.getBullets().remove(this);// Eliminamos la bala de la
+													// lista de su disparador
+			remove(); // eliminamos la bala
 		}
-	}	
+	}
 
 	@Override
 	public void draw(SpriteBatch batch, float parentAlpha) {
@@ -73,9 +81,9 @@ public class BulletActor extends CuerpoActor {
 				getWidth(), getHeight(), getScaleX(), getScaleY(),
 				getRotation());
 	}
-	
-	/** Devuelve verdadero si se produce una colisión entre la bala y el actor*/
-	public boolean collision(CuerpoActor actor){
+
+	/** Devuelve verdadero si se produce una colisión entre la bala y el actor */
+	public boolean collision(CuerpoActor actor) {
 		return getBounds().overlaps(actor.getBounds());
 	}
 }

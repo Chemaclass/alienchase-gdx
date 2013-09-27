@@ -24,7 +24,6 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 /**
@@ -35,14 +34,9 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
  */
 public class NaveActor extends DisparadorActor implements HealthActor {
 
-	
-	private float health;
-
-	/** Velocidad que lleva la nave. */
-	public Vector2 velocidad = new Vector2(0, 0);
-
 	public NaveActor(Stage stage) {
 		super(stage);
+		stage.addActor(this);
 		texture = new TextureRegion(AlienChase.MANAGER.get("cohete.png",
 				Texture.class), 79, 79);
 		setSize(texture.getRegionWidth(), texture.getRegionHeight());
@@ -82,9 +76,10 @@ public class NaveActor extends DisparadorActor implements HealthActor {
 
 	@Override
 	public void disparar() {
-		BulletActor bullet = new BulletActor(this, 250);
+		BulletActor bullet = new BulletActor(stage, this, 250);
 		float x = getX() - 16 + getWidth() / 2;
 		float y = getY() + getHeight() - 10;
+		
 		bullet.setPosition(x, y);
 		stage.addActor(bullet);		
 		

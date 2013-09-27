@@ -11,12 +11,10 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
  */
 public abstract class DisparadorActor extends CuerpoActor {
 
-	protected Stage stage;
 	protected final List<BulletActor> bullets = new LinkedList<BulletActor>();
 
 	public DisparadorActor(Stage stage) {
-		this.stage = stage;
-		stage.addActor(this);
+		super(stage);
 	}
 
 	public abstract void disparar();

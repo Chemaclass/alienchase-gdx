@@ -23,7 +23,6 @@ import static tk.makigas.chase.AlienChase.random;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 /**
@@ -34,39 +33,40 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
  */
 public class AlienActor extends DisparadorActor {
 
-	/* Número de aliens que tendremos */
+	/** Número de aliens que tendremos */
 	public static final int NUM_COLUM = 10;
 	public static final int NUM_FILAS = 3;
-
+	
+	/** Velocidad del movimiento*/ 
 	private static final int MOVIMIENTO_X = 5;
 	private static final int MOVIMIENTO_Y = 20;
-	private TextureRegion texture;
-	public Rectangle bb;
-	private int xv, yv;
 	
+	/** Número de aliens vivos*/
 	public static int nAliensVivos = 0;
 
 	public AlienActor(Stage stage) {
 		super(stage);
+		stage.addActor(this);
 		texture = new TextureRegion(AlienChase.MANAGER.get("alien.gif",
 				Texture.class), 43, 29);
 		setSize(texture.getRegionWidth(), texture.getRegionHeight());
-		bb = new Rectangle(getX(), getY(), getWidth(), getHeight());
-		xv = MOVIMIENTO_X;
-		yv = 0;
+		
+		
+		velocidad.x = MOVIMIENTO_X;
+		velocidad.y = 0;
 		nAliensVivos++;
 	}
 
 	@Override
 	public void act(float delta) {
 
-		translate(xv, yv);
+		translate(velocidad.x, velocidad.y);
 
 		if (getX() < 0) {
-			xv = MOVIMIENTO_X;
+			velocidad.x = MOVIMIENTO_X;
 			translate(0, -MOVIMIENTO_Y);
 		} else if (getRight() > getStage().getWidth()) {
-			xv = -MOVIMIENTO_X;
+			velocidad.x = -MOVIMIENTO_X;
 			translate(0, -MOVIMIENTO_Y);
 		}
 
@@ -74,11 +74,6 @@ public class AlienActor extends DisparadorActor {
 			translate(0, stage.getHeight());
 			// GAMEOVER
 		}
-
-		bb.x = getX();
-		bb.y = getY();
-		bb.width = getWidth();
-		bb.height = getHeight();
 
 		// De forma aleatoria disparará
 		if (random(0, nAliensVivos * 15) == 4){
@@ -89,11 +84,10 @@ public class AlienActor extends DisparadorActor {
 
 	@Override
 	public void disparar() {
-		BulletActor bullet = new BulletActor(this, -120);
+		BulletActor bullet = new BulletActor(stage, this, -120);
 		float x = getX() - 16 + getWidth() / 2;
 		float y = getY() + getHeight() - 10;
-		bullet.setPosition(x, y);
-		stage.addActor(bullet);		
+		bullet.setPosition(x, y);	
 		bullets.add(bullet);
 	}
 
