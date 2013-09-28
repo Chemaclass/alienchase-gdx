@@ -44,7 +44,7 @@ public abstract class DisparadorActor extends CuerpoActor {
 
 	/** Disparar. */
 	public abstract void disparar();
-
+	
 	/** Elimina todas las balas liberando así todo su espacio. */
 	public void limpiarBullets(){
 		Iterator<BulletActor> itBullets = bullets.iterator();

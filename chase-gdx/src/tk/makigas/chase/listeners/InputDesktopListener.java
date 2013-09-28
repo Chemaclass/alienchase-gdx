@@ -21,6 +21,7 @@ package tk.makigas.chase.listeners;
 import tk.makigas.chase.GameplayScreen;
 import tk.makigas.chase.actor.NaveActor;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -30,7 +31,7 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
  * 
  * @author danirod
  * @author chemaclass
- *
+ * 
  */
 public class InputDesktopListener extends InputListener {
 
@@ -78,17 +79,18 @@ public class InputDesktopListener extends InputListener {
 
 	@Override
 	public boolean keyTyped(InputEvent event, char character) {
-		if(GameplayScreen.getEstado() == GameplayScreen.State.RUNNING
+		if (GameplayScreen.getEstado() == GameplayScreen.State.RUNNING
 				&& character == 'p' || character == 'P')
 			GameplayScreen.pausar();
-		else if(GameplayScreen.getEstado() == GameplayScreen.State.PAUSED
-				&& character == 'p' || character == 'P'){
+		else if (GameplayScreen.getEstado() == GameplayScreen.State.PAUSED
+				&& character == 'p' || character == 'P') {
 			GameplayScreen.continuar();
 		}
-			
-		if (character != ' ')
-			return false;
-		nave.disparar();
+
+		if (character == ' ')
+			nave.disparar();
+		if (character == 'r' || character == 'R' || character == '\r')
+			nave.recargar();
 		return true;
 	}
 

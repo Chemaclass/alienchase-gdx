@@ -116,7 +116,7 @@ public class GameplayScreen extends AbstractScreen {
 		vidaNave.setPosition(stage.getWidth() - 150, stage.getHeight() - 20);
 
 		// Creamos la puntuación.
-		puntuacion = new PuntuacionActor(stage, new BitmapFont());
+		puntuacion = new PuntuacionActor(stage, new BitmapFont(), nave);
 		puntuacion.setPosition(10, stage.getHeight() - 10);
 
 		// Creamos los escudos.
@@ -193,13 +193,13 @@ public class GameplayScreen extends AbstractScreen {
 		if (sonidoEfectos)
 			AlienChase.MANAGER.get("sound/siguiente-nivel.mp3", Sound.class)
 					.play();
-		if (puntuacion.getNivel() % 2 == 0) {
-			AlienActor.sumMovimientoX(random(0,10));
-			if (puntuacion.getNivel() % 3 == 0) {
-				AlienActor.setMovimientoX(random(3,8));
-			}
-			System.out.println("AlienActor.movimiento: "+ AlienActor.getMovimientoX());
+		// Incrementamos la velocidad de los aliens en x de manera aleatoria
+		AlienActor.sumMovimientoX(random(0, 6));
+		// Cada 3 niveles estableceremos de nuevo la velocidad en range(3, 8)
+		if (puntuacion.getNivel() % 3 == 0) {
+			AlienActor.setMovimientoX(random(3, 8));
 		}
+
 		nave.limpiarBullets();
 		puntuacion.subirNivel();
 		// Creamos los aliens.
@@ -236,7 +236,7 @@ public class GameplayScreen extends AbstractScreen {
 						// Ocurre cuando dos balas colisionan al mismo tiempo en
 						// un mismo alien
 					}
-					puntuacion.subirPuntuacion();
+					nave.subirPuntuacion();
 				}
 			}
 		}

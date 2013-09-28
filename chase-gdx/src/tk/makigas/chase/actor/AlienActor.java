@@ -45,7 +45,7 @@ public class AlienActor extends DisparadorActor {
 
 	/** Número de aliens vivos */
 	public static int nAliensVivos = 0;
-
+	
 	public AlienActor(Stage stage) {
 		super(stage);
 		texture = new TextureRegion(AlienChase.MANAGER.get("images/alien.gif",

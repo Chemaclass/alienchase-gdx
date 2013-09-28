@@ -35,6 +35,14 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
  */
 public class NaveActor extends DisparadorActor implements HealthActor {
 
+	public static final int MUNICION_PARA_RECARGAR = 5;
+
+	private int municionMax;
+
+	private int municion;
+
+	private int puntuacion;
+
 	public NaveActor(Stage stage) {
 		super(stage);
 		texture = new TextureRegion(AlienChase.MANAGER.get("images/nave.png",
@@ -42,20 +50,23 @@ public class NaveActor extends DisparadorActor implements HealthActor {
 		setSize(texture.getRegionWidth(), texture.getRegionHeight());
 		health = 1;
 		bala = "balaNave";
+		municionMax = 10;
+		municion = municionMax;
+		puntuacion = 0;
 	}
 
 	private float timer = 0;
-	
+
 	@Override
 	public void act(float delta) {
 		super.act(delta);
-		
+
 		timer += delta;
-		if(timer > 1 && health < 1) {
+		if (timer > 1 && health < 1) {
 			health += 0.04f; // Añade un porcentaje de vida a la nave.
 			timer = 0;
 		}
-		
+
 		translate(velocidad.x * delta, velocidad.y * delta);
 
 		if (getX() < 0) {
@@ -77,20 +88,34 @@ public class NaveActor extends DisparadorActor implements HealthActor {
 
 	@Override
 	public void disparar() {
+		// Sólo disparará si la munición es mayor que 0
+		if (municion > 0) {
+			fire();
+		}
+	}
+
+	private void fire() {
+		municion--;
 		BulletActor bullet = new BulletActor(stage, this, 250);
 		float x = getX() - 8 + getWidth() / 2;
 		float y = getY() + getHeight() - 10;
-		
+
 		bullet.setPosition(x, y);
-		stage.addActor(bullet);		
-		
+		stage.addActor(bullet);
+
 		bullets.add(bullet);
 		if (GameplayScreen.isSonidoEfectos())
 			AlienChase.MANAGER.get("sound/shoot.ogg", Sound.class).play();
-	}	
+	}
+
+	/** Recargar la munición a la máxima posible. */
+	public void recargar() {
+		if (municion <= MUNICION_PARA_RECARGAR)
+			municion = municionMax;
+	}
 
 	@Override
-	public void draw(SpriteBatch batch, float parentAlpha) {
+	public void draw(SpriteBatch batch, float parentAlpha) {		
 		batch.draw(texture, getX(), getY(), getOriginX(), getOriginY(),
 				getWidth(), getHeight(), getScaleX(), getScaleY(),
 				getRotation());
@@ -118,6 +143,22 @@ public class NaveActor extends DisparadorActor implements HealthActor {
 			health = 0;
 		if (health > 1)
 			health = 1;
+	}
+
+	public int getMunicion() {
+		return municion;
+	}
+
+	public void subirPuntuacion(int sum) {
+		puntuacion += sum;
+	}
+
+	public void subirPuntuacion() {
+		puntuacion++;
+	}
+
+	public int getPuntuacion() {
+		return puntuacion;
 	}
 
 }
