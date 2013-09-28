@@ -19,30 +19,35 @@
 package tk.makigas.chase;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 
 /**
  * @author danirod
- *
+ * 
  */
 public class LoadingScreen extends AbstractScreen {
 
 	public LoadingScreen(AlienChase game) {
 		super(game);
 	}
-	
+
 	@Override
 	public void render(float delta) {
-		if(AlienChase.MANAGER.update()) {						
+		if (AlienChase.MANAGER.update()) {
+			if (GameplayScreen.isSonidoFondo())
+				AlienChase.MANAGER.get("sound/loop-game.mp3", Sound.class)
+						.loop(0.6f);
 			game.setScreen(game.MAIN);
 		}
-		
+
 		int width, height;
 		width = Gdx.graphics.getWidth();
 		height = Gdx.graphics.getHeight();
-		if(AlienChase.MANAGER.isLoaded("images/cargando.png", Texture.class)) {
+		if (AlienChase.MANAGER.isLoaded("images/cargando.png", Texture.class)) {
 			game.SB.begin();
-			game.SB.draw(AlienChase.MANAGER.get("images/cargando.png", Texture.class), 0, 0, width, height);
+			game.SB.draw(AlienChase.MANAGER.get("images/cargando.png",
+					Texture.class), 0, 0, width, height);
 			game.SB.end();
 		}
 	}
@@ -57,7 +62,7 @@ public class LoadingScreen extends AbstractScreen {
 
 	@Override
 	public void dispose() {
-		
+
 	}
 
 }

@@ -51,10 +51,7 @@ public class MainScreen extends AbstractScreen {
 	}
 
 	@Override
-	public void show() {
-		if (GameplayScreen.isSonidoFondo())
-			AlienChase.MANAGER.get("sound/loop-main.mp3", Sound.class).loop(
-					0.2f);
+	public void show() {		
 
 		stage = new Stage(1024, 512, true, game.SB);
 
@@ -141,7 +138,7 @@ public class MainScreen extends AbstractScreen {
 			}
 		});
 		float x = 380, y = 100, w = 140, h = 30;
-		
+
 		imgEfectosSonidoOff.setBounds(x, y, w, h);
 		imgEfectosSonidoOn.setBounds(x, y, w, h);
 
@@ -164,8 +161,8 @@ public class MainScreen extends AbstractScreen {
 					int pointer, int button) {
 				GameplayScreen.setSonidoFondo(true);
 				imgSonidoFondoOn.setVisible(true);
-				AlienChase.MANAGER.get("sound/loop-main.mp3", Sound.class)
-						.loop(0.2f);
+				AlienChase.MANAGER.get("sound/loop-game.mp3", Sound.class)
+						.loop(0.6f);
 				return true;
 			}
 		});
@@ -175,16 +172,16 @@ public class MainScreen extends AbstractScreen {
 					int pointer, int button) {
 				GameplayScreen.setSonidoFondo(false);
 				imgSonidoFondoOn.setVisible(false);
-				AlienChase.MANAGER.get("sound/loop-main.mp3", Sound.class)
+				AlienChase.MANAGER.get("sound/loop-game.mp3", Sound.class)
 						.stop();
 				return true;
 			}
 		});
 		float x = 180, y = 100, w = 140, h = 30;
-		
+
 		imgSonidoFondoOff.setBounds(x, y, w, h);
 		imgSonidoFondoOn.setBounds(x, y, w, h);
-		
+
 		stage.addActor(imgSonidoFondoOff);
 		stage.addActor(imgSonidoFondoOn);
 		// Jugaremos con la imagen del sonido ON que estará superpuesta
@@ -202,7 +199,7 @@ public class MainScreen extends AbstractScreen {
 
 	@Override
 	public void hide() {
-		AlienChase.MANAGER.get("sound/loop-main.mp3", Sound.class).stop();
+
 	}
 
 	@Override

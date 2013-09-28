@@ -91,8 +91,7 @@ public class GameplayScreen extends AbstractScreen {
 
 	@Override
 	public void show() {
-		if (sonidoFondo){
-			AlienChase.MANAGER.get("sound/loop-game.mp3", Sound.class).loop(0.5f);
+		if (sonidoFondo) {
 			AlienChase.MANAGER.get("sound/corazon.ogg", Sound.class).loop();
 		}
 		// Creamos un nuevo escenario y lo asociamos a la entrada.
@@ -341,8 +340,7 @@ public class GameplayScreen extends AbstractScreen {
 	@Override
 	public void hide() {
 		Gdx.input.setInputProcessor(null);
-		if (sonidoFondo){
-			AlienChase.MANAGER.get("sound/loop-game.mp3", Sound.class).stop();
+		if (sonidoFondo) {
 			AlienChase.MANAGER.get("sound/corazon.ogg", Sound.class).stop();
 		}
 	}

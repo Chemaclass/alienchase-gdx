@@ -80,7 +80,6 @@ public class AlienChase extends Game {
 		MANAGER.load("sound/shoot.ogg", Sound.class);
 		MANAGER.load("sound/corazon.ogg", Sound.class);
 		MANAGER.load("sound/game-over.wav", Sound.class);
-		MANAGER.load("sound/loop-main.mp3", Sound.class);
 		MANAGER.load("sound/loop-game.mp3", Sound.class);
 		MANAGER.load("sound/siguiente-nivel.mp3", Sound.class);
 		
