@@ -40,7 +40,7 @@ public class BarraActor extends Actor {
 
 	public BarraActor(Stage s,HealthActor entidad) {
 		s.addActor(this);
-		barra = AlienChase.MANAGER.get("vida.png", Texture.class);
+		barra = AlienChase.MANAGER.get("images/vida.png", Texture.class);
 		setSize(barra.getWidth(), barra.getHeight());
 		this.entidad = entidad;
 	}

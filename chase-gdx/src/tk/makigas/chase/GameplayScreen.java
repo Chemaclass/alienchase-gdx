@@ -72,7 +72,7 @@ public class GameplayScreen extends AbstractScreen {
 	private List<AlienActor> aliens;
 
 	/** Activar sonido. */
-	private static boolean sound = false;
+	private static boolean soundEffects = false;
 
 	/** Estados en los que se puede encontrar el juego. */
 	public enum State {
@@ -88,7 +88,9 @@ public class GameplayScreen extends AbstractScreen {
 
 	@Override
 	public void show() {
-				
+		
+		AlienChase.MANAGER.get("sound/fondo.ogg",Sound.class).loop();
+		
 		// Creamos un nuevo escenario y lo asociamos a la entrada.
 		int width = Gdx.graphics.getWidth();
 		int height = Gdx.graphics.getHeight();
@@ -96,7 +98,7 @@ public class GameplayScreen extends AbstractScreen {
 		Gdx.input.setInputProcessor(stage);
 
 		// Crear fondo.
-		Image imgFondo = new Image(AlienChase.MANAGER.get("fondo.png",
+		Image imgFondo = new Image(AlienChase.MANAGER.get("images/fondo.png",
 				Texture.class));
 		imgFondo.setFillParent(true);
 		stage.addActor(imgFondo);
@@ -184,7 +186,13 @@ public class GameplayScreen extends AbstractScreen {
 
 	/** Ganar partida */
 	private void win() {
-
+		AlienChase.MANAGER.get("sound/siguienteNivel.ogg",Sound.class).play();
+		if(puntuacion.getNivel() % 2 == 0){
+			AlienActor.sumMovimientoX(5);
+			if(puntuacion.getNivel() % 4 == 0){
+				AlienActor.setMovimientoX(5);
+			}
+		}
 		nave.limpiarBullets();
 		puntuacion.subirNivel();
 		// Creamos los aliens.
@@ -237,14 +245,12 @@ public class GameplayScreen extends AbstractScreen {
 				// Se produce una colisión entre una bala_alien/nave
 				if (bullet.collision(nave)) {
 
-					System.out.println("bala_alien/nave");
-
 					stage.getRoot().removeActor(bullet);
 					itBullets.remove();
 
 					nave.sumHealth(-0.35f);
-					if (sound)
-						AlienChase.MANAGER.get("hit.ogg", Sound.class).play();
+					if (soundEffects)
+						AlienChase.MANAGER.get("sound/hit.ogg", Sound.class).play();
 					if (nave.getHealth() <= 0)
 						game.setScreen(game.GAMEOVER);
 				} else {
@@ -337,11 +343,11 @@ public class GameplayScreen extends AbstractScreen {
 			padShoot.setPosition(stage.getWidth() - 50, 10);
 	}
 
-	public static boolean isSound() {
-		return sound;
+	public static boolean isSoundEffects() {
+		return soundEffects;
 	}
 
-	public static void setSound(boolean sound) {
-		GameplayScreen.sound = sound;
+	public static void setSoundEffects(boolean soundEffects) {
+		GameplayScreen.soundEffects = soundEffects;
 	}
 }

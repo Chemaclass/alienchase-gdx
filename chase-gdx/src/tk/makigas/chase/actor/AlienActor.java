@@ -38,21 +38,21 @@ public class AlienActor extends DisparadorActor {
 	/** Número de aliens que tendremos */
 	public static final int NUM_COLUM = 10;
 	public static final int NUM_FILAS = 3;
-
+	
 	/** Velocidad del movimiento */
-	private static final int MOVIMIENTO_X = 4;
-	private static final int MOVIMIENTO_Y = 24;
+	private static int movimientoX = 4;
+	private static int movimientoY = 24;
 
 	/** Número de aliens vivos */
 	public static int nAliensVivos = 0;
 
 	public AlienActor(Stage stage) {
 		super(stage);
-		texture = new TextureRegion(AlienChase.MANAGER.get("alien.gif",
+		texture = new TextureRegion(AlienChase.MANAGER.get("images/alien.gif",
 				Texture.class), 43, 29);
 		setSize(texture.getRegionWidth(), texture.getRegionHeight());
 
-		velocidad.x = MOVIMIENTO_X;
+		velocidad.x = movimientoX;
 		velocidad.y = 0;
 		nAliensVivos++;
 		bala = "balaAlien";
@@ -64,11 +64,11 @@ public class AlienActor extends DisparadorActor {
 		translate(velocidad.x, velocidad.y);
 
 		if (getX() < 0) {
-			velocidad.x = MOVIMIENTO_X;
-			translate(0, -MOVIMIENTO_Y);
+			velocidad.x = movimientoX;
+			translate(0, -movimientoY);
 		} else if (getRight() > getStage().getWidth()) {
-			velocidad.x = -MOVIMIENTO_X;
-			translate(0, -MOVIMIENTO_Y);
+			velocidad.x = -movimientoX;
+			translate(0, -movimientoY);
 		}
 
 		if (getY() < 0) {
@@ -107,4 +107,16 @@ public class AlienActor extends DisparadorActor {
 				getWidth(), getHeight(), getScaleX(), getScaleY(),
 				getRotation());
 	}	
+	
+	public static void setMovimientoX(int i){
+		movimientoX = i;
+	}
+	
+	public static void setMovimientoY(int i){
+		movimientoY = i;
+	}
+	
+	public static void sumMovimientoX(int i){
+		movimientoX += i;
+	}
 }

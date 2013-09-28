@@ -48,6 +48,10 @@ public class PuntuacionActor extends Actor {
 		font.draw(batch, "NIVEL: " + nivel, getX(), getY());
 		font.draw(batch, "PUNTOS: " + puntuacion, getX(), getY() - 20);
 	}
+	
+	public int getNivel(){
+		return nivel;
+	}
 
 	public void subirNivel() {
 		nivel++;

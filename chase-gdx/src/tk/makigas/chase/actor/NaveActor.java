@@ -37,7 +37,7 @@ public class NaveActor extends DisparadorActor implements HealthActor {
 
 	public NaveActor(Stage stage) {
 		super(stage);
-		texture = new TextureRegion(AlienChase.MANAGER.get("cohete.png",
+		texture = new TextureRegion(AlienChase.MANAGER.get("images/nave.png",
 				Texture.class), 79, 79);
 		setSize(texture.getRegionWidth(), texture.getRegionHeight());
 		health = 1;
@@ -85,8 +85,8 @@ public class NaveActor extends DisparadorActor implements HealthActor {
 		stage.addActor(bullet);		
 		
 		bullets.add(bullet);
-		if (GameplayScreen.isSound())
-			AlienChase.MANAGER.get("shoot.ogg", Sound.class).play();
+		if (GameplayScreen.isSoundEffects())
+			AlienChase.MANAGER.get("sound/shoot.ogg", Sound.class).play();
 	}	
 
 	@Override

@@ -40,7 +40,7 @@ public class BulletActor extends CuerpoActor {
 		this.disparador = disparador;
 		setX(disparador.getX());
 		setY(disparador.getY());
-		texture = new TextureRegion(AlienChase.MANAGER.get(disparador.bala+".png",
+		texture = new TextureRegion(AlienChase.MANAGER.get("images/"+disparador.bala+".png",
 				Texture.class), 16, 16);
 		setSize(texture.getRegionWidth(), texture.getRegionHeight());
 	}

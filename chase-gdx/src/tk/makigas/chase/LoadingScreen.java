@@ -40,9 +40,9 @@ public class LoadingScreen extends AbstractScreen {
 		int width, height;
 		width = Gdx.graphics.getWidth();
 		height = Gdx.graphics.getHeight();
-		if(AlienChase.MANAGER.isLoaded("cargando.png", Texture.class)) {
+		if(AlienChase.MANAGER.isLoaded("images/cargando.png", Texture.class)) {
 			game.SB.begin();
-			game.SB.draw(AlienChase.MANAGER.get("cargando.png", Texture.class), 0, 0, width, height);
+			game.SB.draw(AlienChase.MANAGER.get("images/cargando.png", Texture.class), 0, 0, width, height);
 			game.SB.end();
 		}
 	}

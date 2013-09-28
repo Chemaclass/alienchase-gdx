@@ -51,26 +51,32 @@ public class AlienChase extends Game {
 		SB = new SpriteBatch();
 		
 		// Cargamos todos los elementos externos que usará el juego.
-		MANAGER.load("cargando.png", Texture.class);
-		MANAGER.load("alien.gif", Texture.class);
-		MANAGER.load("balaNave.png", Texture.class);
-		MANAGER.load("balaAlien.png", Texture.class);
-		MANAGER.load("cohete.png", Texture.class);
-		MANAGER.load("defensa.png", Texture.class);
-		MANAGER.load("muro.png", Texture.class);
-		MANAGER.load("fondo.png", Texture.class);
-		MANAGER.load("pad.png", Texture.class);
-		MANAGER.load("vida.png", Texture.class);
-		MANAGER.load("hit.ogg", Sound.class);
-		MANAGER.load("explosion.ogg", Sound.class);
-		MANAGER.load("shoot.ogg", Sound.class);
-		MANAGER.load("gameover.png", Texture.class);
-		MANAGER.load("title.png", Texture.class);
-		MANAGER.load("jugar.png", Texture.class);
-		MANAGER.load("salir.png", Texture.class);
-		MANAGER.load("sonidoOn.png", Texture.class);
-		MANAGER.load("sonidoOff.png", Texture.class);
-		MANAGER.load("txt.png", Texture.class);
+		MANAGER.load("images/cargando.png", Texture.class);
+		MANAGER.load("images/alien.gif", Texture.class);
+		MANAGER.load("images/balaNave.png", Texture.class);
+		MANAGER.load("images/balaAlien.png", Texture.class);
+		MANAGER.load("images/nave.png", Texture.class);
+		MANAGER.load("images/defensa.png", Texture.class);
+		MANAGER.load("images/muro.png", Texture.class);
+		MANAGER.load("images/fondo.png", Texture.class);
+		MANAGER.load("images/pad.png", Texture.class);
+		MANAGER.load("images/vida.png", Texture.class);		
+		MANAGER.load("images/gameover.png", Texture.class);
+		MANAGER.load("images/title.png", Texture.class);
+		MANAGER.load("images/jugar.png", Texture.class);
+		MANAGER.load("images/salir.png", Texture.class);
+		MANAGER.load("images/sonidoOn.png", Texture.class);
+		MANAGER.load("images/sonidoOff.png", Texture.class);
+		MANAGER.load("images/txt.png", Texture.class);
+
+		MANAGER.load("sound/hit.ogg", Sound.class);
+		MANAGER.load("sound/explosion.ogg", Sound.class);
+		MANAGER.load("sound/shoot.ogg", Sound.class);
+		MANAGER.load("sound/corazon.ogg", Sound.class);
+		MANAGER.load("sound/campana.ogg", Sound.class);
+		MANAGER.load("sound/fondo.ogg", Sound.class);
+		MANAGER.load("sound/siguienteNivel.ogg", Sound.class);
+		MANAGER.load("sound/gameOver.ogg", Sound.class);
 		
 		setScreen(LOADING);
 	}

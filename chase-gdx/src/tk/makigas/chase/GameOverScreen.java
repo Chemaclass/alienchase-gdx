@@ -19,6 +19,7 @@
 package tk.makigas.chase;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 
 /**
@@ -46,7 +47,8 @@ public class GameOverScreen extends AbstractScreen {
 
 	@Override
 	public void show() {
-		gameover = AlienChase.MANAGER.get("gameover.png", Texture.class);
+		AlienChase.MANAGER.get("sound/gameOver.ogg",Sound.class).play();
+		gameover = AlienChase.MANAGER.get("images/gameover.png", Texture.class);
 	}
 
 	@Override
