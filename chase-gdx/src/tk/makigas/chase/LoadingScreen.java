@@ -1,7 +1,8 @@
 /*
- * Alien Chase 2013 Chema Edition -- a remake of Alien Chase 2013 by danirod
- * Copyright (C) 2013 Dani Rodríguez <danirod@outlook.com> Twitter: @danirod93
- * & José María Valera Reales <chemaclass@outlook.es> Twitter: @Chemaclass
+ * Alien Chase 2013 [SURVIVAL HORROR] Chema Edition 
+ * -- a remake of Alien Chase 2013 Chema Edition
+ * Copyright (C) 2013 José María Valera Reales <chemaclass@outlook.es> 
+ * Twitter: @Chemaclass
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
