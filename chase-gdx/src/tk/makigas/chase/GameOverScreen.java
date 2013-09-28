@@ -1,6 +1,7 @@
 /*
- * Alien Chase 2013 -- a remake of Alien Chase 2012 (also developed by me)
- * Copyright (C) 2012, 2013 Dani Rodríguez <danirod@outlook.com>
+ * Alien Chase 2013 Chema Edition -- a remake of Alien Chase 2013 by danirod
+ * Copyright (C) 2013 Dani Rodríguez <danirod@outlook.com> Twitter: @danirod93
+ * & José María Valera Reales <chemaclass@outlook.es> Twitter: @Chemaclass
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +21,10 @@ package tk.makigas.chase;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 
+/**
+ * @author danirod
+ *
+ */
 public class GameOverScreen extends AbstractScreen {
 
 	public GameOverScreen(AlienChase game) {
@@ -46,13 +51,11 @@ public class GameOverScreen extends AbstractScreen {
 
 	@Override
 	public void hide() {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
 		
 	}
 

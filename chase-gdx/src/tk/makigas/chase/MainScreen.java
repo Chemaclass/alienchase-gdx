@@ -1,6 +1,7 @@
 /*
- * Alien Chase 2013 -- a remake of Alien Chase 2012 (also developed by me)
- * Copyright (C) 2012, 2013 Dani Rodríguez <danirod@outlook.com>
+ * Alien Chase 2013 Chema Edition -- a remake of Alien Chase 2013 by danirod
+ * Copyright (C) 2013 Dani Rodríguez <danirod@outlook.com> Twitter: @danirod93
+ * & José María Valera Reales <chemaclass@outlook.es> Twitter: @Chemaclass
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +27,11 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
+/**
+ * @author danirod
+ * @author chemaclass
+ *
+ */
 public class MainScreen extends AbstractScreen {
 
 	private Texture titulo;
@@ -54,13 +60,6 @@ public class MainScreen extends AbstractScreen {
 				Texture.class), 0, 0, 90, 32).getTexture();
 		btnSonidoOn = new TextureRegion(AlienChase.MANAGER.get("sonidoOn.png",
 				Texture.class), 0, 0, 90, 32).getTexture();
-		/*//No sé cómo hacerlo funcionar ¿?
-		CheckBoxStyle checkBoxStyle = new CheckBoxStyle();
-		checkBoxStyle.font = new BitmapFont();
-		checkBoxStyle.checkboxOff = new Image(btnSonidoOff).getDrawable();
-		checkBoxStyle.checkboxOn = new Image(btnSonidoOn).getDrawable();
-		CheckBox cbSound = new CheckBox(" Sound", checkBoxStyle);		
-		stage.addActor(cbSound);*/
 		
 		Image imgFondo = new Image(titulo);
 		imgFondo.setFillParent(true);
@@ -109,7 +108,7 @@ public class MainScreen extends AbstractScreen {
 					int pointer, int button) {
 				AlienChase.MANAGER.get("shoot.ogg", Sound.class).play();
 				GameplayScreen.setSound(true);
-				imgSonidoOff.setVisible(false);
+				imgSonidoOn.setVisible(true);
 				return true;
 			}
 		});
@@ -118,14 +117,19 @@ public class MainScreen extends AbstractScreen {
 			public boolean touchDown(InputEvent event, float x, float y,
 					int pointer, int button) {
 				GameplayScreen.setSound(false);
-				imgSonidoOff.setVisible(true);
+				imgSonidoOn.setVisible(false);
 				return true;
 			}
 		});
 		imgSonidoOff.setBounds(210, 65, 140, 30);
 		imgSonidoOn.setBounds(210, 65, 140, 30);
+		stage.addActor(imgSonidoOff);
 		stage.addActor(imgSonidoOn);
-		stage.addActor(imgSonidoOff);		
+		// Jugaremos con la imagen del sonido ON que estará superpuesta
+		// a la imagen del sonido OFF. Mostraremos ON cuando el sonido
+		// sea true, y cuando sea OFF pondremos la imagen ON a visible=false
+		// para que se vea la imagen que tiene detrás, que es la de OFF.
+		imgSonidoOn.setVisible(GameplayScreen.isSound());
 	}
 	
 	@Override

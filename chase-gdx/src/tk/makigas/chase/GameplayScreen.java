@@ -1,6 +1,7 @@
 /*
- * Alien Chase 2013 -- a remake of Alien Chase 2012 (also developed by me)
- * Copyright (C) 2012, 2013 Dani Rodríguez <danirod@outlook.com>
+ * Alien Chase 2013 Chema Edition -- a remake of Alien Chase 2013 by danirod
+ * Copyright (C) 2013 Dani Rodríguez <danirod@outlook.com> Twitter: @danirod93
+ * & José María Valera Reales <chemaclass@outlook.es> Twitter: @Chemaclass
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,7 +46,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
  * Pantalla de juego principal.
  * 
  * @author danirod
- * @author chema
+ * @author chemaclass
  */
 public class GameplayScreen extends AbstractScreen {
 
@@ -87,6 +88,7 @@ public class GameplayScreen extends AbstractScreen {
 
 	@Override
 	public void show() {
+				
 		// Creamos un nuevo escenario y lo asociamos a la entrada.
 		int width = Gdx.graphics.getWidth();
 		int height = Gdx.graphics.getHeight();
