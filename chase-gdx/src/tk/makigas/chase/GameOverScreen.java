@@ -47,7 +47,8 @@ public class GameOverScreen extends AbstractScreen {
 
 	@Override
 	public void show() {
-		AlienChase.MANAGER.get("sound/gameOver.ogg",Sound.class).play();
+		if(GameplayScreen.isSonidoEfectos())
+			AlienChase.MANAGER.get("sound/game-over.wav",Sound.class).play();
 		gameover = AlienChase.MANAGER.get("images/gameover.png", Texture.class);
 	}
 

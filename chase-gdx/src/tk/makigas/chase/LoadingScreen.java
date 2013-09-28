@@ -33,7 +33,7 @@ public class LoadingScreen extends AbstractScreen {
 	
 	@Override
 	public void render(float delta) {
-		if(AlienChase.MANAGER.update()) {
+		if(AlienChase.MANAGER.update()) {						
 			game.setScreen(game.MAIN);
 		}
 		

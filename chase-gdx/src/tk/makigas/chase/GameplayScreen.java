@@ -71,8 +71,11 @@ public class GameplayScreen extends AbstractScreen {
 	/** Lista de aliens. */
 	private List<AlienActor> aliens;
 
-	/** Activar sonido. */
-	private static boolean soundEffects = false;
+	/** Activar sonido de los efectos. */
+	private static boolean sonidoEfectos = false;
+
+	/** Activar sonido del ambiente. */
+	private static boolean sonidoFondo = true;
 
 	/** Estados en los que se puede encontrar el juego. */
 	public enum State {
@@ -88,9 +91,10 @@ public class GameplayScreen extends AbstractScreen {
 
 	@Override
 	public void show() {
-		
-		AlienChase.MANAGER.get("sound/fondo.ogg",Sound.class).loop();
-		
+		if (sonidoFondo){
+			AlienChase.MANAGER.get("sound/loop-game.mp3", Sound.class).loop(0.5f);
+			AlienChase.MANAGER.get("sound/corazon.ogg", Sound.class).loop();
+		}
 		// Creamos un nuevo escenario y lo asociamos a la entrada.
 		int width = Gdx.graphics.getWidth();
 		int height = Gdx.graphics.getHeight();
@@ -177,7 +181,7 @@ public class GameplayScreen extends AbstractScreen {
 			if (aliens.size() <= 0)
 				win();
 		} else if (state.equals(State.PAUSED)) {
-			
+
 		} else if (state.equals(State.LOST)) {
 			game.setScreen(game.GAMEOVER);
 		}
@@ -186,10 +190,12 @@ public class GameplayScreen extends AbstractScreen {
 
 	/** Ganar partida */
 	private void win() {
-		AlienChase.MANAGER.get("sound/siguienteNivel.ogg",Sound.class).play();
-		if(puntuacion.getNivel() % 2 == 0){
+		if (sonidoEfectos)
+			AlienChase.MANAGER.get("sound/siguiente-nivel.mp3", Sound.class)
+					.play();
+		if (puntuacion.getNivel() % 2 == 0) {
 			AlienActor.sumMovimientoX(5);
-			if(puntuacion.getNivel() % 4 == 0){
+			if (puntuacion.getNivel() % 4 == 0) {
 				AlienActor.setMovimientoX(5);
 			}
 		}
@@ -211,6 +217,9 @@ public class GameplayScreen extends AbstractScreen {
 				AlienActor alien = itAliens.next();
 				// Si existe una colisión entre ambos
 				if (bullet.collision(alien)) {
+					if (sonidoEfectos)
+						AlienChase.MANAGER.get("sound/hit-alien.wav",
+								Sound.class).play();
 					// Eliminamos los actores alien/bala del stage
 					stage.getRoot().removeActor(alien);
 					stage.getRoot().removeActor(bullet);
@@ -249,8 +258,9 @@ public class GameplayScreen extends AbstractScreen {
 					itBullets.remove();
 
 					nave.sumHealth(-0.35f);
-					if (soundEffects)
-						AlienChase.MANAGER.get("sound/hit.ogg", Sound.class).play();
+					if (sonidoEfectos)
+						AlienChase.MANAGER.get("sound/hit-nave.ogg",
+								Sound.class).play();
 					if (nave.getHealth() <= 0)
 						game.setScreen(game.GAMEOVER);
 				} else {
@@ -260,6 +270,9 @@ public class GameplayScreen extends AbstractScreen {
 						EscudoActor escudo = itEscudos.next();
 						// Se produce una colisión entre bala_alien/escudo
 						if (bullet.collision(escudo)) {
+							if (sonidoEfectos)
+								AlienChase.MANAGER.get("sound/hit-escudo.wav",
+										Sound.class).play();
 							stage.getRoot().removeActor(bullet);
 							try {
 								itBullets.remove();
@@ -328,6 +341,10 @@ public class GameplayScreen extends AbstractScreen {
 	@Override
 	public void hide() {
 		Gdx.input.setInputProcessor(null);
+		if (sonidoFondo){
+			AlienChase.MANAGER.get("sound/loop-game.mp3", Sound.class).stop();
+			AlienChase.MANAGER.get("sound/corazon.ogg", Sound.class).stop();
+		}
 	}
 
 	@Override
@@ -343,11 +360,19 @@ public class GameplayScreen extends AbstractScreen {
 			padShoot.setPosition(stage.getWidth() - 50, 10);
 	}
 
-	public static boolean isSoundEffects() {
-		return soundEffects;
+	public static boolean isSonidoEfectos() {
+		return sonidoEfectos;
 	}
 
-	public static void setSoundEffects(boolean soundEffects) {
-		GameplayScreen.soundEffects = soundEffects;
+	public static void setSonidoEfectos(boolean soundEffects) {
+		GameplayScreen.sonidoEfectos = soundEffects;
+	}
+
+	public static boolean isSonidoFondo() {
+		return sonidoFondo;
+	}
+
+	public static void setSonidoFondo(boolean soundBack) {
+		GameplayScreen.sonidoFondo = soundBack;
 	}
 }

@@ -31,14 +31,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
  * @author chemaclass
  */
 public class AlienChase extends Game {
-	
+
 	/** Gestor de recursos usado por el juego. */
 	public static final AssetManager MANAGER = new AssetManager();
-	
+
 	public SpriteBatch SB;
-		
+
 	public final AbstractScreen GAMEOVER, GAMEPLAY, LOADING, MAIN;
-		
+
 	public AlienChase() {
 		GAMEOVER = new GameOverScreen(this);
 		GAMEPLAY = new GameplayScreen(this);
@@ -49,7 +49,7 @@ public class AlienChase extends Game {
 	@Override
 	public void create() {
 		SB = new SpriteBatch();
-		
+
 		// Cargamos todos los elementos externos que usará el juego.
 		MANAGER.load("images/cargando.png", Texture.class);
 		MANAGER.load("images/alien.gif", Texture.class);
@@ -60,38 +60,45 @@ public class AlienChase extends Game {
 		MANAGER.load("images/muro.png", Texture.class);
 		MANAGER.load("images/fondo.png", Texture.class);
 		MANAGER.load("images/pad.png", Texture.class);
-		MANAGER.load("images/vida.png", Texture.class);		
+		MANAGER.load("images/vida.png", Texture.class);
 		MANAGER.load("images/gameover.png", Texture.class);
 		MANAGER.load("images/title.png", Texture.class);
 		MANAGER.load("images/jugar.png", Texture.class);
 		MANAGER.load("images/salir.png", Texture.class);
-		MANAGER.load("images/sonidoOn.png", Texture.class);
-		MANAGER.load("images/sonidoOff.png", Texture.class);
+		
+		MANAGER.load("images/efectosOn.png", Texture.class);
+		MANAGER.load("images/efectosOff.png", Texture.class);
+		MANAGER.load("images/fondoOn.png", Texture.class);
+		MANAGER.load("images/fondoOff.png", Texture.class);
 		MANAGER.load("images/txt.png", Texture.class);
 
-		MANAGER.load("sound/hit.ogg", Sound.class);
-		MANAGER.load("sound/explosion.ogg", Sound.class);
+		
+		MANAGER.load("sound/hit-nave.ogg", Sound.class);
+		MANAGER.load("sound/hit-escudo.wav", Sound.class);
+		MANAGER.load("sound/hit-alien.wav", Sound.class);
+		
 		MANAGER.load("sound/shoot.ogg", Sound.class);
 		MANAGER.load("sound/corazon.ogg", Sound.class);
-		MANAGER.load("sound/campana.ogg", Sound.class);
-		MANAGER.load("sound/fondo.ogg", Sound.class);
-		MANAGER.load("sound/siguienteNivel.ogg", Sound.class);
-		MANAGER.load("sound/gameOver.ogg", Sound.class);
+		MANAGER.load("sound/game-over.wav", Sound.class);
+		MANAGER.load("sound/loop-main.mp3", Sound.class);
+		MANAGER.load("sound/loop-game.mp3", Sound.class);
+		MANAGER.load("sound/siguiente-nivel.mp3", Sound.class);
 		
+
 		setScreen(LOADING);
 	}
-	
+
 	@Override
 	public void dispose() {
 		super.dispose();
 		MANAGER.dispose();
 		SB.dispose();
 	}
-	
+
 	public static int random(int inf, int sup) {
-        int posibilidades = sup - inf;
-        double a = Math.random() * posibilidades;
-        return (int) Math.round(a) + inf;
-    }
-	
+		int posibilidades = sup - inf;
+		double a = Math.random() * posibilidades;
+		return (int) Math.round(a) + inf;
+	}
+
 }
