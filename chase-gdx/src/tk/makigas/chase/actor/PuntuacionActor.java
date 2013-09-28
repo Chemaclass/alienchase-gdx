@@ -51,7 +51,7 @@ public class PuntuacionActor extends Actor {
 		font.draw(batch, "VIDA: " + Math.round(nave.getHealth()*10), getX(), getY() - 50);
 		font.draw(batch, "MUNICIÓN: " + nave.getMunicion(), getX(), getY() - 70);
 		if(nave.getMunicion() <= NaveActor.MUNICION_PARA_RECARGAR)
-		font.draw(batch, "->¡RECARGA!<-", getX(), getY() - 90);
+		font.draw(batch, "->¡RECARGA (R)!<-", getX(), getY() - 90);
 		
 	}
 	

@@ -18,10 +18,12 @@
  */
 package tk.makigas.chase.listeners;
 
+import java.awt.event.KeyEvent;
+
+import tk.makigas.chase.AlienChase;
 import tk.makigas.chase.GameplayScreen;
 import tk.makigas.chase.actor.NaveActor;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -35,9 +37,11 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
  */
 public class InputDesktopListener extends InputListener {
 
+	private AlienChase game;
 	private NaveActor nave;
 
-	public InputDesktopListener(NaveActor nave) {
+	public InputDesktopListener(AlienChase game, NaveActor nave) {
+		this.game = game;
 		this.nave = nave;
 	}
 
@@ -79,6 +83,7 @@ public class InputDesktopListener extends InputListener {
 
 	@Override
 	public boolean keyTyped(InputEvent event, char character) {
+		// Pausar
 		if (GameplayScreen.getEstado() == GameplayScreen.State.RUNNING
 				&& character == 'p' || character == 'P')
 			GameplayScreen.pausar();
@@ -86,11 +91,16 @@ public class InputDesktopListener extends InputListener {
 				&& character == 'p' || character == 'P') {
 			GameplayScreen.continuar();
 		}
-
+		// Disparar
 		if (character == ' ')
 			nave.disparar();
+		// Recargar
 		if (character == 'r' || character == 'R' || character == '\r')
 			nave.recargar();
+		// Salir
+		if (character == KeyEvent.VK_ESCAPE) {
+			game.setScreen(game.MAIN);
+		}
 		return true;
 	}
 

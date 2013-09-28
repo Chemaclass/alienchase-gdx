@@ -135,7 +135,7 @@ public class GameplayScreen extends AbstractScreen {
 		// que usar tres botones asociados cada uno a algo.
 		if (Gdx.app.getType() == ApplicationType.Desktop) {
 			stage.setKeyboardFocus(nave); // damos foco a nave.
-			nave.addListener(new InputDesktopListener(nave));
+			nave.addListener(new InputDesktopListener(game, nave));
 		} else if (Gdx.app.getType() == ApplicationType.Android) {
 			// Creamos los pads.
 			padArriba = new PadActor(0, 0);
