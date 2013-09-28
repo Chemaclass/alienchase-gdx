@@ -119,4 +119,8 @@ public class AlienActor extends DisparadorActor {
 	public static void sumMovimientoX(int i){
 		movimientoX += i;
 	}
+
+	public static int getMovimientoX() {
+		return movimientoX;
+	}
 }

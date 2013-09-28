@@ -141,7 +141,7 @@ public class MainScreen extends AbstractScreen {
 
 		imgEfectosSonidoOff.setBounds(x, y, w, h);
 		imgEfectosSonidoOn.setBounds(x, y, w, h);
-
+		
 		stage.addActor(imgEfectosSonidoOff);
 		stage.addActor(imgEfectosSonidoOn);
 		// Jugaremos con la imagen del sonido ON que estará superpuesta

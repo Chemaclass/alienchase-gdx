@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import static tk.makigas.chase.AlienChase.random;
 import tk.makigas.chase.actor.AlienActor;
 import tk.makigas.chase.actor.BarraActor;
 import tk.makigas.chase.actor.BulletActor;
@@ -193,10 +194,11 @@ public class GameplayScreen extends AbstractScreen {
 			AlienChase.MANAGER.get("sound/siguiente-nivel.mp3", Sound.class)
 					.play();
 		if (puntuacion.getNivel() % 2 == 0) {
-			AlienActor.sumMovimientoX(5);
-			if (puntuacion.getNivel() % 4 == 0) {
-				AlienActor.setMovimientoX(5);
+			AlienActor.sumMovimientoX(random(0,10));
+			if (puntuacion.getNivel() % 3 == 0) {
+				AlienActor.setMovimientoX(random(3,8));
 			}
+			System.out.println("AlienActor.movimiento: "+ AlienActor.getMovimientoX());
 		}
 		nave.limpiarBullets();
 		puntuacion.subirNivel();
