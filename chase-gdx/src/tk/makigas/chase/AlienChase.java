@@ -37,13 +37,14 @@ public class AlienChase extends Game {
 	
 	public SpriteBatch SB;
 		
-	public final AbstractScreen GAMEOVER, GAMEPLAY, LOADING, MAIN;
+	public final AbstractScreen GAMEOVER, GAMEPLAY, LOADING, MAIN, SCREAMER;
 		
 	public AlienChase() {
 		GAMEOVER = new GameOverScreen(this);
 		GAMEPLAY = new GameplayScreen(this);
 		LOADING = new LoadingScreen(this);
 		MAIN = new MainScreen(this);
+		SCREAMER = new ScreamerScreen(this);
 	}
 
 	@Override
@@ -68,6 +69,8 @@ public class AlienChase extends Game {
 		MANAGER.load("images/sonidoOn.png", Texture.class);
 		MANAGER.load("images/sonidoOff.png", Texture.class);
 		MANAGER.load("images/txt.png", Texture.class);
+		MANAGER.load("images/sangre.png", Texture.class);
+		MANAGER.load("images/screamer.png", Texture.class);
 
 		MANAGER.load("sound/hit.ogg", Sound.class);
 		MANAGER.load("sound/explosion.ogg", Sound.class);
@@ -77,6 +80,7 @@ public class AlienChase extends Game {
 		MANAGER.load("sound/fondo.ogg", Sound.class);
 		MANAGER.load("sound/siguienteNivel.ogg", Sound.class);
 		MANAGER.load("sound/gameOver.ogg", Sound.class);
+		MANAGER.load("sound/scream.wav", Sound.class);
 		
 		setScreen(LOADING);
 	}

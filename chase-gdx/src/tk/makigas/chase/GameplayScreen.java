@@ -176,6 +176,9 @@ public class GameplayScreen extends AbstractScreen {
 			// Revisamos si destruimos a todos los aliens
 			if (aliens.size() <= 0)
 				win();
+			if( puntuacion.getNivel()==3 && aliens.size() <= 4){
+				game.setScreen(game.SCREAMER);
+			}
 		} else if (state.equals(State.PAUSED)) {
 			
 		} else if (state.equals(State.LOST)) {
@@ -190,7 +193,7 @@ public class GameplayScreen extends AbstractScreen {
 		if(puntuacion.getNivel() % 2 == 0){
 			AlienActor.sumMovimientoX(5);
 			if(puntuacion.getNivel() % 4 == 0){
-				AlienActor.setMovimientoX(5);
+				AlienActor.setMovimientoX(6);
 			}
 		}
 		nave.limpiarBullets();
@@ -198,7 +201,7 @@ public class GameplayScreen extends AbstractScreen {
 		// Creamos los aliens.
 		crearAliens();
 	}
-
+	
 	/** Colisiones de los disparos de la nave con los aliens */
 	private void colisionesNaveAliens() {
 		Iterator<BulletActor> itBullets = nave.getBullets().iterator();
