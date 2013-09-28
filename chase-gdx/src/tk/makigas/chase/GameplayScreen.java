@@ -88,9 +88,8 @@ public class GameplayScreen extends AbstractScreen {
 
 	@Override
 	public void show() {
-		
-		AlienChase.MANAGER.get("sound/fondo.ogg",Sound.class).loop();
-		
+		AlienChase.MANAGER.get("sound/fondo.ogg", Sound.class).loop();
+
 		// Creamos un nuevo escenario y lo asociamos a la entrada.
 		int width = Gdx.graphics.getWidth();
 		int height = Gdx.graphics.getHeight();
@@ -122,6 +121,10 @@ public class GameplayScreen extends AbstractScreen {
 		// Preparamos los listeners
 		crearListeners();
 		state = State.RUNNING;
+		
+		// Obtenemos de forma aleatoria el número con el que saltará
+		numNivelScream = AlienChase.random(2, 5);
+		numAlienScream = AlienChase.random(2, 8);
 	}
 
 	/** Creamos los sistemas de entrada/salida */
@@ -146,14 +149,10 @@ public class GameplayScreen extends AbstractScreen {
 			padShoot.setPosition(stage.getWidth() - 50, 10);
 
 			// Añadimos los listeners.
-			padArriba.addListener(new InputAndroidMoveListener(nave, 250f,
-					false));
-			padAbajo.addListener(new InputAndroidMoveListener(nave, -250f,
-					false));
-			padDerecha.addListener(new InputAndroidMoveListener(nave, 250f,
-					true));
-			padIzquierda.addListener(new InputAndroidMoveListener(nave, -250f,
-					true));
+			padArriba.addListener(new InputAndroidMoveListener(nave, 250f, false));
+			padAbajo.addListener(new InputAndroidMoveListener(nave, -250f, false));
+			padDerecha.addListener(new InputAndroidMoveListener(nave, 250f, true));
+			padIzquierda.addListener(new InputAndroidMoveListener(nave, -250f, true));
 			padShoot.addListener(new InputAndroidShootListener(nave));
 
 			// Los añadimos al escenario.
@@ -164,6 +163,11 @@ public class GameplayScreen extends AbstractScreen {
 			stage.addActor(padShoot);
 		}
 	}
+
+	/** Obtener de forma aleatoria el nivel en el que saltará el screamer */
+	private int numNivelScream;
+	/** Obtener el número de aliens en el que saltará el screamer */
+	private int numAlienScream;
 
 	@Override
 	public void render(float delta) {
@@ -176,11 +180,12 @@ public class GameplayScreen extends AbstractScreen {
 			// Revisamos si destruimos a todos los aliens
 			if (aliens.size() <= 0)
 				win();
-			if( puntuacion.getNivel()==3 && aliens.size() <= 4){
+			if (puntuacion.getNivel() == numNivelScream
+					&& aliens.size() <= numAlienScream) {
 				game.setScreen(game.SCREAMER);
 			}
 		} else if (state.equals(State.PAUSED)) {
-			
+
 		} else if (state.equals(State.LOST)) {
 			game.setScreen(game.GAMEOVER);
 		}
@@ -189,10 +194,10 @@ public class GameplayScreen extends AbstractScreen {
 
 	/** Ganar partida */
 	private void win() {
-		AlienChase.MANAGER.get("sound/siguienteNivel.ogg",Sound.class).play();
-		if(puntuacion.getNivel() % 2 == 0){
+		AlienChase.MANAGER.get("sound/siguienteNivel.ogg", Sound.class).play();
+		if (puntuacion.getNivel() % 2 == 0) {
 			AlienActor.sumMovimientoX(5);
-			if(puntuacion.getNivel() % 4 == 0){
+			if (puntuacion.getNivel() % 4 == 0) {
 				AlienActor.setMovimientoX(6);
 			}
 		}
@@ -201,7 +206,7 @@ public class GameplayScreen extends AbstractScreen {
 		// Creamos los aliens.
 		crearAliens();
 	}
-	
+
 	/** Colisiones de los disparos de la nave con los aliens */
 	private void colisionesNaveAliens() {
 		Iterator<BulletActor> itBullets = nave.getBullets().iterator();
@@ -253,7 +258,8 @@ public class GameplayScreen extends AbstractScreen {
 
 					nave.sumHealth(-0.35f);
 					if (soundEffects)
-						AlienChase.MANAGER.get("sound/hit.ogg", Sound.class).play();
+						AlienChase.MANAGER.get("sound/hit.ogg", Sound.class)
+								.play(0.3f);
 					if (nave.getHealth() <= 0)
 						game.setScreen(game.GAMEOVER);
 				} else {
@@ -331,11 +337,13 @@ public class GameplayScreen extends AbstractScreen {
 	@Override
 	public void hide() {
 		Gdx.input.setInputProcessor(null);
+		AlienChase.MANAGER.get("sound/fondo.ogg", Sound.class).stop();
 	}
 
 	@Override
 	public void dispose() {
 		stage.dispose();
+		AlienChase.MANAGER.get("sound/fondo.ogg", Sound.class).stop();
 	}
 
 	@Override

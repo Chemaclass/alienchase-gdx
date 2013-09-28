@@ -3,7 +3,6 @@ package tk.makigas.chase;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class ScreamerScreen extends AbstractScreen {
 
@@ -31,9 +30,8 @@ public class ScreamerScreen extends AbstractScreen {
 	public void show() {
 		timer = 0;
 		AlienChase.MANAGER.get("sound/scream.wav", Sound.class).play();
-		scream = new TextureRegion(AlienChase.MANAGER.get(
-				"images/screamer.png", Texture.class), 1024, 512)
-				.getTexture();
+		scream = AlienChase.MANAGER.get(
+				"images/screamer.png", Texture.class);
 	}
 
 	@Override

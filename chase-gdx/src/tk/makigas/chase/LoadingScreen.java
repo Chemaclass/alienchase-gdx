@@ -19,6 +19,7 @@
 package tk.makigas.chase;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 
 /**
@@ -34,6 +35,7 @@ public class LoadingScreen extends AbstractScreen {
 	@Override
 	public void render(float delta) {
 		if(AlienChase.MANAGER.update()) {
+			AlienChase.MANAGER.get("sound/corazon.ogg",Sound.class).loop();
 			game.setScreen(game.MAIN);
 		}
 		

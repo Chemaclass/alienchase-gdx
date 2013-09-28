@@ -35,10 +35,14 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
  */
 public class NaveActor extends DisparadorActor implements HealthActor {
 
+	private TextureRegion sangre;
+	
 	public NaveActor(Stage stage) {
 		super(stage);
 		texture = new TextureRegion(AlienChase.MANAGER.get("images/nave.png",
 				Texture.class), 79, 79);
+		sangre = new TextureRegion(AlienChase.MANAGER.get("images/sangre.png",
+				Texture.class), 225, 188);
 		setSize(texture.getRegionWidth(), texture.getRegionHeight());
 		health = 1;
 		bala = "balaNave";
@@ -86,7 +90,7 @@ public class NaveActor extends DisparadorActor implements HealthActor {
 		
 		bullets.add(bullet);
 		if (GameplayScreen.isSoundEffects())
-			AlienChase.MANAGER.get("sound/shoot.ogg", Sound.class).play();
+			AlienChase.MANAGER.get("sound/shoot.ogg", Sound.class).play(0.3f);
 	}	
 
 	@Override
@@ -94,6 +98,11 @@ public class NaveActor extends DisparadorActor implements HealthActor {
 		batch.draw(texture, getX(), getY(), getOriginX(), getOriginY(),
 				getWidth(), getHeight(), getScaleX(), getScaleY(),
 				getRotation());
+		if(health <=0.4f ){
+			batch.draw(sangre, getX(), getY(), getOriginX(), getOriginY(),
+					getWidth(), getHeight(), getScaleX(), getScaleY(),
+					getRotation());
+		}
 	}
 
 	@Override
@@ -117,7 +126,7 @@ public class NaveActor extends DisparadorActor implements HealthActor {
 		if (health < 0)
 			health = 0;
 		if (health > 1)
-			health = 1;
+			health = 1;		
 	}
 
 }

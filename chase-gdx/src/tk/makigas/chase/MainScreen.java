@@ -30,7 +30,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 /**
  * @author danirod
  * @author chemaclass
- *
+ * 
  */
 public class MainScreen extends AbstractScreen {
 
@@ -43,45 +43,48 @@ public class MainScreen extends AbstractScreen {
 	private Texture btnEfectosSonidoOff, btnEfectosSonidoOn;
 
 	private Stage stage;
-
+	
 	public MainScreen(AlienChase game) {
 		super(game);
 	}
 
 	@Override
-	public void show() {		
+	public void show() {
 		stage = new Stage(1024, 512, true, game.SB);
-		
-		AlienChase.MANAGER.get("sound/corazon.ogg",Sound.class).loop();
-		
+
 		titulo = AlienChase.MANAGER.get("images/title.png", Texture.class);
 		btnJugar = AlienChase.MANAGER.get("images/jugar.png", Texture.class);
 		btnSalir = AlienChase.MANAGER.get("images/salir.png", Texture.class);
-		btnEfectosSonidoOff = new TextureRegion(AlienChase.MANAGER.get("images/sonidoOff.png",
-				Texture.class), 0, 0, 90, 32).getTexture();
-		btnEfectosSonidoOn = new TextureRegion(AlienChase.MANAGER.get("images/sonidoOn.png",
-				Texture.class), 0, 0, 90, 32).getTexture();
+		btnEfectosSonidoOff = new TextureRegion(AlienChase.MANAGER.get(
+				"images/sonidoOff.png", Texture.class), 0, 0, 90, 32)
+				.getTexture();
+		btnEfectosSonidoOn = new TextureRegion(AlienChase.MANAGER.get(
+				"images/sonidoOn.png", Texture.class), 0, 0, 90, 32)
+				.getTexture();
 		
-		Image imgFondo = new Image(titulo);
-		imgFondo.setFillParent(true);
-		stage.addActor(imgFondo);
-
+		implementarFondo();	
+		
 		implementarJugarSalir();
 		
 		implementarSonido();
-		
+
 		Gdx.input.setInputProcessor(stage);
 	}
-	
+
+	private void implementarFondo() {
+		Image imgFondo = new Image(titulo);
+		imgFondo.setFillParent(true);
+		stage.addActor(imgFondo);		
+	}
+
 	private void implementarJugarSalir() {
 		Image imgJugar = new Image(btnJugar);
-		imgJugar.setBounds(10, 100, 300, 75);
+		imgJugar.setBounds(200, 150, 350, 75);
 		imgJugar.addListener(new InputListener() {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y,
 					int pointer, int button) {
-				AlienChase.MANAGER.get("sound/campana.ogg",Sound.class).play();
-				//AlienChase.MANAGER.get("sound/corazon.ogg",Sound.class).stop();
+				AlienChase.MANAGER.get("sound/campana.ogg", Sound.class).play();			
 				game.setScreen(game.GAMEPLAY);
 				return true;
 			}
@@ -89,7 +92,7 @@ public class MainScreen extends AbstractScreen {
 		stage.addActor(imgJugar);
 
 		Image imgSalir = new Image(btnSalir);
-		imgSalir.setBounds(330, 100, 300, 75);
+		imgSalir.setBounds(500, 100, 300, 75);
 		imgSalir.addListener(new InputListener() {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y,
@@ -98,35 +101,35 @@ public class MainScreen extends AbstractScreen {
 				return true;
 			}
 		});
-		stage.addActor(imgSalir);		
+		stage.addActor(imgSalir);
 	}
 
 	private void implementarSonido() {
 		final Image imgEfectosSonidoOff = new Image(btnEfectosSonidoOff);
 		final Image imgEfectosSonidoOn = new Image(btnEfectosSonidoOn);
-		
-		imgEfectosSonidoOff.addListener(new InputListener(){
+
+		imgEfectosSonidoOff.addListener(new InputListener() {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y,
 					int pointer, int button) {
-				AlienChase.MANAGER.get("sound/shoot.ogg", Sound.class).play();
+				AlienChase.MANAGER.get("sound/shoot.ogg", Sound.class).play(0.3f);
 				GameplayScreen.setSoundEffects(true);
 				imgEfectosSonidoOn.setVisible(true);
 				return true;
 			}
 		});
-		imgEfectosSonidoOn.addListener(new InputListener(){
+		imgEfectosSonidoOn.addListener(new InputListener() {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y,
 					int pointer, int button) {
-				AlienChase.MANAGER.get("sound/campana.ogg",Sound.class).play();
+				AlienChase.MANAGER.get("sound/campana.ogg", Sound.class).play();
 				GameplayScreen.setSoundEffects(false);
 				imgEfectosSonidoOn.setVisible(false);
 				return true;
 			}
 		});
-		imgEfectosSonidoOff.setBounds(210, 65, 140, 30);
-		imgEfectosSonidoOn.setBounds(210, 65, 140, 30);
+		imgEfectosSonidoOff.setBounds(360, 100, 140, 30);
+		imgEfectosSonidoOn.setBounds(360, 100, 140, 30);
 		stage.addActor(imgEfectosSonidoOff);
 		stage.addActor(imgEfectosSonidoOn);
 		// Jugaremos con la imagen del sonido ON que estará superpuesta
@@ -135,7 +138,7 @@ public class MainScreen extends AbstractScreen {
 		// para que se vea la imagen que tiene detrás, que es la de OFF.
 		imgEfectosSonidoOn.setVisible(GameplayScreen.isSoundEffects());
 	}
-	
+
 	@Override
 	public void render(float delta) {
 		stage.act();
@@ -144,7 +147,6 @@ public class MainScreen extends AbstractScreen {
 
 	@Override
 	public void hide() {
-
 	}
 
 	@Override
