@@ -121,7 +121,7 @@ public class GameplayScreen extends AbstractScreen {
 		// Preparamos los listeners
 		crearListeners();
 		state = State.RUNNING;
-		
+
 		// Obtenemos de forma aleatoria el número con el que saltará
 		numNivelScream = AlienChase.random(2, 5);
 		numAlienScream = AlienChase.random(2, 8);
@@ -134,7 +134,7 @@ public class GameplayScreen extends AbstractScreen {
 		// que usar tres botones asociados cada uno a algo.
 		if (Gdx.app.getType() == ApplicationType.Desktop) {
 			stage.setKeyboardFocus(nave); // damos foco a nave.
-			nave.addListener(new InputDesktopListener(nave));
+			nave.addListener(new InputDesktopListener(game, nave));
 		} else if (Gdx.app.getType() == ApplicationType.Android) {
 			// Creamos los pads.
 			padArriba = new PadActor(0, 0);
@@ -149,10 +149,14 @@ public class GameplayScreen extends AbstractScreen {
 			padShoot.setPosition(stage.getWidth() - 50, 10);
 
 			// Añadimos los listeners.
-			padArriba.addListener(new InputAndroidMoveListener(nave, 250f, false));
-			padAbajo.addListener(new InputAndroidMoveListener(nave, -250f, false));
-			padDerecha.addListener(new InputAndroidMoveListener(nave, 250f, true));
-			padIzquierda.addListener(new InputAndroidMoveListener(nave, -250f, true));
+			padArriba.addListener(new InputAndroidMoveListener(nave, 250f,
+					false));
+			padAbajo.addListener(new InputAndroidMoveListener(nave, -250f,
+					false));
+			padDerecha.addListener(new InputAndroidMoveListener(nave, 250f,
+					true));
+			padIzquierda.addListener(new InputAndroidMoveListener(nave, -250f,
+					true));
 			padShoot.addListener(new InputAndroidShootListener(nave));
 
 			// Los añadimos al escenario.
