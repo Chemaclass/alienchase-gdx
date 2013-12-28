@@ -16,44 +16,32 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package tk.makigas.chase.actor;
+package tk.makigas.chase.listeners;
 
-import tk.makigas.chase.AlienChase;
+import tk.makigas.chase.actor.NaveActor;
 
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 
 /**
  * 
  * @author danirod
  * @author chemaclass
- * 
+ *
  */
-public class PadActor extends Actor {
+public class InputAndroidReloadListener extends InputListener {
 
-	/** Textura usada por el botón. */
-	private final TextureRegion button;
+	/** Nave que hay en el escenario. */
+	private final NaveActor nave;
 
-	/**
-	 * Crea un nuevo pad. La textura del pad contiene una tabla con las
-	 * distintas texturas que pueden usar los pads. La textura que usa este pad
-	 * se indica con los parámetros.
-	 * 
-	 * @param x
-	 *            columna de la textura.
-	 * @param y
-	 *            fila de la textura.
-	 */
-	public PadActor(int x, int y) {
-		button = new TextureRegion(AlienChase.MANAGER.get("images/pad.png",
-				Texture.class), 32 * x, 32 * y, 32, 32);
-		setSize(60, 60);
+	public InputAndroidReloadListener(NaveActor nave) {
+		this.nave = nave;
 	}
 
 	@Override
-	public void draw(SpriteBatch batch, float parentAlpha) {
-		batch.draw(button, getX(), getY());
+	public boolean touchDown(InputEvent event, float x, float y, int pointer,
+			int button) {
+		nave.recargar();
+		return true;
 	}
 }

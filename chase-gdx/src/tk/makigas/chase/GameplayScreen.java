@@ -18,11 +18,12 @@
  */
 package tk.makigas.chase;
 
+import static tk.makigas.chase.AlienChase.random;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import static tk.makigas.chase.AlienChase.random;
 import tk.makigas.chase.actor.AlienActor;
 import tk.makigas.chase.actor.BarraActor;
 import tk.makigas.chase.actor.BulletActor;
@@ -31,6 +32,7 @@ import tk.makigas.chase.actor.NaveActor;
 import tk.makigas.chase.actor.PadActor;
 import tk.makigas.chase.actor.PuntuacionActor;
 import tk.makigas.chase.listeners.InputAndroidMoveListener;
+import tk.makigas.chase.listeners.InputAndroidReloadListener;
 import tk.makigas.chase.listeners.InputAndroidShootListener;
 import tk.makigas.chase.listeners.InputDesktopListener;
 
@@ -64,7 +66,8 @@ public class GameplayScreen extends AbstractScreen {
 	private BarraActor vidaNave;
 
 	/** Pads usados para controlar el juego en Android. */
-	private PadActor padArriba, padAbajo, padDerecha, padIzquierda, padShoot;
+	private PadActor padArriba, padAbajo, padDerecha, padIzquierda, padShoot,
+			padRecargar;
 
 	/** Puntuación. */
 	private PuntuacionActor puntuacion;
@@ -143,11 +146,15 @@ public class GameplayScreen extends AbstractScreen {
 			padDerecha = new PadActor(0, 2);
 			padIzquierda = new PadActor(1, 2);
 			padShoot = new PadActor(0, 1);
+			padRecargar = new PadActor(0, 1);
 
 			// Los colocamos.
-			padArriba.setPosition(10, 50);
-			padAbajo.setPosition(10, 10);
-			padShoot.setPosition(stage.getWidth() - 50, 10);
+			padArriba.setPosition(70, 70);
+			padAbajo.setPosition(70, 10);
+			padDerecha.setPosition(130, 10);
+			padIzquierda.setPosition(10, 10);
+			padShoot.setPosition(stage.getWidth() - 70, 10);
+			padRecargar.setPosition(stage.getWidth() - 130, 10);
 
 			// Añadimos los listeners.
 			padArriba.addListener(new InputAndroidMoveListener(nave, 250f,
@@ -159,6 +166,7 @@ public class GameplayScreen extends AbstractScreen {
 			padIzquierda.addListener(new InputAndroidMoveListener(nave, -250f,
 					true));
 			padShoot.addListener(new InputAndroidShootListener(nave));
+			padRecargar.addListener(new InputAndroidReloadListener(nave));
 
 			// Los añadimos al escenario.
 			stage.addActor(padArriba);
@@ -166,6 +174,7 @@ public class GameplayScreen extends AbstractScreen {
 			stage.addActor(padDerecha);
 			stage.addActor(padIzquierda);
 			stage.addActor(padShoot);
+			stage.addActor(padRecargar);
 		}
 	}
 
